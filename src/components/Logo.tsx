@@ -1,0 +1,12 @@
+export function Logo({ className = "size-7" }: { className?: string }) {
+  return (
+    <svg viewBox="20 150 1215 950" className={className} aria-hidden>
+      <polygon fill="#8a1cff" points="35,160 295,160 625,490 450,672 35,220" />
+      <polygon fill="#5b0fe0" points="35,220 300,510 35,770" />
+      <polygon fill="#4a12d0" points="35,770 300,510 340,560 340,1090 35,1090" />
+      <polygon fill="#2fb4ff" points="955,160 1220,160 1220,220 915,555 625,870 450,672 625,490" />
+      <polygon fill="#0a6cf0" points="1220,220 955,510 1220,775" />
+      <polygon fill="#0a82ff" points="1220,775 955,510 915,555 915,1090 1220,1090" />
+    </svg>
+  );
+}
