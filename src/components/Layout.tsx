@@ -26,11 +26,12 @@ export function Layout() {
             <Logo className="h-5" />
             Pureline
           </Link>
-          <nav className="flex items-center gap-6">
+          <nav className="flex items-center gap-4 sm:gap-6">
             <NavLink to="/docs" className={({ isActive }) => `${link} ${isActive ? "!text-fg" : ""}`}>Docs</NavLink>
             <NavLink to="/docs/languages/README" className={link}>Languages</NavLink>
-            <a href={repoUrl} target="_blank" rel="noreferrer" className={`${link} flex items-center gap-1.5`}>
-              <Icon name="simple-icons:github" /> GitHub
+            <NavLink to="/editor" className={({ isActive }) => `${link} ${isActive ? "!text-fg" : ""}`}>Editor</NavLink>
+            <a href={repoUrl} target="_blank" rel="noreferrer" aria-label="GitHub" className={`${link} flex items-center gap-1.5`}>
+              <Icon name="simple-icons:github" /> <span className="hidden sm:inline">GitHub</span>
             </a>
           </nav>
         </div>

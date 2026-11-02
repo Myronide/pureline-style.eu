@@ -61,6 +61,9 @@ export function Home() {
           <Link to={docPath(INDEX_SLUG)} className="inline-flex items-center gap-2 brand-gradient rounded-md px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90">
             Read the guide <Icon name="lucide:arrow-right" />
           </Link>
+          <Link to="/editor" className="inline-flex items-center gap-2 rounded-md border border-line bg-surface px-5 py-2.5 text-sm font-medium transition-colors hover:bg-raised">
+            <Icon name="lucide:wand-sparkles" /> Try the live editor
+          </Link>
           <a href={repoUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-md border border-line bg-surface px-5 py-2.5 text-sm font-medium transition-colors hover:bg-raised">
             <Icon name="simple-icons:github" /> View on GitHub
           </a>
