@@ -1,15 +1,11 @@
 const authors = [
-  { name: "ezTxmMC", url: "https://github.com/ezTxmMC" },
   { name: "SyntaxJason", url: "https://github.com/SyntaxJason" },
+  { name: "ezTxmMC", url: "https://github.com/ezTxmMC" },
 ];
 
-type Size = "sm" | "lg";
-
-const avatarSize: Record<Size, string> = { sm: "size-6", lg: "size-10" };
-
-export function Authors({ size = "lg" }: { size?: Size }) {
+export function Authors() {
   return (
-    <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+    <div className="flex flex-wrap items-center gap-2 text-xs">
       <span className="text-muted">by</span>
       {authors.map((a) => (
         <a
@@ -17,15 +13,15 @@ export function Authors({ size = "lg" }: { size?: Size }) {
           href={a.url}
           target="_blank"
           rel="noreferrer"
-          className="group inline-flex items-center gap-2.5 font-medium transition-colors hover:text-accent"
+          className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-surface py-1 pl-1 pr-2.5 font-medium transition-colors hover:border-accent hover:bg-raised"
         >
           <img
-            src={`${a.url}.png?size=96`}
+            src={`${a.url}.png?size=48`}
             alt=""
-            width={96}
-            height={96}
+            width={48}
+            height={48}
             loading="lazy"
-            className={`${avatarSize[size]} rounded-full border border-line bg-surface object-cover transition-colors group-hover:border-accent`}
+            className="size-5 rounded-full bg-raised object-cover"
           />
           {a.name}
         </a>

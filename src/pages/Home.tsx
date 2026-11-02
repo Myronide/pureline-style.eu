@@ -65,7 +65,7 @@ export function Home() {
             <Icon name="simple-icons:github" /> View on GitHub
           </a>
         </div>
-        <div className="mt-10 text-sm">
+        <div className="mt-8">
           <Authors />
         </div>
       </section>
