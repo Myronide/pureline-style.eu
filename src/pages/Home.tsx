@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Authors } from "../components/Authors";
 import { Code as Highlighted } from "../components/Code";
 import { Icon } from "../components/Icon";
 import { docPath, INDEX_SLUG, languageDocs, repoUrl, shortTitle } from "../content";
@@ -63,6 +64,9 @@ export function Home() {
           <a href={repoUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-md border border-line bg-surface px-5 py-2.5 text-sm font-medium transition-colors hover:bg-raised">
             <Icon name="simple-icons:github" /> View on GitHub
           </a>
+        </div>
+        <div className="mt-10 text-sm">
+          <Authors />
         </div>
       </section>
 
