@@ -49,7 +49,7 @@ export function Layout() {
           <div className="island flex h-14 items-center justify-between px-6 backdrop-blur-xl">
             <Link to="/" className="group flex items-center gap-2.5 text-[17px] font-semibold tracking-tight">
               <Logo className="h-5" />
-              <span className="display brand-gradient inline-block bg-no-repeat bg-[length:100%_2px] bg-bottom pb-1 text-lg">Pureline</span>
+              <span className="display text-lg">Pure<span className="brand-gradient inline-block bg-no-repeat bg-[length:100%_2px] bg-bottom pb-0.5">line</span></span>
             </Link>
             <nav className="flex items-center gap-6 sm:gap-8">
               <NavLink to="/docs" end={false} className={navLink}>{t("nav.guide")}</NavLink>
