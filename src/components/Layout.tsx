@@ -38,7 +38,6 @@ export function Layout() {
           </nav>
         </div>
         </div>
-        </div>
       </header>
       <main className="flex-1"><Outlet /></main>
       <footer className="pb-6">
@@ -53,7 +52,6 @@ export function Layout() {
             <a href={repoUrl} className="underline underline-offset-4 decoration-line hover:text-fg">Myronide/pureline-style</a>{" "}
             on {new Date(syncedAt).toLocaleString("en-GB")}.
           </p>
-        </div>
         </div>
         </div>
       </footer>
