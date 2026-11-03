@@ -49,6 +49,20 @@ final class Session {
 - Benannte Argumente machen Aufrufstellen explizit (PL-CORE-007).
 - Verwende positionale Parameter nur für offensichtliche Helfer mit einem einzigen Wert.
 
+Benannte Parameter machen am Aufruf sichtbar, welche Rolle Argumente desselben Typs haben.
+
+```text
+− Positional parameters                │ ✓ Pureline
+void resize(int width, int height) {   │ void resize({
+  // …                                 │   required int width,
+}                                      │   required int height,
+                                       │ }) {
+resize(1920, 1080);                    │   // …
+                                       │ }
+                                       │
+                                       │ resize(width: 1920, height: 1080);
+```
+
 ### PL-DART-004 — Asynchroner Code nutzt `Future` und `Stream` zweckgemäß {#pl-dart-004--async-code-uses-future-and-stream-for-their-purpose}
 
 Verwende `Future` für ein einzelnes Ergebnis und `Stream` für eine Folge von Ereignissen. Verwende `async` und `await` statt verketteter `.then`.

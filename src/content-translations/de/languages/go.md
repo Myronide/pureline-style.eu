@@ -25,6 +25,18 @@ return session, nil
 
 Das passt natürlich zur Guard-first-Philosophie von Pureline.
 
+Fehlt dem Aufrufer sonst der Kontext zur Operation, ergänze ihn mit
+`%w`, damit der ursprüngliche Fehler erhalten bleibt.
+
+```text
+− Without operation context       │ ✓ Pureline
+                                  │
+data, err := os.ReadFile(path)    │ data, err := os.ReadFile(path)
+if err != nil {                   │ if err != nil {
+    return nil, err               │     return nil, fmt.Errorf("load config: %w", err)
+}                                 │ }
+```
+
 ### PL-GO-002 — `else` nach abschließenden Zweigen vermeiden {#pl-go-002--avoid-else-after-terminating-branches}
 
 Vermeiden:

@@ -32,6 +32,17 @@ end
 
 Die Regel lautet nicht „nachgestellte Bedingungen vermeiden“. Die Regel lautet: die Form verwenden, die die Absicht sofort erkennbar hält.
 
+Bevorzuge die Postfix-Form für eine einzelne kurze Prüfung mit sofortiger Rückgabe.
+
+```text
+Block guard                 │ ✓ Pureline
+if session.closed?          │ return if session.closed?
+  return                    │
+end                         │ session.send(packet)
+                            │
+session.send(packet)        │
+```
+
 ### PL-CR-002 — `else` vermeiden {#pl-cr-002--avoid-else}
 
 Vermeiden:

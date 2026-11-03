@@ -18,6 +18,14 @@ func take_damage(amount: int) -> void:
 	hp = maxi(hp - amount, 0)
 ```
 
+Bevorzuge `:=` für lokale Variablen, wenn der Initialwert den statischen Typ erkennen lässt.
+
+```text
+Explicit annotation                 │ ✓ Pureline
+var speed: float = 240.0            │ var speed := 240.0
+var direction: Vector2 = Vector2.UP │ var direction := Vector2.UP
+```
+
 ### PL-GD-002 — Werte für Designer exportieren {#pl-gd-002--export-designer-facing-values}
 
 Mache Werte, die ein Designer anpassen soll, mit `@export` verfügbar, typisiert und, wo möglich, mit Wertebereich. Halte Werte, die zum Code gehören, im Skript privat.

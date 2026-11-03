@@ -67,6 +67,23 @@ cleanup:
 }
 ```
 
+Schließe eine einzelne Ressource bei zwei einfachen Rückgabepfaden
+direkt vor jeder Rückgabe. Bei mehr Aufräumarbeit hilft ein gemeinsames Label.
+
+```text
+Shared cleanup label              │ ✓ Pureline
+int status = read_header(file);   │ int status = read_header(file);
+if (status != OK) {               │ if (status != OK) {
+    goto cleanup;                 │     fclose(file);
+}                                 │     return status;
+                                  │ }
+status = read_body(file);         │
+                                  │ status = read_body(file);
+cleanup:                          │ fclose(file);
+    fclose(file);                 │ return status;
+    return status;                │
+```
+
 ### PL-C-005 — Const-Korrektheit und expliziter Zustand {#pl-c-005--const-correctness-and-explicit-state}
 
 Schreibgeschützte Parameter sind `const`, einmal zugewiesene lokale Variablen sind `const`, und Laufzeitzustand wird explizit in einer Kontext-Struct übergeben statt in Variablen auf Dateiebene.

@@ -71,6 +71,16 @@ int count_long(const std::vector<std::string>& names) {
 }
 ```
 
+Bevorzuge `const auto&` für schreibgeschützte Schleifen, wenn der
+Elementtyp aus dem umgebenden Code hervorgeht.
+
+```text
+− Explicit element type           │ ✓ Pureline
+for (const User& user : users) {  │ for (const auto& user : users) {
+    print(user.name);             │     print(user.name);
+}                                 │ }
+```
+
 ### PL-CPP-005 — Kleine Klassen mit einer Verantwortung {#pl-cpp-005--small-classes-with-one-responsibility}
 
 Eine Klasse besitzt ein kohärentes Konzept und dessen Invarianten. Halte Daten privat und stelle eine schmale Schnittstelle bereit. Teile Klassen auf, die Speicherung, Preisberechnung, Persistenz oder Darstellung vermischen. [Kohäsion vor Größe](../core/structure.md) entscheidet, nicht die Zeilenzahl.

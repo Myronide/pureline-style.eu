@@ -65,6 +65,24 @@ function submit() {
 
 Ein Binding enthält einen Ausdruck mit höchstens einer Bedingung und einem kurzen Aufruf. Verlagere längere Logik in eine benannte Funktion oder ein C++- / Python-Backend-Objekt. Verschachtelte Ternaries sind nicht Pureline.
 
+Schreibe eine kurze Bindung direkt an die Property, die sie verwendet.
+Gib der Bedingung einen Namen, wenn mehrere Steuerelemente sie teilen.
+
+```text
+Named property                          │ ✓ Pureline
+Item {                                  │ Item {
+    id: root                            │     id: root
+                                        │
+    readonly property bool canSave:     │     Button {
+        form.valid && !form.saving      │         text: qsTr("Save")
+                                        │         enabled: form.valid
+    Button {                            │             && !form.saving
+        text: qsTr("Save")              │     }
+        enabled: root.canSave           │ }
+    }                                   │
+}                                       │
+```
+
 ### PL-QML-007 — Die Reihenfolge der Properties gruppiert das Objekt {#pl-qml-007--property-order-groups-the-object}
 
 Schreibe die Properties eines Objekts in dieser Reihenfolge, mit einer Leerzeile zwischen den Gruppen: Identität (`id`), erforderliche und öffentliche Properties, Bindings, Kindobjekte, Signal-Handler, Funktionen.

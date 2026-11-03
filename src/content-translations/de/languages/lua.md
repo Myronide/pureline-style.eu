@@ -73,6 +73,17 @@ local function timeout_or_default(config)
 end
 ```
 
+Prüfe optionale Boolean-Werte ausdrücklich auf `nil`, damit ein explizites
+`false` beim Setzen des Standardwerts erhalten bleibt.
+
+```text
+− Overrides false                          │ ✓ Pureline
+local visible = options.visible or true   │ local visible = options.visible
+                                          │ if visible == nil then
+                                          │     visible = true
+                                          │ end
+```
+
 ### PL-LUA-005 — Fehler sind Werte {#pl-lua-005--errors-are-values}
 
 Gib für erwartete Fehler wie eine fehlende Datei oder fehlerhafte Eingaben `nil, err` zurück und prüfe das Paar an der Aufrufstelle. Verwende `assert` nur für Programmierfehler und gebrochene Invarianten, bei denen das Anhalten die richtige Reaktion ist.

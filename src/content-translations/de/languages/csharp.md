@@ -30,6 +30,18 @@ public sealed class UserProfile
 }
 ```
 
+Bevorzuge `?.` mit `??`, wenn die Nullprüfung nur einen Ersatzwert
+auswählt. In diesem Beispiel kann `Name` nicht null sein.
+
+```text
+− Separate null guard            │ ✓ Pureline
+if (user is null) {              │ return user?.Name ?? "Gast";
+    return "Gast";               │
+}                                │
+                                 │
+return user.Name;                │
+```
+
 ### PL-CS-003 — Records für unveränderliche Daten {#pl-cs-003--records-for-immutable-data}
 
 Modelliere Daten, die zwischen Schichten wandern, als `record`. Leite geänderte Kopien mit `with` ab, statt zu mutieren. Verwende eine Klasse nur, wenn das Objekt eine eigene Identität oder ein eigenes Verhalten hat.

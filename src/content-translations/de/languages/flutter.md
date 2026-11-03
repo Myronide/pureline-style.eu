@@ -75,6 +75,19 @@ Widget build(BuildContext context) {
 
 Vermeide verschachtelte Bedingungen in Widget-Bäumen.
 
+Verwende ein Collection-`if`, wenn nur ein Widget bedingt angezeigt wird
+und der Rest der Liste gleich bleibt.
+
+```text
+− Two child lists                            │ ✓ Pureline
+return Column(                               │ return Column(
+  children: showDetails                      │   children: [
+      ? [const TitleBar(), const Details()]  │     const TitleBar(),
+      : [const TitleBar()],                  │     if (showDetails) const Details(),
+);                                           │   ],
+                                             │ );
+```
+
 ### PL-FLUT-007 — Keys nur dort, wo die Identität in Listen zählt {#pl-flut-007--keys-only-where-list-identity-matters}
 
 Vergib einen Key nur, wenn die Identität eines Widgets Umsortierung oder Entfernen überstehen muss, etwa bei zustandsbehafteten Listenelementen oder einem `Dismissible`. Verwende einen stabilen Bezeichner aus den Daten, niemals den Listenindex.

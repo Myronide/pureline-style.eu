@@ -26,11 +26,24 @@ function load(value: UserId): User {
 }
 ```
 
-Verwende `unknown` für wirklich unbekannte Daten:
+Verwende `unknown` für Eingaben aus nicht vertrauenswürdigen Quellen.
+Bevorzuge einen benannten Type Guard für fachliche Prüfungen wie gültige Portnummern.
 
-```ts
-function parse(input: unknown): Config {
-}
+```text
+A · Inline validation                        │ ✓ Pureline · Named type guard
+function readPort(input: unknown): number {  │ function readPort(input: unknown): number {
+    if (typeof input !== "number"            │     if (!isPort(input)) {
+        || !Number.isInteger(input)          │         throw new InvalidPortError();
+        || input < 1 || input > 65535) {     │     }
+        throw new InvalidPortError();        │
+    }                                        │     return input;
+                                             │ }
+    return input;                            │
+}                                            │ function isPort(value: unknown): value is number {
+                                             │     return typeof value === "number"
+                                             │         && Number.isInteger(value)
+                                             │         && value >= 1 && value <= 65535;
+                                             │ }
 ```
 
 ### PL-TS-002 — Typen bewusst einsetzen {#pl-ts-002--use-types-deliberately}

@@ -17,23 +17,18 @@ Wende die [gemeinsamen Kernregeln](../README.md#shared-rules) zusammen mit diese
 
 Validiere zuerst, kehre früh zurück oder löse früh eine Ausnahme aus, und halte den erfolgreichen Pfad auf der Basis-Einrückung.
 
-```python
-def open_session(request: Request) -> Session:
-    if not request.is_valid():
-        raise InvalidRequestError(request)
-
-    user = request.user
-    if user is None:
-        raise MissingUserError()
-
-    return Session.open(user)
+```text
+− Noisy                                      │ ✓ Pureline
+                                             │
+def display_name(user: User | None) -> str:   │ def display_name(user: User | None) -> str:
+    if user is not None:                     │     if user is None or not user.active:
+        if user.active:                      │         return "Gast"
+            return user.name                 │
+                                             │     return user.name
+    return "Gast"                            │
 ```
 
 Ein einzeiliger Guard ist erlaubt, wenn der Rumpf ein einzelnes `return` oder `raise` ist. Verwende keine einzeiligen Rümpfe für Anweisungen mit Seiteneffekten.
-
-```python
-if user is None: raise MissingUserError()   # not Pureline: the body is hidden on the header line
-```
 
 ### PL-PY-003 — Typannotationen an den Grenzen {#pl-py-003--type-hints-at-boundaries}
 

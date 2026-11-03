@@ -52,6 +52,17 @@ export function UserPanel({ query }: UserPanelProps) {
 
 Vermeide verschachtelte Ternaries in JSX. Berechne den Zweig in eine benannte Konstante oder gib ihn aus einem Guard zurück. Ein einzelner Ternary für eine einfache Entweder-oder-Wahl innerhalb von JSX ist erlaubt.
 
+```text
+− Conditional JSX                            │ ✓ Pureline
+function Profile({ user }: ProfileProps) {   │ function Profile({ user }: ProfileProps) {
+    return user === null                     │     if (user === null) {
+        ? <SignInPrompt />                   │         return <SignInPrompt />;
+        : <ProfileCard user={user} />;       │     }
+}                                            │
+                                             │     return <ProfileCard user={user} />;
+                                             │ }
+```
+
 ### PL-REACT-003 — Hooks stehen bedingungslos auf oberster Ebene {#pl-react-003--hooks-are-unconditional-and-top-level}
 
 - Rufe Hooks auf der obersten Ebene einer Komponente oder eines eigenen Hooks auf, bei jedem Render in derselben Reihenfolge. Niemals innerhalb einer Bedingung, einer Schleife oder einer verschachtelten Funktion.

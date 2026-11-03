@@ -49,6 +49,19 @@ Rendere HTML ohne JavaScript, solange die Komponente nicht auf den Benutzer reag
 - Maps über Listen mit einem stabilen `key`, wenn die Liste interaktiv ist.
 - Verschachtele innerhalb des Markups nicht mehr als zwei Ausdrucksebenen. Verlagere den inneren Teil in eine Komponente.
 
+Lass einen kurzen Formatierungsausdruck im Template, wenn er nur einmal
+vorkommt und an der Verwendungsstelle verständlich ist.
+
+```text
+Named frontmatter value                         │ ✓ Pureline
+---                                             │ ---
+const { title } = Astro.props;                  │ const { title } = Astro.props;
+const displayTitle = title.trim() || "Profil";  │ ---
+---                                             │
+                                                │ <h1>{title.trim() || "Profil"}</h1>
+<h1>{displayTitle}</h1>                         │
+```
+
 ### PL-AS-005 — Styles sind scoped {#pl-as-005--styles-are-scoped}
 
 Verwende standardmäßig `<style>`-Blöcke in der Komponente; Astro scoped sie automatisch. Verwende `is:global` nur für dokumentweite Regeln wie Reset oder Theme-Tokens und halte diese in einem einzigen globalen Stylesheet.

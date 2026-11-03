@@ -40,6 +40,20 @@ export class CounterComponent {
 }
 ```
 
+Wenn ein Template-Wert aus einem Signal abgeleitet wird, bevorzuge `computed()`
+gegenüber einem Getter, der die Berechnung bei jedem Zugriff wiederholt.
+
+```text
+Getter                               │ ✓ Pureline
+get activeCount(): number {          │ readonly activeCount = computed(() =>
+    return this.users().filter(      │     this.users().filter(
+        (user) => user.active,       │         (user) => user.active,
+    ).length;                        │     ).length,
+}                                    │ );
+                                     │
+<span>{{ activeCount }}</span>       │ <span>{{ activeCount() }}</span>
+```
+
 ### PL-NG-003 — Eingebauter Kontrollfluss mit `track` {#pl-ng-003--built-in-control-flow-with-track}
 
 Verwende `@if`, `@for` und `@switch`; verwende in neuem Code kein `*ngIf` oder `*ngFor`. Jedes `@for` trackt einen stabilen Bezeichner aus den Daten, niemals `$index` bei Listen, die sich ändern können. Verwende `@empty` für den Leerzustand.

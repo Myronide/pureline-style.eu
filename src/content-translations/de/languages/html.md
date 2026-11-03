@@ -28,6 +28,18 @@ Verwende kleingeschriebene Element- und Attributnamen, doppelte Anführungszeich
 
 Jedes Eingabefeld hat ein sichtbares `<label>`, das über `for` und `id` zugeordnet ist oder das Feld umschließt. Platzhaltertext ist kein Label. Gruppiere zusammengehörige Steuerelemente mit `<fieldset>` und `<legend>`.
 
+Bevorzuge ein umschließendes Label, wenn Beschriftung und Eingabefeld im
+Markup zusammengehören. Sind sie getrennt, verknüpfe sie ausdrücklich
+über `for` und `id`.
+
+```text
+Explicit association                        │ ✓ Pureline
+<label for="email">E-Mail</label>           │ <label>
+<input id="email" name="email" type="email"> │     E-Mail
+                                            │     <input name="email" type="email">
+                                            │ </label>
+```
+
 ### PL-HTML-005 — Bilder und Medien haben Textalternativen {#pl-html-005--images-and-media-have-text-alternatives}
 
 Jedes `<img>` hat ein `alt`-Attribut: eine Beschreibung für informative Bilder, ein leeres `alt=""` für dekorative. Gib `width` und `height` an, um Layoutverschiebungen zu vermeiden. Videos liefern Untertitel über `<track>`.

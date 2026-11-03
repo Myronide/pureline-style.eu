@@ -79,6 +79,12 @@ method retry(string url): integer {
 }
 ```
 
+```text
+Explicit local type         │ ✓ Pureline
+integer attempts = 0        │ var attempts = 0
+attempts = attempts + 1     │ attempts = attempts + 1
+```
+
 ### PL-NV-004 — Konstruktion und Objektliterale {#pl-nv-004--construction-and-object-literals}
 
 - Verwende Objektliterale (`Person{name="Tom"}`) für einfache Daten ohne Verhalten.

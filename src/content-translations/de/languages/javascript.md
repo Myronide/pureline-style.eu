@@ -50,6 +50,18 @@ count++;
 
 Verwende kein `var`.
 
+Bevorzuge `??`, wenn der Standardwert nur bei `null` oder `undefined` greifen soll.
+Werte wie `0`, `false` und `""` bleiben erhalten.
+
+```text
+− Noisy                                │ ✓ Pureline
+                                       │
+let timeout = options.timeout;         │ const timeout = options.timeout ?? DEFAULT_TIMEOUT;
+if (timeout == null) {                 │
+    timeout = DEFAULT_TIMEOUT;         │
+}                                      │
+```
+
 ### PL-JS-004 — `async` / `await` bevorzugen {#pl-js-004--prefer-async--await}
 
 Bevorzugt:

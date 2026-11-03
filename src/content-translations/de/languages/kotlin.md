@@ -43,13 +43,18 @@ fun describe(state: ConnectionState): String = when (state) {
 
 ### PL-KT-004 — Null Safety ohne !! {#pl-kt-004--null-safety-without}
 
-Verwende `?.` für optionalen Zugriff und `?:` für Fallbacks oder frühe Ausstiege. Verwende `!!` niemals außerhalb von Tests; es macht aus einer Null-Prüfung einen Absturz zur Laufzeit.
+Verwende `?.` für optionalen Zugriff und `?:` für Ersatzwerte. Bevorzuge
+einen separaten Null-Guard, wenn ein fehlender Wert zur frühen Rückgabe führt.
+Verwende `!!` nur in Tests.
 
-```kotlin
-fun greet(name: String?): String {
-    val safeName = name ?: return "Hello, guest"
-    return "Hello, $safeName"
-}
+```text
+− Elvis with early return              │ ✓ Pureline
+val user = users[id] ?: return "Gast"  │ val user = users[id]
+                                       │ if (user == null) {
+return user.name                       │     return "Gast"
+                                       │ }
+                                       │
+                                       │ return user.name
 ```
 
 ### PL-KT-005 — Scope-Funktionen nur, wenn sie klar lesbar sind {#pl-kt-005--scope-functions-only-when-they-read-clearly}

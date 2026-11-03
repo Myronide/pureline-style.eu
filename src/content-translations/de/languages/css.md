@@ -40,6 +40,20 @@ Deklariere die Reihenfolge der Layer einmalig: `@layer reset, base, components, 
 
 Style mit einzelnen Klassen. Style nicht mit Elementketten (`div section ul li a`) oder IDs. Spezifität, die mit dem Markup wächst, macht spätere Änderungen teuer. Ein Selektor, der tiefer als zwei Ebenen reicht, ist ein Review-Befund.
 
+Bevorzuge eine eigene Klasse, wenn der Stil unabhängig von der Position
+des Elements in der Komponente gelten soll.
+
+```text
+− Descendant selector                  │ ✓ Pureline
+.card .title {                         │ .card-title {
+    font-weight: 600;                  │     font-weight: 600;
+}                                      │ }
+                                       │
+<div class="card">                     │ <div class="card">
+    <h2 class="title">Profil</h2>       │     <h2 class="card-title">Profil</h2>
+</div>                                 │ </div>
+```
+
 ### PL-CSS-004 — Kein `!important` außerhalb von Utilities {#pl-css-004--no-important-outside-utilities}
 
 `!important` ist nur für Utility-Klassen erlaubt, die eine Komponente überschreiben müssen, und nur im Utilities-Layer. Überall sonst ist es ein Befund.

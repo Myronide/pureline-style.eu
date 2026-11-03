@@ -47,6 +47,18 @@ func open(_ request: Request) throws -> Session {
 }
 ```
 
+Bevorzuge `guard let`, wenn ein fehlender Wert die Funktion beendet und
+der ausgepackte Wert im Erfolgspfad gebraucht wird.
+
+```text
+− if let                              │ ✓ Pureline
+if let user = users[id] {             │ guard let user = users[id] else {
+    return user.name                  │     return "Gast"
+}                                     │ }
+                                      │
+return "Gast"                         │ return user.name
+```
+
 ### PL-SW-005 — Optionals werden sicher entpackt {#pl-sw-005--optionals-are-unwrapped-safely}
 
 - Entpacke mit `if let` oder `guard let`; verwende `??` für einfache Standardwerte. Erzwinge das Entpacken (`!`) oder `try!` niemals außerhalb von Tests; verwende dort `XCTUnwrap`.

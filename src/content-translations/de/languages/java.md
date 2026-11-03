@@ -133,6 +133,19 @@ streams
 
 Moderne Syntax soll Lärm reduzieren, nicht Neuheit um ihrer selbst willen erzeugen.
 
+Bevorzuge ein `instanceof`-Muster, wenn ein Guard den Typ prüft und der
+Erfolgspfad den Wert mit diesem Typ benötigt.
+
+```text
+− Separate cast                      │ ✓ Pureline
+if (!(value instanceof String)) {   │ if (!(value instanceof String text)) {
+    return "";                       │     return "";
+}                                    │ }
+                                     │
+String text = (String) value;        │ return text.trim();
+return text.trim();                  │
+```
+
 ### PL-JAVA-007 — Switch für echte Zustandsverzweigungen bevorzugen {#pl-java-007--prefer-switch-for-real-state-branching}
 
 Bevorzugt:

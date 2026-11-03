@@ -43,6 +43,18 @@ fn show_user() {
 }
 ```
 
+Bevorzuge in einer Funktion mit Result-Rückgabe `!`, um einen Fehler
+unverändert weiterzugeben. Verwende einen `or`-Block für weitere Fehlerbehandlung.
+
+```text
+Explicit propagation                  │ ✓ Pureline
+config := load_config(path) or {      │ config := load_config(path)!
+    return err                        │ start(config)
+}                                     │
+                                      │
+start(config)                         │
+```
+
 ### PL-V-004 — Option-Typen für fehlende Werte verwenden {#pl-v-004--use-option-types-for-absent-values}
 
 Verwende `?T`, wenn Abwesenheit ein normales Ergebnis ist. Verwende `!T`, wenn ein Fehler eine Begründung braucht.

@@ -103,6 +103,24 @@ const props = defineProps<{ done: boolean }>();
 </template>
 ```
 
+Wenn der Komponente ein `users`-Ref zur Verfügung steht:
+
+```text
+− Inline filtering          │ ✓ Pureline
+<template>                  │ <script setup lang="ts">
+  <span>{{ users.filter(    │ import { computed } from "vue";
+    (user) => user.active   │
+  ).length }}</span>        │ // users is a ref supplied by the component.
+</template>                 │ const activeCount = computed(
+                            │   () => users.value.filter((user) => user.active).length,
+                            │ );
+                            │ </script>
+                            │
+                            │ <template>
+                            │   <span>{{ activeCount }}</span>
+                            │ </template>
+```
+
 ### PL-VUE-008 — Pinia hält gemeinsamen Zustand {#pl-vue-008--pinia-holds-shared-state}
 
 Halte Zustand in einer Komponente oder einem Composable, bis zwei unabhängige Teile der App ihn brauchen, und verlagere ihn dann in einen Pinia-Store. Lies Stores mit `storeToRefs`, damit die Destrukturierung die Reaktivität behält.
