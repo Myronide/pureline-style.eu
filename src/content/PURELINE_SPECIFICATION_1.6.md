@@ -1,4 +1,4 @@
-# Pureline Specification 1.5
+# Pureline Specification 1.6
 
 ## Definition
 
@@ -35,7 +35,7 @@ The central Pureline principles are:
 
 > **Linear Flow. Explicit Intent. Minimal Noise. Small Units. Clear Ownership. Cohesion over Size.**
 
-**Version 1.5:** Adds the idiomatic Rust profile (`PL-RS-001` through `PL-RS-020`) while preserving all existing rule IDs and the 1.4 Cohesion over Size principle.
+**Version 1.6:** Adds the Novus profile (`PL-NV-001` through `PL-NV-013`) and the React profile (`PL-REACT-001` through `PL-REACT-014`), extends the Rust profile with `PL-RS-021` through `PL-RS-024` and a precise test exemption in `PL-RS-004`, and keeps all existing rule IDs and the 1.4 Cohesion over Size principle. Version 1.5 added the Rust profile (`PL-RS-001` through `PL-RS-020`).
 
 ---
 
@@ -1595,7 +1595,7 @@ fn load_config(path: &Path) -> Result<Config, ConfigError> {
 
 ## PL-RS-004 — Restrict `unwrap`, `expect`, and `panic!`
 
-Never use `unwrap()` or `expect()` for ordinary recoverable production failures. They are acceptable in tests, prototypes, or documented invariants that really cannot be violated. `panic!` is not a normal error-handling strategy. Prefer explicit handling over hidden failure via unchecked indexing or conversions.
+Never use `unwrap()` or `expect()` for ordinary recoverable production failures. They are acceptable in documented invariants that really cannot be violated, and inside test code (`#[cfg(test)]` modules and `tests/`), where a panic is the failure report. `panic!` is not a normal error-handling strategy. Prefer explicit handling over hidden failure via unchecked indexing or conversions.
 
 ## PL-RS-005 — Use `match` and Patterns for Real State Branching
 
@@ -1689,6 +1689,199 @@ Avoid unnecessary allocations, clones, reference counting, and locking in measur
 - Test normal, invalid, and failure paths, especially cancellation, lifecycle, FFI, and concurrency boundaries.
 - Make warnings intentional; avoid blanket `allow` attributes to silence broad lint groups.
 - Pureline Checker must use Rust syntax/AST-aware inspection (including `let ... else`, pattern matching, macros, and expression returns), not textual pattern matching.
+
+## PL-RS-021 — Error Types Match the Crate Role
+
+- Libraries expose typed errors: an `enum` that implements `std::error::Error` and `Display`, with one variant per distinct failure a caller can act on.
+- Applications may use one opaque top-level error type at the boundary (`main`, request handlers, CLI commands) to carry context. Do not leak that opaque type through a library's public API.
+- Preserve the source error (`source()` or a wrapped variant) instead of converting it to a string.
+- `Display` messages are lowercase and carry no trailing punctuation, so that callers can compose them.
+
+```rust
+#[derive(Debug)]
+pub enum ConfigError {
+    Missing(PathBuf),
+    Invalid(toml::de::Error),
+}
+```
+
+## PL-RS-022 — Lints Are Configured Centrally
+
+- Configure lint levels in the manifest (`[lints]` in `Cargo.toml`, or `[workspace.lints]` with `lints.workspace = true` in member crates), not in scattered crate-level attributes.
+- Enable the lint groups the project agrees on, and list individual exceptions with a reason next to them.
+- A crate-level `#![allow(...)]` is a finding unless a comment explains why the lint is wrong for this code.
+
+```toml
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+module_name_repetitions = "allow"
+```
+
+## PL-RS-023 — Cancellation-Safe Async Code
+
+- When a future is dropped before it completes (for example as a losing branch of `select!`, or on timeout), state whether the operation is cancellation-safe. Document any operation that is not.
+- Do not assume that a dropped future has rolled back its work. Commit state changes after the awaited step succeeds, or make the step idempotent.
+- Keep the future that holds a lock or an open transaction out of `select!` branches that can drop it mid-operation.
+
+## PL-RS-024 — Tests Sit Next to the Behaviour They Check
+
+- Unit tests live in a `#[cfg(test)] mod tests` block at the end of the file they test. They can reach private items, which keeps the public surface narrow.
+- Integration tests live in `tests/` and use only the public API.
+- Test names state the behaviour (`rejects_expired_token`), not the function name alone.
+- Fixtures are built by small helper functions, not by copying setup blocks into every test.
+
+---
+
+# 15.1 Novus Profile
+
+Novus (`.nv`, `.nvh`) is a self-hosting language that compiles to portable C. Apply the shared core rules together with the rules below. The linter rules `PL-CF-002`, `PL-FN-001`, `PL-STRUCT-001`, `PL-STRUCT-002`, and `PL-NAME-001` are reported by the Novus language server under source `pureline` when `novus.pureline.enabled` is set. `.nvmd` pages are checked through the `.nvh` they generate, and the generator reports errors at the `.nvmd` line.
+
+## PL-NV-001 — Naming and Visibility
+
+- Classes, enums, and components: `PascalCase`. Methods, fields, locals, and parameters: `lowerCamelCase`.
+- Package (folder) names: short, lowercase, without separators.
+- File-level constants: `private final SCREAMING_SNAKE_CASE`.
+- Keep members private unless another package or file uses them. Expose fields through `: get` or `: get, set` only when callers need them.
+- Short names are allowed for loop counters (`i`, `j`, `k`). Other one-letter names and placeholders (`tmp`, `obj`, `thing`, `data2`) are reported by `PL-NAME-001`.
+
+## PL-NV-002 — Guard Clauses and Linear Flow
+
+Validate first, return early, and keep the successful path at the base indentation. Avoid `else` after a branch that already returns, breaks, or continues (`PL-CF-002`). When an `else` is genuinely the clearest form, mark the line with a justified exemption: `} else { // pureline:allow-else <reason>`.
+
+## PL-NV-003 — Declarations: `final`, `var`, and Explicit Types
+
+- Use `final` for values that never change; use `var` for locals whose type is obvious from the initialiser.
+- Write a declared type where the reader would otherwise have to guess, and at API boundaries.
+- An explicit type converts the value: `integer x = 2.9` stores `2`. Make such conversions visible.
+- Novus has no compound assignment. Write `count = count + 1`, not `count += 1`.
+
+## PL-NV-004 — Construction and Object Literals
+
+- Use object literals (`Person{name="Tom"}`) for plain data with no behaviour.
+- Use `construct()` when the object must establish invariants, derive fields, or validate arguments.
+- Do not hide significant work in field initialisers.
+- Use `based` inheritance only for a real is-a relationship. Prefer an `interface` when only the behaviour is shared.
+
+## PL-NV-005 — Method Signatures
+
+- Declare parameter and return types when the signature is part of an API, a module boundary, or an `.nvh` component.
+- Keep parameter lists short enough to scan.
+- Overloads by arity or parameter type are allowed when the meaning is identical. Do not use overloads to hide different behaviour behind one name.
+
+## PL-NV-006 — Function Size Is a Review Signal
+
+The language server reviews a method at 30 lines and reports it above 50 lines (`PL-FN-001`). These are review thresholds. A cohesive method that does one thing in sequence may stay longer; split it when it mixes responsibilities such as parsing, validation, and I/O.
+
+## PL-NV-007 — Packages, Imports, and Folder Density
+
+- A folder is a package. Import the narrowest unit that is needed: `import geo/circle` or `import @helpers` instead of a whole package when one file is enough.
+- Keep at most **10 `.nv` / `.nvh` files** per folder by default (`PL-STRUCT-002`).
+- Review a file at **200 lines** (`PL-STRUCT-001`). This is a review threshold, not a hard limit.
+
+## PL-NV-008 — Concurrency Has Visible Ownership
+
+- Make concurrency visible at the call site: `async` / `await`, `thread`, `virtual`, and `sync`.
+- Track every task that matters. Do not start fire-and-forget work for results the program later depends on.
+- Guard shared mutable state explicitly with `sync`.
+- Apply [PL-RS-013](#pl-rs-013--async-tasks-have-ownership-and-shutdown)-style shutdown and cancellation discipline.
+
+## PL-NV-009 — Evaluation Order Is Documented, Not Assumed
+
+Do not write code whose result depends on an unusual ordering. Keep side effects in their own statements. The `..` chain is for building an object or array in one linear sequence on the same receiver; break it into named steps when a step needs a comment or a branch.
+
+## PL-NV-010 — C Blocks and Platform Boundaries
+
+A `c { ... }` block is a native boundary. Keep it small, isolate it in a focused file, and document what the C code assumes about types, lifetimes, and the platform. Expose it through a Novus method with a typed signature.
+
+## PL-NV-011 — `.nvh` Components Keep Markup and Logic Apart
+
+- Declare reactive state with `ref` inside `<?nv ... ?>`.
+- Keep handlers and computations in Novus blocks; keep the HTML focused on structure.
+- Compute derived values in one place, not repeatedly in the markup.
+- Treat each component as one responsibility (`PL-STRUCT-001`).
+
+## PL-NV-012 — Comments and Diagnostics
+
+- Comments explain why, not what ([PL-DOC-001](#pl-doc-001--comments-explain-why-not-what)).
+- Pureline diagnostics are opt-in in the editor. Enable them for shared projects so that the same rule IDs appear in every editor and in CI.
+- Every `pureline:allow-else` exemption needs a reason on the same line.
+
+## PL-NV-013 — Markdown Content (`.nvmd`)
+
+A `.nvmd` file is Markdown with Novus in it. The generator in nvh-markdown turns `Page.nvmd` into `Page.nvh` before the compiler runs. Apply the rules above to the header block and to any `.nv` modules it imports; the Markdown body follows these rules.
+
+- The body carries the content. The header block (`<?nv ... ?>`) carries only imports, props, and a few methods; longer logic moves into a `.nv` module.
+- Frontmatter keys are the page's props. Keep them short and flat, and use `{title}` rather than repeating the value.
+- Keep each `{expr}` to one value or one call. Compute anything longer in the header or a module.
+- Keep `{#if}` and `{#for}` blocks at most two levels deep. When a block repeats markup, use a component (`<Callout>`, `<Toc>`).
+- A heading whose text is dynamic gets an explicit id (`# {title} {#intro}`), so anchors and `markdown.headings` stay stable.
+- Generated `.nvh` files are build output: add them to `.gitignore`, never edit them, and fix the `.nvmd` source. Keep the `<?nv /* nvmd-generated */` mark intact.
+- An HTML block with a handler (`<button @click="hit">`) is nvh inside Markdown. Keep such blocks short and separate them with blank lines.
+
+---
+
+# 15.2 React Profile
+
+The React profile targets React 19 with TypeScript in strict mode, bundled with Vite and routed with react-router. Apply the shared core rules, the JavaScript profile, and the TypeScript profile together with it. Components are functions; a component reads as props in, guards, derived values, markup out.
+
+## PL-REACT-001 — Components Are Named Functions
+
+Components are named functions in `PascalCase`, exported by name. One component is one responsibility. Never define a component inside another component: it is remounted on every render and loses its state.
+
+## PL-REACT-002 — Guard Clauses Before the Main Markup
+
+Handle loading, error, and empty states first and return early. Avoid nested ternaries in JSX; compute the branch into a named constant or return it from a guard.
+
+## PL-REACT-003 — Hooks Are Unconditional and Top-Level
+
+Call hooks at the top level of a component or custom hook, in the same order on every render. A custom hook is named `useX`, encapsulates one concern, and returns a stable, typed result.
+
+## PL-REACT-004 — Derived Values Are Computed, Not Stored
+
+Compute a value from props or state during render. Do not copy props into state. Use `useMemo` only where a measured cost or a memoized child's referential stability justifies it.
+
+## PL-REACT-005 — Effects Synchronise with External Systems
+
+`useEffect` synchronises with something outside React. It is not for deriving state, responding to user events, or initialising state a parent can own. Every subscribing effect returns a cleanup that undoes exactly its own work. Prefer `useSyncExternalStore` for external stores.
+
+## PL-REACT-006 — Props Are Typed Explicitly
+
+Declare props with an `interface` (or `type` for unions) named `<Component>Props`. Do not use `any`. Use union types for variants (`status: "idle" | "loading" | "done"`) rather than sets of optional booleans.
+
+## PL-REACT-007 — Context Carries Cross-Cutting Values Only
+
+Use context for values many components need and that change rarely (current user, theme, locale, service client). Pass ordinary data through props. Expose each context through a custom hook that throws a clear error when the provider is missing.
+
+## PL-REACT-008 — Data Loading Has an Owner
+
+Load route data through router loaders where the app uses them. Outside the router, use a data library or a hook that handles cancellation and stale responses. Do not write bare `fetch` calls in effects without an abort signal.
+
+## PL-REACT-009 — Keys Identify Items, Not Positions
+
+Use a stable identifier from the data as the key. Do not use array indices for lists that can be reordered, filtered, or changed in length.
+
+## PL-REACT-010 — Render Is Pure
+
+Rendering computes markup from props and state only. Do not mutate props, module state, or DOM nodes during render, and do not start requests or subscriptions there. The app runs under `StrictMode`; a component that behaves differently on its second render is a bug.
+
+## PL-REACT-011 — Event Handlers and Callback Props
+
+Name handlers `handleX` and props that receive them `onX`. Give longer handlers a name so the component body stays linear. Use `useCallback` only where a memoized child depends on referential stability.
+
+## PL-REACT-012 — Styling Stays Close to the Markup
+
+Utility classes stay next to the element they style. A class string repeated in three or more places becomes a named component or constant.
+
+## PL-REACT-013 — Folder Density and Feature Folders
+
+Group components, hooks, and tests by feature when a feature has several files. Shared primitives live in one `components/` or `ui/` folder. A folder holds at most 10 hand-maintained source files by default; split along responsibilities, not into meaningless nested folders.
+
+## PL-REACT-014 — Routing Is a Boundary
+
+Keep route definitions in one place. Route components receive or load data at the boundary and pass plain props to presentational components, which do not read the URL themselves.
 
 ---
 
@@ -1856,8 +2049,22 @@ Pureline Core
 │   ├── Result / Option / ? and let-else guards
 │   ├── ownership, borrowing, RAII
 │   ├── exhaustive match and enums
-│   ├── rustfmt / clippy
-│   └── explicit async task lifecycles
+│   ├── error types by crate role
+│   ├── central lints, rustfmt / clippy
+│   ├── cancellation-safe async lifecycles
+│   └── test placement
+│
+├── Pureline React (on JavaScript + TypeScript)
+│   ├── components as named functions
+│   ├── guards before markup
+│   ├── hooks, derived state, effects
+│   └── pure render, typed props
+│
+├── Pureline Novus (.nv / .nvh / .nvmd)
+│   ├── final / var / explicit types
+│   ├── construct() and object literals
+│   ├── packages and narrow imports
+│   └── .nvh components with ref state
 │
 ├── Pureline Emerald (.ems)
 │   ├── namespace / use with ::
@@ -1908,7 +2115,7 @@ This allows the website, CLI, formatter, linter, and IDE integrations to stay co
 
 **Emerald and Emvus tooling requirement:** use separate grammars for `.ems` and `.ev`. The checker must distinguish real syntax and resolved AST constructs from textual lookalikes; macro-generated declarations, inferred tuple/list forms, optional method-declaration parentheses, and optional Emvus semicolons require language-aware handling. Existing and newly added profile IDs must produce consistent diagnostics across tools.
 
-**Versioning:** Rust rules use stable `PL-RS-*` IDs; Emerald and Emvus rules retain `PL-EMS-*` and `PL-EV-*` IDs. The established `PL-CORE-*`, `PL-CF-*`, `PL-JAVA-*`, `PL-JS-*`, `PL-TS-*`, `PL-GO-*`, and `PL-CR-*` IDs are not renumbered. Version 1.4 added `PL-CORE-022` and `PL-STRUCT-003`; version 1.5 adds `PL-RS-001`–`PL-RS-020` without renumbering existing rules.
+**Versioning:** Rust rules use stable `PL-RS-*` IDs; Novus, React, Emerald, and Emvus rules use `PL-NV-*`, `PL-REACT-*`, `PL-EMS-*`, and `PL-EV-*` IDs. The established `PL-CORE-*`, `PL-CF-*`, `PL-JAVA-*`, `PL-JS-*`, `PL-TS-*`, `PL-GO-*`, and `PL-CR-*` IDs are not renumbered. Version 1.4 added `PL-CORE-022` and `PL-STRUCT-003`; version 1.5 added `PL-RS-001`–`PL-RS-020`; version 1.6 adds `PL-NV-001`–`PL-NV-013`, `PL-REACT-001`–`PL-REACT-014`, and `PL-RS-021`–`PL-RS-024` without renumbering existing rules.
 
 ---
 

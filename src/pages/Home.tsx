@@ -49,7 +49,7 @@ export function Home() {
     <>
       <section className="mx-auto max-w-7xl px-5 pb-20 pt-24">
         <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 text-xs text-muted">
-          <span className="brand-gradient size-1.5 rounded-full" /> Specification 1.5
+          <span className="brand-gradient size-1.5 rounded-full" /> Specification 1.6
         </p>
         <h1 className="max-w-3xl text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl">
           Code without <span className="brand-text">noise</span>.

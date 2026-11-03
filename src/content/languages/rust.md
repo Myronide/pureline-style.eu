@@ -1,6 +1,6 @@
 # Rust Code Style
 
-[Code style guide](../README.md) · [Original specification 1.5](../../../PURELINE_SPECIFICATION_1.5.md)
+[Code style guide](../README.md) · [Original specification 1.6](../../../PURELINE_SPECIFICATION_1.6.md)
 
 Apply the [shared core rules](../README.md#shared-rules) together with this profile. Language-native rules and explicit profile exceptions take precedence over cross-language syntax preferences. [Cohesion over Size](../core/structure.md) applies throughout.
 
@@ -61,7 +61,7 @@ fn load_config(path: &Path) -> Result<Config, ConfigError> {
 
 ### PL-RS-004 — Restrict `unwrap`, `expect`, and `panic!`
 
-Never use `unwrap()` or `expect()` for ordinary recoverable production failures. They are acceptable in tests, prototypes, or documented invariants that really cannot be violated. `panic!` is not a normal error-handling strategy. Prefer explicit handling over hidden failure via unchecked indexing or conversions.
+Never use `unwrap()` or `expect()` for ordinary recoverable production failures. They are acceptable in documented invariants that really cannot be violated, and inside test code (`#[cfg(test)]` modules and `tests/`), where a panic is the failure report. `panic!` is not a normal error-handling strategy. Prefer explicit handling over hidden failure via unchecked indexing or conversions.
 
 ### PL-RS-005 — Use `match` and Patterns for Real State Branching
 
@@ -155,3 +155,46 @@ Avoid unnecessary allocations, clones, reference counting, and locking in measur
 - Test normal, invalid, and failure paths, especially cancellation, lifecycle, FFI, and concurrency boundaries.
 - Make warnings intentional; avoid blanket `allow` attributes to silence broad lint groups.
 - Pureline Checker must use Rust syntax/AST-aware inspection (including `let ... else`, pattern matching, macros, and expression returns), not textual pattern matching.
+
+### PL-RS-021 — Error Types Match the Crate Role
+
+- Libraries expose typed errors: an `enum` that implements `std::error::Error` and `Display`, with one variant per distinct failure a caller can act on.
+- Applications may use one opaque top-level error type at the boundary (`main`, request handlers, CLI commands) to carry context. Do not leak that opaque type through a library's public API.
+- Preserve the source error (`source()` or a wrapped variant) instead of converting it to a string.
+- `Display` messages are lowercase and carry no trailing punctuation, so that callers can compose them.
+
+```rust
+#[derive(Debug)]
+pub enum ConfigError {
+    Missing(PathBuf),
+    Invalid(toml::de::Error),
+}
+```
+
+### PL-RS-022 — Lints Are Configured Centrally
+
+- Configure lint levels in the manifest (`[lints]` in `Cargo.toml`, or `[workspace.lints]` with `lints.workspace = true` in member crates), not in scattered crate-level attributes.
+- Enable the lint groups the project agrees on, and list individual exceptions with a reason next to them.
+- A crate-level `#![allow(...)]` is a finding unless a comment explains why the lint is wrong for this code.
+
+```toml
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+module_name_repetitions = "allow"
+```
+
+### PL-RS-023 — Cancellation-Safe Async Code
+
+- When a future is dropped before it completes (for example as a losing branch of `select!`, or on timeout), state whether the operation is cancellation-safe. Document any operation that is not.
+- Do not assume that a dropped future has rolled back its work. Commit state changes after the awaited step succeeds, or make the step idempotent.
+- Keep the future that holds a lock or an open transaction out of `select!` branches that can drop it mid-operation.
+
+### PL-RS-024 — Tests Sit Next to the Behaviour They Check
+
+- Unit tests live in a `#[cfg(test)] mod tests` block at the end of the file they test. They can reach private items, which keeps the public surface narrow.
+- Integration tests live in `tests/` and use only the public API.
+- Test names state the behaviour (`rejects_expired_token`), not the function name alone.
+- Fixtures are built by small helper functions, not by copying setup blocks into every test.

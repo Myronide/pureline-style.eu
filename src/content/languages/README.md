@@ -1,6 +1,6 @@
 # Language Profiles
 
-[Code style guide](../README.md) · [Original specification 1.5](../../../PURELINE_SPECIFICATION_1.5.md)
+[Code style guide](../README.md) · [Original specification 1.6](../../../PURELINE_SPECIFICATION_1.6.md)
 
 Choose your language profile from the [guide index](../README.md#language-specific-rules). TypeScript inherits JavaScript as well as the shared core. Keep Emerald and Emvus profiles separate.
 
@@ -44,8 +44,21 @@ Pureline Core
 │   ├── Result / Option / ? and let-else guards
 │   ├── ownership, borrowing, RAII
 │   ├── exhaustive match and enums
-│   ├── rustfmt / clippy
+│   ├── error types by crate role
+│   ├── central lints, rustfmt / clippy
 │   └── explicit async task lifecycles
+│
+├── Pureline React (on JavaScript + TypeScript)
+│   ├── components as named functions
+│   ├── guards before markup
+│   ├── hooks, derived state, effects
+│   └── pure render, typed props
+│
+├── Pureline Novus (.nv / .nvh)
+│   ├── final / var / explicit types
+│   ├── construct() and object literals
+│   ├── packages and narrow imports
+│   └── .nvh components with ref state
 │
 ├── Pureline Emerald (.ems)
 │   ├── namespace / use with ::

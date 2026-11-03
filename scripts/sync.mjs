@@ -8,7 +8,7 @@ import { dirname, join } from "node:path";
 const REPO = "Myronide/pureline-style";
 const OUT = new URL("../src/content", import.meta.url).pathname;
 const STAGE = `${OUT}.tmp`;
-const SPEC = "PURELINE_SPECIFICATION_1.5.md";
+const SPEC = "PURELINE_SPECIFICATION_1.6.md";
 const DOCS = /^docs\/code-style\//;
 
 function ghAuthed() {

@@ -40,7 +40,7 @@ export function Layout() {
       <footer className="border-t border-line">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-5 py-6 text-xs text-muted">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-            <span>Pureline Style 1.5 · Code without noise.</span>
+            <span>Pureline Style 1.6 · Code without noise.</span>
             <Authors />
           </div>
           <span>Content synced from <a href={repoUrl} className="underline underline-offset-4 hover:text-fg">Myronide/pureline-style</a> · {new Date(syncedAt).toLocaleString("en-GB")}</span>

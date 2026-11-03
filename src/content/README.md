@@ -1,13 +1,14 @@
 # Pureline Code Style
 
-The Pureline 1.5 coding standard, organized by topic and language. Start with the [overview](overview.md), read the shared rules, then apply the relevant language profile.
+The Pureline 1.6 coding standard, organized by topic and language. Start with the [overview](overview.md), read the shared rules, then apply the relevant language profile.
 
 **Linear Flow. Explicit Intent. Minimal Noise. Small Units. Clear Ownership. Cohesion over Size.**
 
 ## How to apply this guide
 
 - Shared rules apply wherever the language supports them naturally.
-- Language-native syntax and explicit profile exceptions take precedence. For example, Crystal allows simple postfix guards, Rust allows `let ... else` and follows rustfmt, and Emvus allows optional semicolons.
+- Language-native syntax and explicit profile exceptions take precedence. For example, Crystal allows simple postfix guards, Rust allows `let ... else` and follows rustfmt, Novus uses `pureline:allow-else` for justified `else` branches, and Emvus allows optional semicolons.
+- The React profile sits on top of the JavaScript and TypeScript profiles. Apply all three together for `.tsx` / `.jsx` files.
 - TypeScript inherits the JavaScript profile in addition to its own rules.
 - Function and class size ranges are review heuristics. Keep cohesive logic together; line count alone is not a violation.
 - Preserve stable rule IDs in reviews and diagnostics. See the [tooling model](tooling.md).
@@ -38,12 +39,14 @@ The Pureline 1.5 coding standard, organized by topic and language. Start with th
 | [Crystal](languages/crystal.md) | `PL-CR-001`–`PL-CR-008` | Postfix guards, snake_case, inference, nil handling, macros |
 | [Emerald](languages/emerald.md) | `PL-EMS-001`–`PL-EMS-012` | `.ems`, `namespace`/`use`, semicolons, data classes, AST macros, Flow |
 | [Emvus](languages/emvus.md) | `PL-EV-001`–`PL-EV-018` | `.ev`, `method<Type>`, `where`, Result, `scoped`, task lifecycles; intended language design |
-| [Rust](languages/rust.md) | `PL-RS-001`–`PL-RS-020` | Ownership, Result/Option, pattern matching, rustfmt, RAII, async and FFI |
+| [Rust](languages/rust.md) | `PL-RS-001`–`PL-RS-024` | Ownership, Result/Option, pattern matching, rustfmt, RAII, async and FFI, error types, central lints, cancellation safety, test placement |
+| [Novus](languages/novus.md) | `PL-NV-001`–`PL-NV-013` | `.nv` / `.nvh`, `final`/`var`, `construct()`, `pureline:allow-else`, packages and imports, `.nvh` components, `.nvmd` Markdown content |
+| [React](languages/react.md) | `PL-REACT-001`–`PL-REACT-014` | React 19 with strict TypeScript: guards, hooks, effects, props, context, keys, pure render, routing |
 
 See also the [language profile overview](languages/README.md) and [tooling requirements](tooling.md).
 
 ## Specification and maintenance
 
-These topic files preserve the rules, examples, qualifications, and stable IDs from the [original Pureline Specification 1.5](../../PURELINE_SPECIFICATION_1.5.md). The original remains the versioned source of reference. Section numbers are omitted here so each topic can be read independently; rule IDs are unchanged.
+These topic files preserve the rules, examples, qualifications, and stable IDs from the [Pureline Specification 1.6](../../PURELINE_SPECIFICATION_1.6.md), the versioned source of reference. Section numbers are omitted here so each topic can be read independently; rule IDs are unchanged.
 
 When revising guidance, keep the original specification and the corresponding topic file consistent. Do not renumber existing rule IDs or turn review heuristics into hard violations.

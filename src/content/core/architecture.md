@@ -1,6 +1,6 @@
 # Abstractions, Architecture, and Dependencies
 
-[Code style guide](../README.md) · [Original specification 1.5](../../../PURELINE_SPECIFICATION_1.5.md)
+[Code style guide](../README.md) · [Original specification 1.6](../../../PURELINE_SPECIFICATION_1.6.md)
 
 ## Abstraction Rules
 
