@@ -26,7 +26,7 @@ function trailingIf(s: Source, scope: Block): Finding | null {
     severity: "warn",
     start,
     end: close + 1,
-    message: "The whole body is wrapped in an if. Invert the condition and exit early.",
+    message: { key: "lint.invertIf" },
   };
   if (collides(s, scope, [open + 1, close])) return finding;
 
@@ -71,7 +71,7 @@ export const guardClauses: Rule = {
         severity: "warn",
         start: lineHead(s, block.open),
         end: block.open + 1,
-        message: "Nesting is 3 levels deep. Flatten it with guard clauses.",
+        message: { key: "lint.flattenNesting" },
       });
     }
     return out;

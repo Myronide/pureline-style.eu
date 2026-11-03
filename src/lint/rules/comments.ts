@@ -49,7 +49,7 @@ export const comments: Rule = {
         severity: "warn",
         start: comment.start,
         end: comment.end,
-        message: "This comment says what the code already says. Comments should explain why.",
+        message: { key: "lint.obviousComment" },
         edits: [edit],
       });
     }

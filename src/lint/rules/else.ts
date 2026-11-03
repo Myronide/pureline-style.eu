@@ -2,9 +2,9 @@ import { ifHead, terminator } from "../blocks";
 import { closeOf, indentOf, openOf, prevIndex, skipSpace, wordEndingAt } from "../scan";
 import { collides, exitAtEnd } from "../scope";
 import { blockBody, dedentBlock, negate } from "../text";
-import type { Edit, Finding, Rule, Source } from "../types";
+import type { Edit, Finding, Msg, Rule, Source } from "../types";
 
-const MESSAGE = "Avoid else: exit early with return/throw so the happy path stays flat.";
+const MESSAGE: Msg = { key: "lint.avoidElse" };
 
 interface Chain {
   /** Every earlier branch of the chain ends in return/throw/continue/break. */

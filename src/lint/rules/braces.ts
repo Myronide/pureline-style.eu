@@ -33,7 +33,7 @@ function check(s: Source, out: Finding[], keyword: number, from: number): void {
     severity: "error",
     start: keyword,
     end,
-    message: "Control-flow bodies need an explicit block.",
+    message: { key: "lint.explicitBlock" },
   };
   if (!s.src.slice(from, body).trim()) finding.edits = [{ start: from, end, text: wrap(s, keyword, body, end) }];
   out.push(finding);

@@ -110,7 +110,7 @@ function IssueRow({ issue, stale, onJump, onFix, t }: { issue: Issue; stale: boo
       <span className={`mt-2 size-1.5 shrink-0 rounded-full ${TONE[issue.severity].dot}`} />
       <div className="min-w-0 flex-1">
         <button type="button" onClick={onJump} className="block w-full text-left text-sm leading-relaxed transition-colors hover:text-accent">
-          <Message text={issue.message} />
+          <Message text={t(issue.message.key, issue.message.vars)} />
         </button>
         <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted">
           <span className="font-mono tabular-nums">{t("editor.line", { line: issue.line, col: issue.col })}</span>

@@ -1,4 +1,13 @@
+import type { Messages } from "../i18n/messages";
+
 export type Lang = "typescript" | "javascript" | "java";
+
+/** A checker message: a translation key plus the values it fills in. */
+export type LintKey = Extract<keyof Messages, `lint.${string}`>;
+export interface Msg {
+  key: LintKey;
+  vars?: Record<string, string | number>;
+}
 export type Severity = "error" | "warn" | "info";
 
 export interface Edit {
@@ -35,7 +44,7 @@ export interface Finding {
   severity: Severity;
   start: number;
   end: number;
-  message: string;
+  message: Msg;
   edits?: Edit[];
 }
 

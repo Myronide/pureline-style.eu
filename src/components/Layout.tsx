@@ -51,7 +51,7 @@ export function Layout() {
               <Logo className="h-5" />
               <span className="display relative text-lg">
                 Pureline
-                <span aria-hidden className="brand-gradient absolute -bottom-1.5 left-0 h-0.5 w-7 rounded-full transition-[width] duration-300 group-hover:w-full" />
+                <span aria-hidden className="brand-gradient absolute -bottom-[3px] left-0 h-0.5 w-7 rounded-full transition-[width] duration-300 group-hover:w-full" />
               </span>
             </Link>
             <nav className="flex items-center gap-6 sm:gap-8">

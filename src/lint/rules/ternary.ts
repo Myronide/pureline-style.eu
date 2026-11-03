@@ -28,7 +28,7 @@ export const nestedTernary: Rule = {
         closed.delete(depth);
       } else if (isTernary(m, i)) {
         if (open.has(depth) || closed.has(depth)) {
-          out.push({ rule: "PL-CF-002", severity: "warn", start: i, end: i + 1, message: "Nested ternary: use guard clauses or named steps instead." });
+          out.push({ rule: "PL-CF-002", severity: "warn", start: i, end: i + 1, message: { key: "lint.nestedTernary" } });
         }
         open.add(depth);
       } else if (c === ":" && open.has(depth) && m[i - 1] !== ":" && m[i + 1] !== ":") {

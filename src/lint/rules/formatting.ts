@@ -38,7 +38,7 @@ export const compactCalls: Rule = {
         severity: "warn",
         start: open,
         end: close + 1,
-        message: "Unnecessary vertical expansion: keep simple calls on one line.",
+        message: { key: "lint.verticalExpansion" },
         edits: [{ start: open + 1, end: close, text: joined }],
       });
     }

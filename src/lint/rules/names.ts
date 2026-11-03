@@ -1,5 +1,5 @@
 import { listBlocks, paramList } from "../blocks";
-import type { Finding, Rule, Source } from "../types";
+import type { Finding, Msg, Rule, Source } from "../types";
 
 const WEAK = /^(?:r|s|p|x|tmp|temp|obj|data\d+|thing|stuff)$/;
 const MAX_LENGTH = 30;
@@ -52,10 +52,10 @@ export const naming: Rule = {
     const check = (name: string, at: number) => {
       if (seen.has(at)) return;
       seen.add(at);
-      const message = WEAK.test(name)
-        ? `\`${name}\` says nothing. Name it after what it holds.`
+      const message: Msg | null = WEAK.test(name)
+        ? { key: "lint.nameSaysNothing", vars: { name } }
         : name.length > MAX_LENGTH
-          ? `\`${name}\` is longer than it needs to be: as short as possible, as explicit as necessary.`
+          ? { key: "lint.nameTooLong", vars: { name } }
           : null;
       if (message) out.push({ rule: "PL-NAME-001", severity: "warn", start: at, end: at + name.length, message });
     };

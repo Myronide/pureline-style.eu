@@ -30,14 +30,14 @@ export const functions: Rule = {
       const name = params ? nameOf(m, params[0]) : "";
 
       if (VAGUE.test(name)) {
-        out.push({ rule: "PL-FN-001", severity: "warn", start, end: block.open + 1, message: `\`${name}\` is vague. Name the one action it performs, e.g. validateRequest().` });
+        out.push({ rule: "PL-FN-001", severity: "warn", start, end: block.open + 1, message: { key: "lint.nameVague", vars: { name } } });
       }
 
       const lines = s.position(block.close).line - s.position(block.open).line - 1;
       if (lines > SPLIT_LINES) {
-        out.push({ rule: "PL-FN-001", severity: "warn", start, end: block.open + 1, message: `${lines} lines: usually split into smaller units.` });
+        out.push({ rule: "PL-FN-001", severity: "warn", start, end: block.open + 1, message: { key: "lint.longFunction", vars: { lines } } });
       } else if (lines > REVIEW_LINES) {
-        out.push({ rule: "PL-FN-001", severity: "info", start, end: block.open + 1, message: `${lines} lines: worth a review. Does it still do one thing?` });
+        out.push({ rule: "PL-FN-001", severity: "info", start, end: block.open + 1, message: { key: "lint.reviewFunction", vars: { lines } } });
       }
     }
     return out;

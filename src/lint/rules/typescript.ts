@@ -17,7 +17,7 @@ export const noAny: Rule = {
       severity: "warn" as const,
       start: match.index,
       end: match.index + 3,
-      message: "Avoid `any`: use a real type, or `unknown` for truly unknown data.",
+      message: { key: "lint.noAny" },
       edits: [{ start: match.index, end: match.index + 3, text: "unknown" }],
     }));
   },
@@ -39,7 +39,7 @@ export const noInterfacePrefix: Rule = {
         severity: "warn",
         start: at,
         end: at + full.length,
-        message: `Rename \`${full}\` to \`${bare}\`: TypeScript has no I prefix.`,
+        message: { key: "lint.noIPrefix", vars: { full, bare } },
       };
       if (!identRe(bare, "").test(s.masked)) {
         finding.edits = [...s.masked.matchAll(identRe(full))].map((use) => ({ start: use.index, end: use.index + full.length, text: bare }));
@@ -116,7 +116,7 @@ export const preferUnion: Rule = {
         severity: "info",
         start: match.index,
         end: open,
-        message: "Prefer a union of string literals over an enum unless the enum construct adds value.",
+        message: { key: "lint.unionOverEnum" },
       };
 
       const members = stringMembers(s, open, close);
@@ -161,7 +161,7 @@ export const interfaceForObjects: Rule = {
         severity: "info",
         start: match.index,
         end: open,
-        message: "Use `interface` for object-like contracts and `type` for unions and aliases.",
+        message: { key: "lint.interfaceOrType" },
         edits,
       });
     }
