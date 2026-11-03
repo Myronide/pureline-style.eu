@@ -51,7 +51,9 @@ export function Docs() {
   const { t, locale } = useI18n();
   const slug = useParams()["*"] || INDEX_SLUG;
   const doc = getDoc(slug);
-  if (!doc) return <NotFound />;
+  if (!doc) {
+    return <NotFound />;
+  }
 
   const machine = locale !== "en" && SHOW_MACHINE_TRANSLATIONS ? translatedBody(slug, locale) : null;
   const body = machine ?? doc.body;

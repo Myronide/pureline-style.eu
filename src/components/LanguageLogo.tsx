@@ -63,7 +63,9 @@ const marks: Record<string, (props: { className: string }) => React.JSX.Element>
 /** Renders the logo of a language profile, or nothing when none is available. */
 export function LanguageLogo({ slug, className = "size-5" }: { slug: string; className?: string }) {
   const Mark = marks[slug];
-  if (Mark) return <Mark className={className} />;
+  if (Mark) {
+    return <Mark className={className} />;
+  }
   const name = iconify[slug];
   return name ? <Icon name={name} className={className} /> : null;
 }

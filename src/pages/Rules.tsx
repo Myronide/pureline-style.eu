@@ -85,9 +85,7 @@ export function Rules() {
                 <td className="px-5 py-3.5">
                   {checkedRules.has(r.id) ? (
                     <span className="rounded-md border border-accent/30 bg-accent/10 px-2 py-0.5 text-xs text-accent">auto</span>
-                  ) : (
-                    <span className="text-muted">–</span>
-                  )}
+                  ) : <span className="text-muted">–</span>}
                 </td>
               </tr>
             ))}

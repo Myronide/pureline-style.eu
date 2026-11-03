@@ -7,9 +7,15 @@ import { Code } from "./Code";
 import { Icon } from "./Icon";
 
 function text(node: ReactNode): string {
-  if (typeof node === "string" || typeof node === "number") return String(node);
-  if (Array.isArray(node)) return node.map(text).join("");
-  if (node && typeof node === "object" && "props" in node) return text((node as { props: { children?: ReactNode } }).props.children);
+  if (typeof node === "string" || typeof node === "number") {
+    return String(node);
+  }
+  if (Array.isArray(node)) {
+    return node.map(text).join("");
+  }
+  if (node && typeof node === "object" && "props" in node) {
+    return text((node as { props: { children?: ReactNode } }).props.children);
+  }
   return "";
 }
 
@@ -44,7 +50,9 @@ export function Markdown({ slug, children }: { slug: string; children: string })
           const title = text(children);
           const id = slugify(title);
           const rule = /^(PL-[A-Z0-9-]+)\s+—\s+(.+)$/.exec(title);
-          if (!rule) return <h3 id={id}>{children}</h3>;
+          if (!rule) {
+            return <h3 id={id}>{children}</h3>;
+          }
           return (
             <h3 id={id} className="flex flex-wrap items-baseline gap-x-3 gap-y-2">
               <span className="rounded-md border border-accent/30 bg-accent/10 px-2 py-0.5 font-mono text-xs font-medium text-accent">{rule[1]}</span>
@@ -59,10 +67,16 @@ export function Markdown({ slug, children }: { slug: string; children: string })
           return <CodeBlock lang={lang} code={text(child.props?.children).replace(/\n$/, "")} />;
         },
         a: ({ href = "", children }) => {
-          if (/^https?:/.test(href)) return <a href={href} target="_blank" rel="noreferrer">{children}</a>;
-          if (href.startsWith("#")) return <a href={href}>{children}</a>;
+          if (/^https?:/.test(href)) {
+            return <a href={href} target="_blank" rel="noreferrer">{children}</a>;
+          }
+          if (href.startsWith("#")) {
+            return <a href={href}>{children}</a>;
+          }
           const to = resolveLink(slug, href);
-          if (to) return <Link to={to}>{children}</Link>;
+          if (to) {
+            return <Link to={to}>{children}</Link>;
+          }
           const file = href.replace(/^(\.\.\/)+/, "");
           return <a href={`${repoUrl}/blob/HEAD/${file}`} target="_blank" rel="noreferrer">{children}</a>;
         },

@@ -73,8 +73,12 @@ function paint(code: string, tokens: Token[] | null, issues: Issue[]): ReactNode
   for (let i = 0; i < points.length - 1; i++) {
     const from = points[i]!;
     const to = points[i + 1]!;
-    if (from === to) continue;
-    while (tokens && k < tokens.length && tokens[k]!.end <= from) k++;
+    if (from === to) {
+      continue;
+    }
+    while (tokens && k < tokens.length && tokens[k]!.end <= from) {
+      k++;
+    }
     const color = tokens && k < tokens.length && tokens[k]!.start <= from ? tokens[k]!.color : undefined;
     const top = ranges
       .filter((r) => r.from < to && r.to > from)
@@ -156,7 +160,9 @@ export function Editor() {
   useEffect(() => {
     let current = true;
     tokenize(deferred, lang).then((list) => {
-      if (current) setTokens({ text: deferred, lang, list });
+      if (current) {
+        setTokens({ text: deferred, lang, list });
+      }
     });
     return () => {
       current = false;
@@ -165,28 +171,41 @@ export function Editor() {
   const activeTokens = tokens && tokens.text === deferred && tokens.lang === lang ? tokens.list : null;
 
   useLayoutEffect(() => {
-    if (caret.current === null) return;
+    if (caret.current === null) {
+      return;
+    }
     textarea.current?.setSelectionRange(caret.current, caret.current);
     caret.current = null;
   }, [code]);
 
-  const unit = (text: string) => (isChecked(lang) ? indentUnit(text, lang) : lang === "go" ? "\t" : "    ");
+  function unit(text: string): string {
+    if (isChecked(lang)) {
+      return indentUnit(text, lang);
+    }
+    return lang === "go" ? "\t" : "    ";
+  }
 
   function commit(next: string, message: string) {
-    if (next === code) return;
+    if (next === code) {
+      return;
+    }
     setHistory((h) => [...h.slice(-19), code]);
     setCode(next);
     setNotice(`${message} ${summary(isChecked(lang) ? analyze(next, lang) : [])}`);
   }
 
   function summary(left: Issue[]) {
-    if (!left.length) return t("editor.nothingLeft");
+    if (!left.length) {
+      return t("editor.nothingLeft");
+    }
     const auto = left.filter((i) => i.fixable).length;
     return auto ? t("editor.leftAuto", { count: left.length, auto }) : t("editor.leftManual", { count: left.length });
   }
 
   function onConvert() {
-    if (!isChecked(lang)) return;
+    if (!isChecked(lang)) {
+      return;
+    }
     const result = convert(code, lang);
     if (result.code === code) {
       setNotice(t("editor.noConvert"));
@@ -197,23 +216,31 @@ export function Editor() {
 
   function onUndo() {
     const previous = history[history.length - 1];
-    if (previous === undefined) return;
+    if (previous === undefined) {
+      return;
+    }
     setHistory(history.slice(0, -1));
     setCode(previous);
     setNotice(null);
   }
 
   function onLang(next: EditorLang) {
-    if (next === lang) return;
+    if (next === lang) {
+      return;
+    }
     const untouched = !code.trim() || code === exampleFor(lang);
     setLang(next);
     setNotice(null);
-    if (untouched) setCode(exampleFor(next));
+    if (untouched) {
+      setCode(exampleFor(next));
+    }
   }
 
   function jump(issue: Issue) {
     const el = textarea.current;
-    if (!el) return;
+    if (!el) {
+      return;
+    }
     el.focus();
     el.setSelectionRange(issue.start, visibleEnd(deferred, issue));
     el.scrollTop = Math.max(0, (issue.line - 4) * LINE_HEIGHT);
@@ -232,7 +259,9 @@ export function Editor() {
 
   function onKeyDown(e: KeyboardEvent<HTMLTextAreaElement>) {
     const el = e.currentTarget;
-    if (e.nativeEvent.isComposing) return;
+    if (e.nativeEvent.isComposing) {
+      return;
+    }
 
     if (e.key === "Escape") {
       trapTab.current = false;
@@ -261,7 +290,9 @@ export function Editor() {
       layer.current.scrollTop = scrollTop;
       layer.current.scrollLeft = scrollLeft;
     }
-    if (gutter.current) gutter.current.scrollTop = scrollTop;
+    if (gutter.current) {
+      gutter.current.scrollTop = scrollTop;
+    }
   }
 
   const counts = (["error", "warn", "info"] as const).map((s) => ({ s, n: issues.filter((i) => i.severity === s).length }));

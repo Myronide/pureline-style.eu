@@ -50,11 +50,16 @@ export function resolveLink(fromSlug: string, href: string): string | null {
   const [pathPart, hash] = href.split("#");
   const parts = fromSlug.split("/").slice(0, -1);
   for (const seg of (pathPart ?? "").split("/")) {
-    if (seg === "..") parts.pop();
-    else if (seg && seg !== ".") parts.push(seg);
+    if (seg === "..") {
+      parts.pop();
+    } else if (seg && seg !== ".") {
+      parts.push(seg);
+    }
   }
   const slug = (pathPart ? parts.join("/") : fromSlug).replace(/\.md$/, "");
-  if (!docs.has(slug)) return null;
+  if (!docs.has(slug)) {
+    return null;
+  }
   return docPath(slug) + (hash ? `#${hash}` : "");
 }
 
@@ -86,16 +91,20 @@ export const checkedRules = new Set(lintRules.map((r) => r.id));
 export const rules: Rule[] = (() => {
   const byId = new Map<string, Rule>();
   for (const doc of docs.values()) {
-    if (doc.slug.startsWith("PURELINE") || doc.slug.endsWith("README")) continue;
+    if (doc.slug.startsWith("PURELINE") || doc.slug.endsWith("README")) {
+      continue;
+    }
     const isCore = doc.slug.startsWith("core/") || doc.slug === "overview" || doc.slug === "tooling";
     const profileDoc = isCore ? null : docs.get(doc.slug.split("/").slice(0, 2).join("/"));
-    const profile = isCore ? "Core" : profileDoc ? shortTitle(profileDoc) : doc.slug;
+    const profile = isCore ? "Core" : (profileDoc ? shortTitle(profileDoc) : doc.slug);
     const profileSlug = isCore ? "core" : doc.slug.split("/").slice(0, 2).join("/");
     for (const line of doc.body.split("\n")) {
       const heading = /^#{2,4}\s+(PL-[A-Z0-9-]+)\s+—\s+(.+)$/.exec(line);
       const row = /^\|\s*(PL-[A-Z0-9-]+)\s*\|\s*(.+?)\s*\|\s*$/.exec(line);
       const match = heading ?? row;
-      if (!match || byId.has(match[1]!)) continue;
+      if (!match || byId.has(match[1]!)) {
+        continue;
+      }
       const id = match[1]!;
       const title = match[2]!.replace(/`/g, "");
       const anchor = heading ? `#${slugify(`${id} — ${title}`)}` : "";

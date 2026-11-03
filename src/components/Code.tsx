@@ -11,13 +11,17 @@ export function Code({ code, lang }: { code: string; lang: string }) {
     let stale = false;
     setHtml(null);
     highlight(code, lang).then((result) => {
-      if (!stale) setHtml(result);
+      if (!stale) {
+        setHtml(result);
+      }
     });
     return () => {
       stale = true;
     };
   }, [code, lang]);
 
-  if (html) return <div className="shiki-wrap" dangerouslySetInnerHTML={{ __html: html }} />;
+  if (html) {
+    return <div className="shiki-wrap" dangerouslySetInnerHTML={{ __html: html }} />;
+  }
   return <pre className={pre}><code>{code}</code></pre>;
 }

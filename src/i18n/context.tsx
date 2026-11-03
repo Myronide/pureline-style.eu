@@ -6,7 +6,9 @@ const STORAGE_KEY = "pureline-locale";
 /** The first visit follows the browser language; after that the user's choice wins. */
 function initialLocale(): Locale {
   const saved = typeof localStorage !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null;
-  if (saved && (locales as string[]).includes(saved)) return saved as Locale;
+  if (saved && (locales as string[]).includes(saved)) {
+    return saved as Locale;
+  }
   const browser = typeof navigator !== "undefined" ? navigator.language.slice(0, 2).toLowerCase() : "en";
   return (locales as string[]).includes(browser) ? (browser as Locale) : "en";
 }
@@ -45,6 +47,8 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
 
 export function useI18n(): I18n {
   const ctx = useContext(I18nContext);
-  if (!ctx) throw new Error("useI18n must be used inside LocaleProvider");
+  if (!ctx) {
+    throw new Error("useI18n must be used inside LocaleProvider");
+  }
   return ctx;
 }
