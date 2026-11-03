@@ -82,7 +82,9 @@ function translateText(text, translate) {
   let masked = text
     .replace(/\[([^\]]*)\]\(([^)]*)\)/g, (_, label, url) => `[${label}](${protect(url)})`)
     .replace(/`[^`]*`/g, (code) => protect(code))
-    .replace(/PL-[A-Z0-9-]+/g, (id) => protect(id));
+    .replace(/PL-[A-Z0-9-]+/g, (id) => protect(id))
+    .replace(/Pureline/g, (name) => protect(name))
+    .replace(/\*\*|__/g, (marker) => protect(marker));
 
   if (!/[A-Za-z]{2,}/.test(masked.replace(/ZQ\d+Z/g, ""))) return text;
 

@@ -34,10 +34,13 @@ jobs:
       - name: Sync content from Myronide/pureline-style
         run: npm run sync
 
+      - name: Translate the guide (local models, sentence cache)
+        run: npm run translate:docs
+
       - name: Commit content changes
         if: github.event_name != 'push'
         run: |
-          git add -A src/content
+          git add -A src/content src/content-i18n scripts/translation-cache
           # meta.json changes on every run, so only real content changes count
           if git diff --cached --quiet -- . ':!src/content/meta.json'; then
             git reset --quiet

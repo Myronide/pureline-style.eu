@@ -122,7 +122,7 @@ const translatedDocs = import.meta.glob("./content-i18n/**/*.md", { query: "?raw
 
 /** The translated body of a guide page for a locale, or null when that page has no translation. */
 /** Off until the machine translations have been reviewed: Opus-MT still garbles brand names and emphasis. */
-export const SHOW_MACHINE_TRANSLATIONS = false;
+export const SHOW_MACHINE_TRANSLATIONS = true;
 
 export function translatedBody(slug: string, locale: string): string | null {
   return translatedDocs[`./content-i18n/${locale}/${slug}.md`] ?? null;

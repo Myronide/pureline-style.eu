@@ -14,6 +14,14 @@ const langs = {
   astro: () => import("shiki/langs/astro.mjs"),
   html: () => import("shiki/langs/html.mjs"),
   css: () => import("shiki/langs/css.mjs"),
+  csharp: () => import("shiki/langs/csharp.mjs"),
+  vue: () => import("shiki/langs/vue.mjs"),
+  c: () => import("shiki/langs/c.mjs"),
+  cpp: () => import("shiki/langs/cpp.mjs"),
+  lua: () => import("shiki/langs/lua.mjs"),
+  dart: () => import("shiki/langs/dart.mjs"),
+  swift: () => import("shiki/langs/swift.mjs"),
+  kotlin: () => import("shiki/langs/kotlin.mjs"),
   emvus: () => import("../grammars/emvus.tmLanguage.json"),
   emerald: () => import("../grammars/emerald.tmLanguage.json"),
   novus: () => import("../grammars/novus.tmLanguage.json"),
@@ -32,6 +40,11 @@ const aliases: Record<string, Lang> = {
   nv: "novus",
   htm: "html",
   scss: "css",
+  cs: "csharp",
+  "c#": "csharp",
+  "c++": "cpp",
+  kt: "kotlin",
+  sw: "swift",
 };
 
 const resolve = (lang: string): Lang | null => {
