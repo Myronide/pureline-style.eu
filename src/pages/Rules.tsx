@@ -31,15 +31,15 @@ export function Rules() {
         {rules.length} rules, {automatedCount} of them checked automatically in the editor. Every rule keeps its stable ID.
       </p>
 
-      <div className="mt-10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex flex-wrap gap-1 rounded-lg border border-line p-1 lg:flex-nowrap" role="group" aria-label="Filter by profile">
+      <div className="mt-10 flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+        <div className="flex min-w-0 flex-wrap gap-1 rounded-lg border border-line p-1" role="group" aria-label="Filter by profile">
           {["All", ...ruleProfiles.map((p) => p.label)].map((label) => (
             <button key={label} onClick={() => setProfile(label)} className={chip(profile === label)} aria-pressed={profile === label}>
               {label}
             </button>
           ))}
         </div>
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="flex shrink-0 flex-col gap-3 sm:flex-row sm:items-center">
           <input
             type="search"
             value={query}
