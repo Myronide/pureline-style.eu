@@ -5,7 +5,7 @@ import { LanguageLogo } from "../components/LanguageLogo";
 import { checkedRules, rules, ruleProfiles } from "../content";
 
 const chip = (active: boolean) =>
-  `rounded-md px-3 py-1.5 text-sm transition-colors ${active ? "bg-raised text-fg ring-1 ring-line" : "text-muted hover:text-fg"}`;
+  `whitespace-nowrap rounded-md px-3 py-1.5 text-sm transition-colors ${active ? "bg-raised text-fg ring-1 ring-line" : "text-muted hover:text-fg"}`;
 
 export function Rules() {
   const [profile, setProfile] = useState("All");
@@ -32,7 +32,7 @@ export function Rules() {
       </p>
 
       <div className="mt-10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex flex-wrap gap-1 rounded-lg border border-line p-1" role="group" aria-label="Filter by profile">
+        <div className="flex flex-wrap gap-1 rounded-lg border border-line p-1 lg:flex-nowrap" role="group" aria-label="Filter by profile">
           {["All", ...ruleProfiles.map((p) => p.label)].map((label) => (
             <button key={label} onClick={() => setProfile(label)} className={chip(profile === label)} aria-pressed={profile === label}>
               {label}
@@ -48,7 +48,7 @@ export function Rules() {
             aria-label="Search rules"
             className="w-full rounded-md border border-line bg-surface px-4 py-2 text-sm placeholder:text-muted/70 focus:border-accent focus:outline-none sm:w-80"
           />
-          <label className="flex cursor-pointer items-center gap-2 text-sm text-muted">
+          <label className="flex cursor-pointer items-center gap-2 whitespace-nowrap text-sm text-muted">
             <input type="checkbox" checked={automated} onChange={(e) => setAutomated(e.target.checked)} className="accent-[var(--color-accent)]" />
             Automated only
           </label>
