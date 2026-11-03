@@ -55,7 +55,7 @@ export function resolveLink(fromSlug: string, href: string): string | null {
 }
 
 export function headings(body: string) {
-  return [...body.matchAll(/^(##)\s+(.+)$/gm)].map((m) => ({ text: m[2]!.replace(/`/g, ""), id: slugify(m[2]!) }));
+  return [...body.matchAll(/^(##|###)\s+(.+)$/gm)].map((m) => ({ level: m[1]!.length, text: m[2]!.replace(/`/g, ""), id: slugify(m[2]!) }));
 }
 
 export function slugify(text: string) {

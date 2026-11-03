@@ -39,12 +39,12 @@ function DocNav() {
   );
 }
 
-function Toc({ items }: { items: { id: string; text: string }[] }) {
+function Toc({ items }: { items: { id: string; text: string; level: number }[] }) {
   return (
     <ul className="space-y-1.5 border-l border-line text-sm">
       {items.map((h) => (
         <li key={h.id}>
-          <a href={`#${h.id}`} className="-ml-px block border-l border-transparent pl-3 text-muted transition-colors hover:border-accent hover:text-fg">{h.text}</a>
+          <a href={`#${h.id}`} className={`-ml-px block border-l border-transparent text-muted transition-colors hover:border-accent hover:text-fg ${h.level === 3 ? "pl-6 text-[13px] leading-snug" : "pl-3"}`}>{h.text}</a>
         </li>
       ))}
     </ul>
