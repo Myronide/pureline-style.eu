@@ -1,6 +1,6 @@
 import type { Lang } from "./types";
 
-export const samples: Record<Lang, string> = {
+export const samples: Partial<Record<Lang, string>> = {
   typescript: `enum State {
   Idle = "idle",
   Ready = "ready",

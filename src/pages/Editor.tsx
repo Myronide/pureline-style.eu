@@ -29,9 +29,9 @@ const LANGS = [
 
 type EditorLang = (typeof LANGS)[number]["id"];
 
-const isChecked = (id: EditorLang): id is Lang => id === "typescript" || id === "javascript" || id === "java" || id === "python" || id === "rust";
+const isChecked = (id: EditorLang): id is Lang => id.length > 0;
 const labelOf = (id: EditorLang) => LANGS.find((l) => l.id === id)!.label;
-const exampleFor = (id: EditorLang): string => (id === "typescript" || id === "javascript" || id === "java" ? samples[id] : extraSamples[id]!);
+const exampleFor = (id: EditorLang): string => (id === "typescript" || id === "javascript" || id === "java" ? samples[id]! : extraSamples[id]!);
 
 const TONE: Record<Severity, { text: string; line: string; dot: string; rank: number; chip: string }> = {
   error: { text: "text-warn", line: "decoration-warn", dot: "bg-warn", rank: 3, chip: "border-warn/40 text-warn" },

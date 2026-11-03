@@ -60,7 +60,8 @@ export function analyzeRust(code: string): Issue[] {
   const blockEnd = (i: number): number => {
     const base = lines[i]!.depth;
     for (let j = i + 1; j < lines.length; j++) {
-      if (lines[j]!.depth <= base && lines[j]!.code.includes("}")) return j;
+      const net = [...lines[j]!.code].reduce((n, c) => n + (c === "{" ? 1 : c === "}" ? -1 : 0), 0);
+      if (lines[j]!.depth + net <= base) return j;
     }
     return lines.length - 1;
   };
@@ -77,7 +78,8 @@ export function analyzeRust(code: string): Issue[] {
   const open: { inner: number }[] = [];
   lines.forEach((line, i) => {
     if (blank(line)) return;
-    while (open.length && line.depth < open[open.length - 1]!.inner) open.pop();
+    const level = line.depth - (/^\s*\}/.exec(line.code)?.[0].length ?? 0) + (/^\s*\}/.test(line.code) ? 1 : 0);
+    while (open.length && level < open[open.length - 1]!.inner) open.pop();
     const stripped = line.code.trim();
     const start = line.code.length - line.code.trimStart().length;
     if (CONTROL.test(stripped)) {
@@ -88,7 +90,8 @@ export function analyzeRust(code: string): Issue[] {
     // else after a block that already exits
     if (/^\}?\s*else\b/.test(stripped)) {
       const prev = previousCodeLine(lines, i);
-      if (prev && prev.depth > line.depth && JUMP.test(prev.code.trim())) {
+      const closing = /^\s*\}/.test(line.code) ? 1 : 0;
+      if (prev && prev.depth > line.depth - closing && JUMP.test(prev.code.trim())) {
         at(line, start, stripped.length, "warn", "lint.avoidElse");
       }
     }

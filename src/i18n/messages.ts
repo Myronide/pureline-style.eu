@@ -131,6 +131,18 @@ const en = {
   "lint.pyTypeHints": "Public function without type hints. Annotate the parameters and the return type.",
   "lint.rsUnwrap": "Avoid unwrap() and expect() in production code: propagate the error with ? or handle it.",
   "lint.rsTypeName": "Types use PascalCase, like Session or ConfigError.",
+  "lint.htmlImgAlt": "Image without alt text. Use alt=\"\" for decorative images.",
+  "lint.htmlInlineStyle": "Inline style attribute. Move the rule into a stylesheet.",
+  "lint.htmlInlineScript": "Inline script with application logic. Move it to an external module.",
+  "lint.htmlInputLabel": "Form control without a label. Associate a visible label with for and id.",
+  "lint.htmlSecondH1": "More than one h1 on the page. Keep one top-level heading.",
+  "lint.htmlLang": "The html element has no lang attribute.",
+  "lint.cssImportant": "Avoid !important. Fix the cascade with layers or specificity instead.",
+  "lint.cssIdSelector": "Avoid id selectors. Style with a class so specificity stays low.",
+  "lint.cssDeepSelector": "Selector chain is deeper than two levels. Use a class on the element instead.",
+  "lint.cssLiteralColor": "Colour literal outside the tokens. Use a custom property like var(--color-accent).",
+  "lint.cssReducedMotion": "Motion without a prefers-reduced-motion alternative.",
+  "lint.qmlNesting": "Object nesting is 5 levels deep. Split the inner part into its own component.",
 };
 
 export type Messages = typeof en;
@@ -266,6 +278,18 @@ const de: Messages = {
   "lint.pyTypeHints": "Öffentliche Funktion ohne Typhinweise. Parameter und Rückgabetyp annotieren.",
   "lint.rsUnwrap": "unwrap() und expect() im Produktivcode vermeiden: den Fehler mit ? weiterreichen oder behandeln.",
   "lint.rsTypeName": "Typen schreiben wir in PascalCase, etwa Session oder ConfigError.",
+  "lint.htmlImgAlt": "Bild ohne Alternativtext. Für dekorative Bilder alt=\"\" verwenden.",
+  "lint.htmlInlineStyle": "Inline-style-Attribut. Die Regel in eine Stylesheet-Datei verschieben.",
+  "lint.htmlInlineScript": "Inline-Skript mit Anwendungslogik. In ein externes Modul auslagern.",
+  "lint.htmlInputLabel": "Formularfeld ohne Label. Ein sichtbares Label über for und id verknüpfen.",
+  "lint.htmlSecondH1": "Mehr als ein h1 auf der Seite. Eine oberste Überschrift behalten.",
+  "lint.htmlLang": "Das html-Element hat kein lang-Attribut.",
+  "lint.cssImportant": "!important vermeiden. Die Kaskade besser über Layer oder Spezifität lösen.",
+  "lint.cssIdSelector": "ID-Selektoren vermeiden. Mit einer Klasse stylen, damit die Spezifität niedrig bleibt.",
+  "lint.cssDeepSelector": "Selektorkette ist tiefer als zwei Ebenen. Stattdessen eine Klasse am Element verwenden.",
+  "lint.cssLiteralColor": "Farbliteral außerhalb der Tokens. Eine Custom Property wie var(--color-accent) verwenden.",
+  "lint.cssReducedMotion": "Bewegung ohne prefers-reduced-motion-Alternative.",
+  "lint.qmlNesting": "Objektverschachtelung ist 5 Ebenen tief. Den inneren Teil in eine eigene Komponente auslagern.",
 };
 
 const es: Messages = {
@@ -399,6 +423,18 @@ const es: Messages = {
   "lint.pyTypeHints": "Función pública sin anotaciones de tipo. Anota los parámetros y el tipo de retorno.",
   "lint.rsUnwrap": "Evita unwrap() y expect() en código de producción: propaga el error con ? o gestiónalo.",
   "lint.rsTypeName": "Los tipos usan PascalCase, como Session o ConfigError.",
+  "lint.htmlImgAlt": "Imagen sin texto alternativo. Usa alt=\"\" en imágenes decorativas.",
+  "lint.htmlInlineStyle": "Atributo style en línea. Mueve la regla a una hoja de estilos.",
+  "lint.htmlInlineScript": "Script en línea con lógica de aplicación. Muévelo a un módulo externo.",
+  "lint.htmlInputLabel": "Campo de formulario sin etiqueta. Asocia una etiqueta visible con for e id.",
+  "lint.htmlSecondH1": "Hay más de un h1 en la página. Mantén un único encabezado principal.",
+  "lint.htmlLang": "El elemento html no tiene atributo lang.",
+  "lint.cssImportant": "Evita !important. Resuelve la cascada con capas o especificidad.",
+  "lint.cssIdSelector": "Evita los selectores de id. Estiliza con una clase para mantener baja la especificidad.",
+  "lint.cssDeepSelector": "La cadena de selectores es más profunda que dos niveles. Usa una clase en el elemento.",
+  "lint.cssLiteralColor": "Color literal fuera de los tokens. Usa una propiedad personalizada como var(--color-accent).",
+  "lint.cssReducedMotion": "Movimiento sin alternativa prefers-reduced-motion.",
+  "lint.qmlNesting": "La anidación de objetos tiene 5 niveles. Mueve la parte interna a su propio componente.",
 };
 
 const fr: Messages = {
@@ -532,6 +568,18 @@ const fr: Messages = {
   "lint.pyTypeHints": "Fonction publique sans annotations de types. Annotez les paramètres et le type de retour.",
   "lint.rsUnwrap": "Évitez unwrap() et expect() en production : propagez l'erreur avec ? ou traitez-la.",
   "lint.rsTypeName": "Les types utilisent PascalCase, comme Session ou ConfigError.",
+  "lint.htmlImgAlt": "Image sans texte alternatif. Utilisez alt=\"\" pour les images décoratives.",
+  "lint.htmlInlineStyle": "Attribut style en ligne. Déplacez la règle dans une feuille de style.",
+  "lint.htmlInlineScript": "Script en ligne avec de la logique applicative. Déplacez-le dans un module externe.",
+  "lint.htmlInputLabel": "Champ de formulaire sans étiquette. Associez une étiquette visible via for et id.",
+  "lint.htmlSecondH1": "Plus d'un h1 sur la page. Gardez un seul titre de niveau supérieur.",
+  "lint.htmlLang": "L'élément html n'a pas d'attribut lang.",
+  "lint.cssImportant": "Évitez !important. Réglez la cascade avec des couches ou la spécificité.",
+  "lint.cssIdSelector": "Évitez les sélecteurs d'id. Stylez avec une classe pour garder une spécificité basse.",
+  "lint.cssDeepSelector": "La chaîne de sélecteurs dépasse deux niveaux. Utilisez une classe sur l'élément.",
+  "lint.cssLiteralColor": "Couleur littérale hors des tokens. Utilisez une propriété personnalisée comme var(--color-accent).",
+  "lint.cssReducedMotion": "Animation sans alternative prefers-reduced-motion.",
+  "lint.qmlNesting": "L'imbrication d'objets dépasse 5 niveaux. Déplacez la partie interne dans son propre composant.",
 };
 
 const it: Messages = {
@@ -665,6 +713,18 @@ const it: Messages = {
   "lint.pyTypeHints": "Funzione pubblica senza annotazioni di tipo. Annota i parametri e il tipo di ritorno.",
   "lint.rsUnwrap": "Evita unwrap() ed expect() nel codice di produzione: propaga l'errore con ? o gestiscilo.",
   "lint.rsTypeName": "I tipi usano PascalCase, come Session o ConfigError.",
+  "lint.htmlImgAlt": "Immagine senza testo alternativo. Usa alt=\"\" per le immagini decorative.",
+  "lint.htmlInlineStyle": "Attributo style in linea. Sposta la regola in un foglio di stile.",
+  "lint.htmlInlineScript": "Script in linea con logica applicativa. Spostalo in un modulo esterno.",
+  "lint.htmlInputLabel": "Campo del modulo senza etichetta. Collega un'etichetta visibile tramite for e id.",
+  "lint.htmlSecondH1": "Più di un h1 nella pagina. Tieni un solo titolo di primo livello.",
+  "lint.htmlLang": "L'elemento html non ha un attributo lang.",
+  "lint.cssImportant": "Evita !important. Risolvi la cascata con i layer o la specificità.",
+  "lint.cssIdSelector": "Evita i selettori id. Stilizza con una classe per mantenere bassa la specificità.",
+  "lint.cssDeepSelector": "La catena di selettori è più profonda di due livelli. Usa una classe sull'elemento.",
+  "lint.cssLiteralColor": "Colore letterale fuori dai token. Usa una proprietà personalizzata come var(--color-accent).",
+  "lint.cssReducedMotion": "Movimento senza alternativa prefers-reduced-motion.",
+  "lint.qmlNesting": "L'annidamento degli oggetti è di 5 livelli. Sposta la parte interna in un componente proprio.",
 };
 
 const nl: Messages = {
@@ -798,6 +858,18 @@ const nl: Messages = {
   "lint.pyTypeHints": "Publieke functie zonder typehints. Annoteer de parameters en het retourtype.",
   "lint.rsUnwrap": "Vermijd unwrap() en expect() in productiecode: geef de fout door met ? of behandel hem.",
   "lint.rsTypeName": "Typen gebruiken PascalCase, zoals Session of ConfigError.",
+  "lint.htmlImgAlt": "Afbeelding zonder alternatieve tekst. Gebruik alt=\"\" bij decoratieve afbeeldingen.",
+  "lint.htmlInlineStyle": "Inline style-attribuut. Verplaats de regel naar een stylesheet.",
+  "lint.htmlInlineScript": "Inline script met applicatielogica. Verplaats het naar een extern module.",
+  "lint.htmlInputLabel": "Formulierveld zonder label. Koppel een zichtbaar label via for en id.",
+  "lint.htmlSecondH1": "Meer dan één h1 op de pagina. Houd één hoofdkop.",
+  "lint.htmlLang": "Het html-element heeft geen lang-attribuut.",
+  "lint.cssImportant": "Vermijd !important. Los de cascade op met lagen of specificiteit.",
+  "lint.cssIdSelector": "Vermijd id-selectors. Stijl met een klasse zodat de specificiteit laag blijft.",
+  "lint.cssDeepSelector": "De selectorketen is dieper dan twee niveaus. Gebruik een klasse op het element.",
+  "lint.cssLiteralColor": "Kleurliteral buiten de tokens. Gebruik een custom property zoals var(--color-accent).",
+  "lint.cssReducedMotion": "Beweging zonder prefers-reduced-motion-alternatief.",
+  "lint.qmlNesting": "Objectnesting is 5 niveaus diep. Splits het binnenste deel af als eigen component.",
 };
 
 const pl: Messages = {
@@ -931,6 +1003,18 @@ const pl: Messages = {
   "lint.pyTypeHints": "Publiczna funkcja bez adnotacji typów. Opisz parametry i typ zwracany.",
   "lint.rsUnwrap": "Unikaj unwrap() i expect() w kodzie produkcyjnym: przekaż błąd dalej przez ? lub go obsłuż.",
   "lint.rsTypeName": "Typy używają PascalCase, np. Session lub ConfigError.",
+  "lint.htmlImgAlt": "Obraz bez tekstu alternatywnego. Dla dekoracyjnych obrazów użyj alt=\"\".",
+  "lint.htmlInlineStyle": "Atrybut style w linii. Przenieś regułę do arkusza stylów.",
+  "lint.htmlInlineScript": "Skrypt w linii z logiką aplikacji. Przenieś go do zewnętrznego modułu.",
+  "lint.htmlInputLabel": "Pole formularza bez etykiety. Powiąż widoczną etykietę przez for i id.",
+  "lint.htmlSecondH1": "Więcej niż jeden h1 na stronie. Zostaw jeden główny nagłówek.",
+  "lint.htmlLang": "Element html nie ma atrybutu lang.",
+  "lint.cssImportant": "Unikaj !important. Ułóż kaskadę przez warstwy lub specyficzność.",
+  "lint.cssIdSelector": "Unikaj selektorów id. Stylizuj klasą, aby specyficzność pozostała niska.",
+  "lint.cssDeepSelector": "Łańcuch selektorów jest głębszy niż dwa poziomy. Użyj klasy na elemencie.",
+  "lint.cssLiteralColor": "Literał koloru poza tokenami. Użyj właściwości własnej, np. var(--color-accent).",
+  "lint.cssReducedMotion": "Ruch bez alternatywy prefers-reduced-motion.",
+  "lint.qmlNesting": "Zagnieżdżenie obiektów ma 5 poziomów. Wydziel wewnętrzną część do własnego komponentu.",
 };
 
 export type Locale = "en" | "de" | "es" | "fr" | "it" | "nl" | "pl";

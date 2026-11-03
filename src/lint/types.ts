@@ -1,6 +1,6 @@
 import type { Messages } from "../i18n/messages";
 
-export type Lang = "typescript" | "javascript" | "java" | "python" | "rust";
+export type Lang = "typescript" | "javascript" | "java" | "python" | "rust" | "go" | "crystal" | "emvus" | "emerald" | "novus" | "qml" | "astro" | "html" | "css";
 
 /** A checker message: a translation key plus the values it fills in. */
 export type LintKey = Extract<keyof Messages, `lint.${string}`>;

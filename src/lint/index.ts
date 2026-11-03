@@ -1,5 +1,14 @@
 import { analyzePython } from "./python";
 import { analyzeRust } from "./rust";
+import { analyzeGo } from "./go";
+import { analyzeEmerald } from "./emerald";
+import { analyzeCrystal } from "./crystal";
+import { analyzeEmvus } from "./emvus";
+import { analyzeNovus } from "./novus";
+import { analyzeQml } from "./qml";
+import { analyzeAstro } from "./astro";
+import { analyzeHtml } from "./html";
+import { analyzeCss } from "./css";
 import { braces } from "./rules/braces";
 import { comments } from "./rules/comments";
 import { noElse } from "./rules/else";
@@ -42,9 +51,26 @@ function collect(code: string, lang: Lang): { findings: Finding[]; position: (of
 }
 
 /** All violations in `code`, in source order. */
+/** Line and column for analyzers that report offsets only. */
+function withPositions(code: string, issues: Issue[]): Issue[] {
+  return issues.map((issue) => {
+    const before = code.slice(0, issue.start);
+    return { ...issue, line: before.split("\n").length, col: issue.start - before.lastIndexOf("\n") };
+  });
+}
+
 export function analyze(code: string, lang: Lang): Issue[] {
-  if (lang === "python") return analyzePython(code);
-  if (lang === "rust") return analyzeRust(code);
+  if (lang === "python") return withPositions(code, analyzePython(code));
+  if (lang === "rust") return withPositions(code, analyzeRust(code));
+  if (lang === "go") return withPositions(code, analyzeGo(code));
+  if (lang === "crystal") return withPositions(code, analyzeCrystal(code));
+  if (lang === "emvus") return withPositions(code, analyzeEmvus(code));
+  if (lang === "emerald") return withPositions(code, analyzeEmerald(code));
+  if (lang === "novus") return withPositions(code, analyzeNovus(code));
+  if (lang === "qml") return withPositions(code, analyzeQml(code));
+  if (lang === "astro") return withPositions(code, analyzeAstro(code, (inner) => analyze(inner, "typescript")));
+  if (lang === "html") return withPositions(code, analyzeHtml(code));
+  if (lang === "css") return withPositions(code, analyzeCss(code));
   const { findings, position } = collect(code, lang);
   return findings
     .map((f) => ({ ...f, ...position(f.start), fixable: !!f.edits?.length }))
@@ -77,7 +103,7 @@ export interface Conversion {
 
 /** Applies every mechanical fix, re-analyzing until nothing fixable is left. */
 export function convert(code: string, lang: Lang): Conversion {
-  if (lang === "python" || lang === "rust") return { code, fixes: 0 };
+  if (lang !== "typescript" && lang !== "javascript" && lang !== "java") return { code, fixes: 0 };
   let current = code;
   let fixes = 0;
 
