@@ -59,7 +59,7 @@ export function Rules() {
         </div>
       </div>
 
-      <div className="island mt-6 overflow-x-auto">
+      <div className="island mt-6 hidden overflow-x-auto md:block">
         <table className="w-full min-w-[46rem] text-left text-[15px]">
           <thead className="border-b border-line text-xs text-muted">
             <tr>
@@ -99,6 +99,22 @@ export function Rules() {
           </tbody>
         </table>
       </div>
+      <ul className="island mt-6 divide-y divide-line/60 md:hidden">
+        {list.map((r) => (
+          <li key={r.id} className="px-5 py-4">
+            <div className="flex items-center justify-between gap-3">
+              <span className="font-mono text-[13px] text-accent">{r.id}</span>
+              {checkedRules.has(r.id) && <span className="rounded-md border border-accent/30 bg-accent/10 px-2 py-0.5 text-xs text-accent">auto</span>}
+            </div>
+            <Link to={r.href} className="mt-1.5 block text-[15px] text-fg hover:text-accent">{r.title}</Link>
+            <div className="mt-2 flex items-center gap-2 text-xs text-muted">
+              {r.profileSlug === "core" ? <Icon name="lucide:layers" className="size-3.5" /> : <LanguageLogo slug={r.profileSlug} className="size-3.5" />}
+              {label(r.profile)}
+            </div>
+          </li>
+        ))}
+        {list.length === 0 && <li className="px-5 py-10 text-center text-muted">{t("rules.none")}</li>}
+      </ul>
       <p className="mt-4 text-xs text-muted">{t("rules.showing", { shown: list.length, total: rules.length })}</p>
     </div>
   );

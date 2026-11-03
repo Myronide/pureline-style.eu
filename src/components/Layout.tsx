@@ -47,9 +47,12 @@ export function Layout() {
       <header className="sticky top-0 z-30 pt-4">
         <div className="mx-auto w-full max-w-[96rem] px-4">
           <div className="island flex h-14 items-center justify-between px-6 backdrop-blur-xl">
-            <Link to="/" className="flex items-center gap-2.5 text-[17px] font-semibold tracking-tight">
+            <Link to="/" className="group flex items-center gap-2.5 text-[17px] font-semibold tracking-tight">
               <Logo className="h-5" />
-              <span className="display text-lg">Pureline</span>
+              <span className="display relative text-lg">
+                Pureline
+                <span aria-hidden className="brand-gradient absolute -bottom-1.5 left-0 h-0.5 w-7 rounded-full transition-[width] duration-300 group-hover:w-full" />
+              </span>
             </Link>
             <nav className="flex items-center gap-6 sm:gap-8">
               <NavLink to="/docs" end={false} className={navLink}>{t("nav.guide")}</NavLink>
