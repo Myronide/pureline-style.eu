@@ -88,6 +88,15 @@
   *:hover { scrollbar-color: #3a3a5c transparent; }
   ::selection { background: color-mix(in srgb, var(--color-accent) 30%, transparent); }
   :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; border-radius: 4px; }
+  /* Links show keyboard focus as an accent underline instead of a box. */
+  a:focus-visible {
+    outline: none;
+    border-radius: 0;
+    text-decoration: underline;
+    text-decoration-color: var(--color-accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+  }
 }
 
 /* The one container every page uses, so all edges line up. */
