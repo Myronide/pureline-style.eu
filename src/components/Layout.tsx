@@ -22,7 +22,7 @@ export function Layout() {
   return (
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-30 px-4 pt-4">
-        <div className="island mx-auto flex h-14 max-w-5xl items-center justify-between px-5 backdrop-blur-xl">
+        <div className="island mx-auto flex h-14 max-w-7xl items-center justify-between px-6 backdrop-blur-xl">
           <Link to="/" className="flex items-center gap-2.5 text-[17px] font-semibold tracking-tight">
             <Logo className="h-5" />
             <span className="display text-lg">Pureline</span>
@@ -39,7 +39,7 @@ export function Layout() {
       </header>
       <main className="flex-1"><Outlet /></main>
       <footer className="px-4 pb-6">
-        <div className="island mx-auto flex max-w-6xl flex-col gap-6 px-8 py-10 text-sm text-muted sm:flex-row sm:items-end sm:justify-between">
+        <div className="island mx-auto flex max-w-7xl flex-col gap-6 px-8 py-10 text-sm text-muted sm:flex-row sm:items-end sm:justify-between">
           <div className="space-y-4">
             <p className="display text-lg text-fg">Code without noise.</p>
             <Authors />

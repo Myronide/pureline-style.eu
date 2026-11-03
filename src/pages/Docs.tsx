@@ -16,8 +16,8 @@ export function Docs() {
   const next = all[i + 1];
 
   return (
-    <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[13rem_minmax(0,1fr)] xl:grid-cols-[13rem_minmax(0,1fr)_12rem]">
-      <aside className="island p-5 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:self-start lg:overflow-y-auto">
+    <div className="mx-auto grid max-w-7xl gap-8 px-6 py-10 lg:grid-cols-[18rem_minmax(0,1fr)] xl:grid-cols-[18rem_minmax(0,1fr)_16rem] xl:gap-12">
+      <aside className="island p-6 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:self-start lg:overflow-y-auto">
         {nav.map((g) => (
           <div key={g.label} className="mb-8">
             <p className="display mb-3 text-[15px] text-fg">{g.label}</p>
@@ -27,7 +27,7 @@ export function Docs() {
                   <NavLink
                     to={docPath(d.slug)}
                     end
-                    className={({ isActive }) => `-ml-px block border-l py-1.5 pl-4 text-sm transition-colors ${isActive ? "border-accent text-fg" : "border-transparent text-muted hover:border-line hover:text-fg"}`}
+                    className={({ isActive }) => `-ml-px block border-l py-2 pl-4 text-[15px] transition-colors ${isActive ? "border-accent text-fg" : "border-transparent text-muted hover:border-line hover:text-fg"}`}
                   >
                     {d.slug === INDEX_SLUG ? "Guide" : d.title.replace(/ Code Style$/, "").replace(/^Pureline /, "")}
                   </NavLink>
@@ -50,7 +50,7 @@ export function Docs() {
       </article>
 
       {toc.length > 1 && (
-        <aside className="island hidden p-5 xl:sticky xl:top-24 xl:block xl:max-h-[calc(100vh-7rem)] xl:self-start xl:overflow-y-auto">
+        <aside className="island hidden p-6 xl:sticky xl:top-24 xl:block xl:max-h-[calc(100vh-7rem)] xl:self-start xl:overflow-y-auto">
           <p className="display mb-3 text-[15px] text-fg">On this page</p>
           <ul className="space-y-1.5 border-l border-line text-sm">
             {toc.map((h) => (

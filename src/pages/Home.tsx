@@ -52,7 +52,7 @@ function Compare({ label, tone, code }: { label: string; tone: "bad" | "good"; c
 export function Home() {
   return (
     <>
-      <section className="mx-auto max-w-6xl px-6 pb-24 pt-28 sm:pt-36">
+      <section className="mx-auto max-w-7xl px-6 pb-24 pt-28 sm:pt-36">
         <p className="mb-6 text-sm text-muted">Specification 1.7 · Linear flow, explicit intent</p>
         <h1 className="display max-w-4xl text-[clamp(2.75rem,7vw,5.5rem)] leading-[1.02]">
           Code without noise.
@@ -73,7 +73,7 @@ export function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 pb-28">
+      <section className="mx-auto max-w-7xl px-6 pb-28">
         <div className="mb-10 max-w-xl">
           <h2 className="display text-3xl">Same behaviour, less noise.</h2>
           <p className="mt-3 text-muted">Both versions validate the same two conditions and pay the same way. Only one of them reads top to bottom.</p>
@@ -84,7 +84,7 @@ export function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 pb-28">
+      <section className="mx-auto max-w-7xl px-6 pb-28">
         <h2 className="display mb-8 text-3xl">Six principles</h2>
         <dl className="island grid gap-x-12 gap-y-10 p-8 sm:grid-cols-2 lg:grid-cols-3">
           {principles.map((p) => (
@@ -96,7 +96,7 @@ export function Home() {
         </dl>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 pb-32">
+      <section className="mx-auto max-w-7xl px-6 pb-32">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
             <h2 className="display text-3xl">Language profiles</h2>
