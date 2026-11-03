@@ -63,8 +63,15 @@ export function resolveLink(fromSlug: string, href: string): string | null {
   return docPath(slug) + (hash ? `#${hash}` : "");
 }
 
+export const HEADING_ID = /\s*\{#([\w-]+)\}\s*$/;
+
 export function headings(body: string) {
-  return [...body.matchAll(/^(##|###)\s+(.+)$/gm)].map((m) => ({ level: m[1]!.length, text: m[2]!.replace(/`/g, ""), id: slugify(m[2]!) }));
+  return [...body.matchAll(/^(##|###)\s+(.+)$/gm)].map((m) => {
+    // Translated pages carry the English anchor as an explicit id: "## Titel {#english-title}".
+    const explicit = HEADING_ID.exec(m[2]!)?.[1];
+    const text = m[2]!.replace(HEADING_ID, "");
+    return { level: m[1]!.length, text: text.replace(/`/g, ""), id: explicit ?? slugify(text) };
+  });
 }
 
 export function slugify(text: string) {
@@ -123,6 +130,19 @@ const translatedDocs = import.meta.glob("./content-i18n/**/*.md", { query: "?raw
 /** The translated body of a guide page for a locale, or null when that page has no translation. */
 /** Off until the machine translations have been reviewed: Opus-MT still garbles brand names and emphasis. */
 export const SHOW_MACHINE_TRANSLATIONS = true;
+
+/** Hand-checked translations (src/content-translations/<locale>/). They win over the machine translations. */
+const manualDocs = import.meta.glob("./content-translations/**/*.md", { query: "?raw", import: "default", eager: true }) as Record<string, string>;
+
+export function manualBody(slug: string, locale: string): string | null {
+  return manualDocs[`./content-translations/${locale}/${slug}.md`] ?? null;
+}
+
+/** The page title in a locale: the first heading of the translation, or the English title. */
+export function docTitle(doc: Doc, locale: string): string {
+  const translated = locale === "en" ? null : manualBody(doc.slug, locale)?.match(/^#\s+(.+?)(?:\s*\{#[\w-]+\})?\s*$/m)?.[1];
+  return translated ?? doc.title;
+}
 
 export function translatedBody(slug: string, locale: string): string | null {
   return translatedDocs[`./content-i18n/${locale}/${slug}.md`] ?? null;

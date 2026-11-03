@@ -40,15 +40,33 @@ function CodeBlock({ lang, code }: { lang: string; code: string }) {
   );
 }
 
+type MdNode = { type: string; value?: string; children?: MdNode[]; data?: Record<string, unknown> };
+
+/** "## Titel {#english-title}" keeps the English anchor on translated pages, so links and the rule index still resolve. */
+function remarkHeadingIds() {
+  return (tree: MdNode) => {
+    const walk = (node: MdNode) => {
+      const last = node.type === "heading" ? node.children?.[node.children.length - 1] : undefined;
+      const match = last?.type === "text" && last.value ? /\s*\{#([\w-]+)\}\s*$/.exec(last.value) : null;
+      if (last && match) {
+        last.value = last.value!.slice(0, match.index);
+        node.data = { ...node.data, hProperties: { id: match[1] } };
+      }
+      node.children?.forEach(walk);
+    };
+    walk(tree);
+  };
+}
+
 export function Markdown({ slug, children }: { slug: string; children: string }) {
   return (
     <ReactMarkdown
-      remarkPlugins={[remarkGfm]}
+      remarkPlugins={[remarkGfm, remarkHeadingIds]}
       components={{
-        h2: ({ children }) => <h2 id={slugify(text(children))}>{children}</h2>,
-        h3: ({ children }) => {
+        h2: ({ children, id }) => <h2 id={id ?? slugify(text(children))}>{children}</h2>,
+        h3: ({ children, id: explicitId }) => {
           const title = text(children);
-          const id = slugify(title);
+          const id = explicitId ?? slugify(title);
           const rule = /^(PL-[A-Z0-9-]+)\s+—\s+(.+)$/.exec(title);
           if (!rule) {
             return <h3 id={id}>{children}</h3>;
@@ -60,7 +78,7 @@ export function Markdown({ slug, children }: { slug: string; children: string })
             </h3>
           );
         },
-        h4: ({ children }) => <h4 id={slugify(text(children))}>{children}</h4>,
+        h4: ({ children, id }) => <h4 id={id ?? slugify(text(children))}>{children}</h4>,
         pre: ({ children }) => {
           const child = children as { props?: { className?: string; children?: ReactNode } };
           const lang = /language-(\S+)/.exec(child.props?.className ?? "")?.[1] ?? "";

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useParams } from "react-router-dom";
 import { Markdown } from "../components/Markdown";
-import { docPath, getDoc, headings, INDEX_SLUG, nav, repoUrl, SHOW_MACHINE_TRANSLATIONS, translatedBody } from "../content";
+import { docPath, docTitle, getDoc, headings, INDEX_SLUG, manualBody, nav, repoUrl, SHOW_MACHINE_TRANSLATIONS, translatedBody } from "../content";
 import { Icon } from "../components/Icon";
 import { LanguageLogo } from "../components/LanguageLogo";
 import { useI18n } from "../i18n/context";
@@ -9,12 +9,13 @@ import { canTranslateLive, loadMissing, translateBody, type Missing } from "../l
 import { NotFound } from "./NotFound";
 
 function DocNav() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+  const groupLabel: Record<string, Parameters<typeof t>[0]> = { Start: "docs.nav.start", "Core rules": "docs.nav.core", Languages: "docs.nav.languages", Reference: "docs.nav.reference" };
   return (
     <>
       {nav.map((g) => (
         <div key={g.label} className="mb-8 last:mb-0">
-          <p className="display mb-3 text-[15px] text-fg">{g.label}</p>
+          <p className="display mb-3 text-[15px] text-fg">{groupLabel[g.label] ? t(groupLabel[g.label]!) : g.label}</p>
           <ul className="space-y-px border-l border-line">
             {g.docs.map((d) => (
               <li key={d.slug}>
@@ -25,7 +26,7 @@ function DocNav() {
                 >
                   <span className="flex items-center gap-2.5">
                     <LanguageLogo slug={d.slug} className="size-4 shrink-0" />
-                    {d.slug === INDEX_SLUG ? t("docs.guide") : d.title.replace(/ Code Style$/, "").replace(/^Pureline /, "")}
+                    {d.slug === INDEX_SLUG ? t("docs.guide") : d.slug.startsWith("languages/") && d.slug !== "languages/README" ? d.title.replace(/ Code Style$/, "").replace(/^Pureline /, "") : docTitle(d, locale).replace(/^Pureline[ -]/, "")}
                   </span>
                 </NavLink>
               </li>
@@ -103,6 +104,7 @@ export function Docs() {
   const slug = useParams()["*"] || INDEX_SLUG;
   const doc = getDoc(slug);
   const [live, setLive] = useState<Live | null>(null);
+  const [showOriginal, setShowOriginal] = useState(false);
   // The machine translation is rough, so the English original is the default and the translation is opt-in.
   const [showMachine, setShowMachine] = useState(() => localStorage.getItem("pureline-machine") === "1");
   const chooseMachine = (on: boolean) => {
@@ -113,11 +115,12 @@ export function Docs() {
     return <NotFound />;
   }
 
-  const available = locale !== "en" && SHOW_MACHINE_TRANSLATIONS ? translatedBody(slug, locale) : null;
+  const manual = locale !== "en" ? manualBody(slug, locale) : null;
+  const available = !manual && locale !== "en" && SHOW_MACHINE_TRANSLATIONS ? translatedBody(slug, locale) : null;
   const machine = showMachine ? available : null;
   const docKey = `${locale}/${slug}`;
-  const base = machine ?? doc.body;
-  const body = live?.key === docKey ? live.body : base;
+  const base = manual ?? machine ?? doc.body;
+  const body = manual && showOriginal ? doc.body : live?.key === docKey ? live.body : base;
   const toc = headings(body);
   const all = nav.flatMap((g) => g.docs);
   const i = all.findIndex((d) => d.slug === slug);
@@ -145,7 +148,12 @@ export function Docs() {
       <article className="min-w-0">
         {locale !== "en" && (
           <p className="mb-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted">
-            <span>{t(machine ? "docs.machineNote" : "docs.englishNote")}</span>
+            <span>{t(manual ? "docs.aiNote" : machine ? "docs.machineNote" : "docs.englishNote")}</span>
+            {manual && (
+              <button type="button" onClick={() => setShowOriginal(!showOriginal)} className="underline decoration-line underline-offset-4 transition-colors hover:text-fg">
+                {t(showOriginal ? "docs.showTranslation" : "docs.showEnglish")}
+              </button>
+            )}
             {available && (
               <button type="button" onClick={() => chooseMachine(!machine)} className="underline decoration-line underline-offset-4 transition-colors hover:text-fg">
                 {t(machine ? "docs.showEnglish" : "docs.showMachine")}
@@ -153,11 +161,11 @@ export function Docs() {
             )}
           </p>
         )}
-        {machine && <LiveTranslateBar docKey={docKey} locale={locale} slug={slug} body={base} onDone={setLive} />}
+        {machine && !manual && <LiveTranslateBar docKey={docKey} locale={locale} slug={slug} body={base} onDone={setLive} />}
         <div className="doc prose prose-invert max-w-none"><Markdown slug={slug}>{body}</Markdown></div>
         <div className="mt-20 flex items-center justify-between gap-4 border-t border-line pt-6 text-sm">
-          {prev ? <Link to={docPath(prev.slug)} className="flex items-center gap-2 text-muted hover:text-fg"><Icon name="lucide:arrow-left" />{prev.title}</Link> : <span />}
-          {next ? <Link to={docPath(next.slug)} className="flex items-center gap-2 text-muted hover:text-fg">{next.title}<Icon name="lucide:arrow-right" /></Link> : <span />}
+          {prev ? <Link to={docPath(prev.slug)} className="flex items-center gap-2 text-muted hover:text-fg"><Icon name="lucide:arrow-left" />{docTitle(prev, locale)}</Link> : <span />}
+          {next ? <Link to={docPath(next.slug)} className="flex items-center gap-2 text-muted hover:text-fg">{docTitle(next, locale)}<Icon name="lucide:arrow-right" /></Link> : <span />}
         </div>
         <a href={`${repoUrl}/blob/HEAD/${slug.startsWith("PURELINE") ? slug : `docs/code-style/${slug}`}.md`} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center gap-1.5 text-xs text-muted hover:text-fg">
           <Icon name="lucide:pencil" className="size-3.5" /> {t("docs.viewSource")}
