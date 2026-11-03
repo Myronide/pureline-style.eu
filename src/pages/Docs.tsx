@@ -2,6 +2,7 @@ import { Link, NavLink, useParams } from "react-router-dom";
 import { Markdown } from "../components/Markdown";
 import { docPath, getDoc, headings, INDEX_SLUG, nav, repoUrl } from "../content";
 import { Icon } from "../components/Icon";
+import { LanguageLogo } from "../components/LanguageLogo";
 import { NotFound } from "./NotFound";
 
 export function Docs() {
@@ -29,7 +30,10 @@ export function Docs() {
                     end
                     className={({ isActive }) => `-ml-px block border-l py-1.5 pl-4 text-sm leading-snug transition-colors ${isActive ? "border-accent text-fg" : "border-transparent text-muted hover:border-line hover:text-fg"}`}
                   >
-                    {d.slug === INDEX_SLUG ? "Guide" : d.title.replace(/ Code Style$/, "").replace(/^Pureline /, "")}
+                    <span className="flex items-center gap-2.5">
+                      <LanguageLogo slug={d.slug} className="size-4 shrink-0" />
+                      {d.slug === INDEX_SLUG ? "Guide" : d.title.replace(/ Code Style$/, "").replace(/^Pureline /, "")}
+                    </span>
                   </NavLink>
                 </li>
               ))}

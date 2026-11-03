@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Code as Highlighted } from "../components/Code";
 import { Icon } from "../components/Icon";
+import { LanguageLogo } from "../components/LanguageLogo";
 import { docPath, INDEX_SLUG, languageDocs, repoUrl, shortTitle } from "../content";
 
 const principles = [
@@ -108,7 +109,10 @@ export function Home() {
           {languageDocs.map((d) => (
             <li key={d.slug} className="border-b border-line/70 last:border-b-0 sm:[&:nth-last-child(2)]:border-b-0">
               <Link to={docPath(d.slug)} className="group flex items-center justify-between py-4 pr-2 transition-colors hover:text-accent">
-                <span className="font-medium">{shortTitle(d)}</span>
+                <span className="flex items-center gap-3">
+                  <LanguageLogo slug={d.slug} className="size-5 shrink-0" />
+                  <span className="font-medium">{shortTitle(d)}</span>
+                </span>
                 <Icon name="lucide:arrow-up-right" className="size-4 text-muted transition-colors group-hover:text-accent" />
               </Link>
             </li>
