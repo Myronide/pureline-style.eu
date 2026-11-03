@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Code as Highlighted } from "../components/Code";
 import { Icon } from "../components/Icon";
 import { LanguageLogo } from "../components/LanguageLogo";
-import { docPath, INDEX_SLUG, languageDocs, repoUrl, shortTitle } from "../content";
+import { docPath, INDEX_SLUG, languageDocs, repoUrl, ruleCount, shortTitle } from "../content";
 
 const principles = [
   { title: "Linear flow", text: "Input, validation, transformation, execution, result. Read top to bottom, never into a pyramid.", bar: "bg-violet" },
@@ -36,6 +36,8 @@ const pure = `function charge(user: User | null, amount: number): Receipt {
 
   return pay(user, amount);
 }`;
+
+const flow = ["Input", "Validation", "Transformation", "Execution", "Result"];
 
 /** A thin brand line above a section title. It marks the start of a section without being a label. */
 function Rule() {
@@ -111,6 +113,19 @@ export function Home() {
 
       <section className="shell pb-24">
         <Rule />
+        <h2 className="display mb-8 text-3xl">Reading direction</h2>
+        <ol className="island flex flex-wrap items-center gap-x-3 gap-y-4 p-6 sm:p-8">
+          {flow.map((step, i) => (
+            <li key={step} className="flex items-center gap-3">
+              <span className="display text-lg">{step}</span>
+              {i < flow.length - 1 && <Icon name="lucide:arrow-right" className="size-4 text-muted" />}
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section className="shell pb-24">
+        <Rule />
         <h2 className="display mb-8 text-3xl">Six principles</h2>
         <dl className="island grid gap-x-12 gap-y-10 p-8 sm:grid-cols-2 lg:grid-cols-3">
           {principles.map((p) => (
@@ -138,7 +153,10 @@ export function Home() {
               <Link to={docPath(d.slug)} className="group flex items-center justify-between rounded-xl px-4 py-4 transition-colors hover:bg-raised">
                 <span className="flex items-center gap-3">
                   <LanguageLogo slug={d.slug} className="size-5 shrink-0 text-muted transition-colors group-hover:text-fg" />
-                  <span className="font-medium">{shortTitle(d)}</span>
+                  <span className="flex flex-col">
+                    <span className="font-medium">{shortTitle(d)}</span>
+                    <span className="text-xs text-muted">{ruleCount(d)} rules</span>
+                  </span>
                 </span>
                 <Icon name="lucide:arrow-up-right" className="size-4 text-muted transition-colors group-hover:text-accent" />
               </Link>

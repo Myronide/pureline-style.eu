@@ -21,6 +21,7 @@ export function Layout() {
 
   return (
     <div className="flex min-h-screen flex-col">
+      <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-fg focus:px-4 focus:py-2 focus:text-sm focus:text-bg">Skip to content</a>
       <header className="sticky top-0 z-30 pt-4">
         <div className="shell">
         <div className="island flex h-14 items-center justify-between px-6 backdrop-blur-xl">
@@ -39,7 +40,7 @@ export function Layout() {
         </div>
         </div>
       </header>
-      <main className="flex-1"><Outlet /></main>
+      <main id="main" className="flex-1"><Outlet /></main>
       <footer className="pb-6">
         <div className="shell">
         <div className="island flex flex-col gap-6 px-8 py-10 text-sm text-muted sm:flex-row sm:items-end sm:justify-between">

@@ -41,6 +41,9 @@ export const nav: NavGroup[] = [
 export const languageDocs = pick("languages/");
 export const shortTitle = (d: Doc) => d.title.replace(/ Code Style$/, "").replace(/^Pureline /, "");
 
+/** Number of rule headings (`### PL-…`) in a profile. */
+export const ruleCount = (d: Doc) => (d.body.match(/^###\s+PL-/gm) ?? []).length;
+
 /** Resolves a relative markdown link from `fromSlug` to an internal route, or null if it is not a known doc. */
 export function resolveLink(fromSlug: string, href: string): string | null {
   const [pathPart, hash] = href.split("#");
