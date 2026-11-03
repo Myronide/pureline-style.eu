@@ -1,4 +1,5 @@
 import meta from "./content/meta.json";
+import { rules as lintRules } from "./lint";
 
 const raw = import.meta.glob("./content/**/*.md", { query: "?raw", import: "default", eager: true }) as Record<string, string>;
 
@@ -78,11 +79,8 @@ export interface Rule {
   href: string;
 }
 
-/** Rule IDs the Pureline checker in the editor enforces. Keep in sync with src/lint/rules. */
-export const checkedRules = new Set([
-  "PL-CF-001", "PL-CF-002", "PL-CF-003", "PL-DOC-001", "PL-FMT-001", "PL-FN-001",
-  "PL-NAME-001", "PL-TS-001", "PL-TS-003", "PL-TS-004", "PL-TS-005",
-]);
+/** Rule IDs the Pureline checker in the editor enforces, read from the checker itself. */
+export const checkedRules = new Set(lintRules.map((r) => r.id));
 
 /** Every rule in the guide: headings (`### PL-…`) and the core table rows (`| PL-CORE-… |`). */
 export const rules: Rule[] = (() => {
