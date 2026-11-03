@@ -49,9 +49,9 @@ export function Layout() {
           <div className="island flex h-14 items-center justify-between px-6 backdrop-blur-xl">
             <Link to="/" className="group flex items-center gap-2.5 text-[17px] font-semibold tracking-tight">
               <Logo className="h-5" />
-              <span className="display relative text-lg">
+              <span className="display relative inline-block text-lg">
                 Pureline
-                <span aria-hidden className="brand-gradient absolute -bottom-[3px] left-0 h-0.5 w-7 rounded-full transition-[width] duration-300 group-hover:w-full" />
+                <span aria-hidden className="brand-gradient absolute -bottom-1 left-0 h-0.5 w-1/3 rounded-full transition-[width] duration-300 group-hover:w-full" />
               </span>
             </Link>
             <nav className="flex items-center gap-6 sm:gap-8">
