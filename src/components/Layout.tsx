@@ -45,7 +45,7 @@ export function Layout() {
     <div className="flex min-h-screen flex-col">
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-fg focus:px-4 focus:py-2 focus:text-sm focus:text-bg">{t("skip")}</a>
       <header className="sticky top-0 z-30 pt-4">
-        <div className="shell">
+        <div className="mx-auto w-full max-w-[96rem] px-4">
           <div className="island flex h-14 items-center justify-between px-6 backdrop-blur-xl">
             <Link to="/" className="flex items-center gap-2.5 text-[17px] font-semibold tracking-tight">
               <Logo className="h-5" />
@@ -66,7 +66,7 @@ export function Layout() {
       </header>
       <main id="main" className="flex-1"><Outlet /></main>
       <footer className="pb-6">
-        <div className="shell">
+        <div className="mx-auto w-full max-w-[96rem] px-4">
           <div className="island flex flex-col gap-6 px-8 py-10 text-sm text-muted sm:flex-row sm:items-end sm:justify-between">
             <div className="space-y-4">
               <p className="display text-lg text-fg">{t("footer.tagline")}</p>
