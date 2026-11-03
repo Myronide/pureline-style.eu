@@ -121,4 +121,13 @@ function handleEverything(request) {
     }
 }
 `,
+  python: `def charge(user, amount):
+    if user:
+        if user.active:
+            if amount > 0:
+                return pay(user, amount)
+            else:
+                raise ValueError("invalid amount")
+    return None
+`,
 };

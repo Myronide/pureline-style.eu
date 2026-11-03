@@ -16,7 +16,7 @@ const LANGS = [
   { id: "java", label: "Java", checked: true },
   { id: "rust", label: "Rust" },
   { id: "go", label: "Go" },
-  { id: "python", label: "Python" },
+  { id: "python", label: "Python", checked: true },
   { id: "crystal", label: "Crystal" },
   { id: "emvus", label: "Emvus" },
   { id: "emerald", label: "Emerald" },
@@ -29,9 +29,9 @@ const LANGS = [
 
 type EditorLang = (typeof LANGS)[number]["id"];
 
-const isChecked = (id: EditorLang): id is Lang => id === "typescript" || id === "javascript" || id === "java";
+const isChecked = (id: EditorLang): id is Lang => id === "typescript" || id === "javascript" || id === "java" || id === "python";
 const labelOf = (id: EditorLang) => LANGS.find((l) => l.id === id)!.label;
-const exampleFor = (id: EditorLang): string => (isChecked(id) ? samples[id] : extraSamples[id]!);
+const exampleFor = (id: EditorLang): string => (id === "typescript" || id === "javascript" || id === "java" ? samples[id] : extraSamples[id]!);
 
 const TONE: Record<Severity, { text: string; line: string; dot: string; rank: number; chip: string }> = {
   error: { text: "text-warn", line: "decoration-warn", dot: "bg-warn", rank: 3, chip: "border-warn/40 text-warn" },

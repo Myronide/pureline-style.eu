@@ -1,3 +1,4 @@
+import { analyzePython } from "./python";
 import { braces } from "./rules/braces";
 import { comments } from "./rules/comments";
 import { noElse } from "./rules/else";
@@ -41,6 +42,7 @@ function collect(code: string, lang: Lang): { findings: Finding[]; position: (of
 
 /** All violations in `code`, in source order. */
 export function analyze(code: string, lang: Lang): Issue[] {
+  if (lang === "python") return analyzePython(code);
   const { findings, position } = collect(code, lang);
   return findings
     .map((f) => ({ ...f, ...position(f.start), fixable: !!f.edits?.length }))
@@ -73,6 +75,7 @@ export interface Conversion {
 
 /** Applies every mechanical fix, re-analyzing until nothing fixable is left. */
 export function convert(code: string, lang: Lang): Conversion {
+  if (lang === "python") return { code, fixes: 0 };
   let current = code;
   let fixes = 0;
 

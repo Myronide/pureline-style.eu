@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build && node scripts/postbuild.mjs",
     "preview": "vite preview",
-    "sync": "node scripts/sync.mjs"
+    "sync": "node scripts/sync.mjs",
+    "translate:docs": "node scripts/translate-docs.mjs"
   },
   "dependencies": {
     "@iconify/react": "^6.0.3",
@@ -19,6 +20,7 @@
     "shiki": "^4.5.0"
   },
   "devDependencies": {
+    "@huggingface/transformers": "^4.3.2",
     "@tailwindcss/typography": "^0.5.20",
     "@tailwindcss/vite": "^4.3.3",
     "@types/react": "^19.3.0",

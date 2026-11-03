@@ -2,3 +2,4 @@ node_modules
 dist
 *.tsbuildinfo
 src/content.tmp
+src/content-i18n/

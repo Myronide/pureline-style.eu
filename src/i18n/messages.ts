@@ -70,6 +70,7 @@ const en = {
   "docs.guide": "Guide",
   "docs.viewSource": "View source on GitHub",
   "docs.englishNote": "The guide content is maintained in English. Only the interface is translated.",
+  "docs.machineNote": "Machine translated from the English original. The English text is authoritative.",
 
   "notFound.code": "404",
   "notFound.title": "Nothing here.",
@@ -125,6 +126,9 @@ const en = {
   "lint.unionOverEnum": "Prefer a union of string literals over an enum unless the enum construct adds value.",
   "lint.interfaceOrType": "Use `interface` for object-like contracts and `type` for unions and aliases.",
   "lint.avoidElse": "Avoid else: exit early with return/throw so the happy path stays flat.",
+  "lint.pyBareExcept": "Bare except catches everything, including KeyboardInterrupt. Catch the specific exception.",
+  "lint.pyMutableDefault": "Mutable default argument is shared between calls. Use None and create the value inside the function.",
+  "lint.pyTypeHints": "Public function without type hints. Annotate the parameters and the return type.",
 };
 
 export type Messages = typeof en;
@@ -199,6 +203,7 @@ const de: Messages = {
   "docs.guide": "Leitfaden",
   "docs.viewSource": "Quelle auf GitHub ansehen",
   "docs.englishNote": "Der Inhalt des Leitfadens wird auf Englisch gepflegt. Nur die Oberfläche ist übersetzt.",
+  "docs.machineNote": "Maschinell aus dem englischen Original übersetzt. Maßgeblich ist der englische Text.",
 
   "notFound.code": "404",
   "notFound.title": "Hier ist nichts.",
@@ -254,6 +259,9 @@ const de: Messages = {
   "lint.unionOverEnum": "String-Literal-Union bevorzugen, außer das enum bringt echten Mehrwert.",
   "lint.interfaceOrType": "`interface` für objektartige Verträge, `type` für Unions und Aliasse verwenden.",
   "lint.avoidElse": "Kein else: mit return/throw früh verlassen, damit der Happy Path flach bleibt.",
+  "lint.pyBareExcept": "Ein nacktes except fängt alles ab, auch KeyboardInterrupt. Die konkrete Ausnahme abfangen.",
+  "lint.pyMutableDefault": "Ein veränderliches Standardargument wird zwischen Aufrufen geteilt. None verwenden und den Wert in der Funktion erzeugen.",
+  "lint.pyTypeHints": "Öffentliche Funktion ohne Typhinweise. Parameter und Rückgabetyp annotieren.",
 };
 
 const es: Messages = {
@@ -326,6 +334,7 @@ const es: Messages = {
   "docs.guide": "Guía",
   "docs.viewSource": "Ver el código en GitHub",
   "docs.englishNote": "El contenido de la guía se mantiene en inglés. Solo la interfaz está traducida.",
+  "docs.machineNote": "Traducido automáticamente del original en inglés. El texto en inglés es el de referencia.",
 
   "notFound.code": "404",
   "notFound.title": "No hay nada aquí.",
@@ -381,6 +390,9 @@ const es: Messages = {
   "lint.unionOverEnum": "Prefiere una unión de literales de cadena a un enum, salvo que el enum aporte valor.",
   "lint.interfaceOrType": "Usa `interface` para contratos tipo objeto y `type` para uniones y alias.",
   "lint.avoidElse": "Evita else: sal pronto con return/throw para que el camino principal quede plano.",
+  "lint.pyBareExcept": "Un except sin tipo captura todo, incluido KeyboardInterrupt. Captura la excepción concreta.",
+  "lint.pyMutableDefault": "El argumento por defecto mutable se comparte entre llamadas. Usa None y crea el valor dentro de la función.",
+  "lint.pyTypeHints": "Función pública sin anotaciones de tipo. Anota los parámetros y el tipo de retorno.",
 };
 
 const fr: Messages = {
@@ -453,6 +465,7 @@ const fr: Messages = {
   "docs.guide": "Guide",
   "docs.viewSource": "Voir la source sur GitHub",
   "docs.englishNote": "Le contenu du guide est tenu en anglais. Seule l'interface est traduite.",
+  "docs.machineNote": "Traduit automatiquement de l'original anglais. Le texte anglais fait foi.",
 
   "notFound.code": "404",
   "notFound.title": "Rien ici.",
@@ -508,6 +521,9 @@ const fr: Messages = {
   "lint.unionOverEnum": "Préférez une union de littéraux de chaîne à un enum, sauf si l'enum apporte une valeur.",
   "lint.interfaceOrType": "Utilisez `interface` pour les contrats de type objet et `type` pour les unions et alias.",
   "lint.avoidElse": "Évitez else : sortez tôt avec return/throw pour garder le chemin principal à plat.",
+  "lint.pyBareExcept": "Un except nu attrape tout, y compris KeyboardInterrupt. Attrapez l'exception précise.",
+  "lint.pyMutableDefault": "Un argument par défaut mutable est partagé entre les appels. Utilisez None et créez la valeur dans la fonction.",
+  "lint.pyTypeHints": "Fonction publique sans annotations de types. Annotez les paramètres et le type de retour.",
 };
 
 const it: Messages = {
@@ -580,6 +596,7 @@ const it: Messages = {
   "docs.guide": "Guida",
   "docs.viewSource": "Vedi il sorgente su GitHub",
   "docs.englishNote": "Il contenuto della guida è mantenuto in inglese. Solo l'interfaccia è tradotta.",
+  "docs.machineNote": "Tradotto automaticamente dall'originale inglese. Fa fede il testo inglese.",
 
   "notFound.code": "404",
   "notFound.title": "Non c'è niente qui.",
@@ -635,6 +652,9 @@ const it: Messages = {
   "lint.unionOverEnum": "Preferisci un'unione di letterali stringa a un enum, salvo che l'enum aggiunga valore.",
   "lint.interfaceOrType": "Usa `interface` per contratti simili a oggetti e `type` per unioni e alias.",
   "lint.avoidElse": "Evita else: esci presto con return/throw, così il percorso principale resta piatto.",
+  "lint.pyBareExcept": "Un except senza tipo cattura tutto, incluso KeyboardInterrupt. Cattura l'eccezione specifica.",
+  "lint.pyMutableDefault": "L'argomento predefinito mutabile è condiviso tra le chiamate. Usa None e crea il valore dentro la funzione.",
+  "lint.pyTypeHints": "Funzione pubblica senza annotazioni di tipo. Annota i parametri e il tipo di ritorno.",
 };
 
 const nl: Messages = {
@@ -707,6 +727,7 @@ const nl: Messages = {
   "docs.guide": "Gids",
   "docs.viewSource": "Bron bekijken op GitHub",
   "docs.englishNote": "De inhoud van de gids wordt in het Engels bijgehouden. Alleen de interface is vertaald.",
+  "docs.machineNote": "Automatisch vertaald uit het Engelse origineel. De Engelse tekst is leidend.",
 
   "notFound.code": "404",
   "notFound.title": "Hier is niets.",
@@ -762,6 +783,9 @@ const nl: Messages = {
   "lint.unionOverEnum": "Geef de voorkeur aan een union van stringliteralen boven een enum, tenzij de enum iets toevoegt.",
   "lint.interfaceOrType": "Gebruik `interface` voor objectachtige contracten en `type` voor unions en aliassen.",
   "lint.avoidElse": "Vermijd else: verlaat vroeg met return/throw, zodat het hoofdpad plat blijft.",
+  "lint.pyBareExcept": "Een kale except vangt alles, ook KeyboardInterrupt. Vang de specifieke uitzondering op.",
+  "lint.pyMutableDefault": "Een mutabel standaardargument wordt gedeeld tussen aanroepen. Gebruik None en maak de waarde in de functie.",
+  "lint.pyTypeHints": "Publieke functie zonder typehints. Annoteer de parameters en het retourtype.",
 };
 
 const pl: Messages = {
@@ -834,6 +858,7 @@ const pl: Messages = {
   "docs.guide": "Przewodnik",
   "docs.viewSource": "Zobacz źródło na GitHubie",
   "docs.englishNote": "Treść przewodnika jest utrzymywana po angielsku. Przetłumaczony jest tylko interfejs.",
+  "docs.machineNote": "Przetłumaczono maszynowo z oryginału angielskiego. Wiążący jest tekst angielski.",
 
   "notFound.code": "404",
   "notFound.title": "Nic tu nie ma.",
@@ -889,6 +914,9 @@ const pl: Messages = {
   "lint.unionOverEnum": "Preferuj unię literałów tekstowych zamiast enum, chyba że enum wnosi wartość.",
   "lint.interfaceOrType": "Używaj `interface` dla kontraktów przypominających obiekty, a `type` dla unii i aliasów.",
   "lint.avoidElse": "Unikaj else: wychodź wcześnie przez return/throw, żeby główna ścieżka pozostała płaska.",
+  "lint.pyBareExcept": "Gołe except łapie wszystko, także KeyboardInterrupt. Złap konkretny wyjątek.",
+  "lint.pyMutableDefault": "Modyfikowalny domyślny argument jest współdzielony między wywołaniami. Użyj None i utwórz wartość w funkcji.",
+  "lint.pyTypeHints": "Publiczna funkcja bez adnotacji typów. Opisz parametry i typ zwracany.",
 };
 
 export type Locale = "en" | "de" | "es" | "fr" | "it" | "nl" | "pl";

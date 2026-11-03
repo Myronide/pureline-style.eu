@@ -1,6 +1,6 @@
 import { Link, NavLink, useParams } from "react-router-dom";
 import { Markdown } from "../components/Markdown";
-import { docPath, getDoc, headings, INDEX_SLUG, nav, repoUrl } from "../content";
+import { docPath, getDoc, headings, INDEX_SLUG, nav, repoUrl, SHOW_MACHINE_TRANSLATIONS, translatedBody } from "../content";
 import { Icon } from "../components/Icon";
 import { LanguageLogo } from "../components/LanguageLogo";
 import { useI18n } from "../i18n/context";
@@ -53,7 +53,9 @@ export function Docs() {
   const doc = getDoc(slug);
   if (!doc) return <NotFound />;
 
-  const toc = headings(doc.body);
+  const machine = locale !== "en" && SHOW_MACHINE_TRANSLATIONS ? translatedBody(slug, locale) : null;
+  const body = machine ?? doc.body;
+  const toc = headings(body);
   const all = nav.flatMap((g) => g.docs);
   const i = all.findIndex((d) => d.slug === slug);
   const prev = all[i - 1];
@@ -78,8 +80,8 @@ export function Docs() {
       )}
 
       <article className="min-w-0">
-        {locale !== "en" && <p className="mb-6 text-sm text-muted">{t("docs.englishNote")}</p>}
-        <div className="doc prose prose-invert max-w-none"><Markdown slug={slug}>{doc.body}</Markdown></div>
+        {locale !== "en" && <p className="mb-6 text-sm text-muted">{t(machine ? "docs.machineNote" : "docs.englishNote")}</p>}
+        <div className="doc prose prose-invert max-w-none"><Markdown slug={slug}>{body}</Markdown></div>
         <div className="mt-20 flex items-center justify-between gap-4 border-t border-line pt-6 text-sm">
           {prev ? <Link to={docPath(prev.slug)} className="flex items-center gap-2 text-muted hover:text-fg"><Icon name="lucide:arrow-left" />{prev.title}</Link> : <span />}
           {next ? <Link to={docPath(next.slug)} className="flex items-center gap-2 text-muted hover:text-fg">{next.title}<Icon name="lucide:arrow-right" /></Link> : <span />}
