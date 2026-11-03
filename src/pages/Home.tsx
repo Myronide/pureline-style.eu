@@ -72,7 +72,7 @@ export function Home() {
             <span className="brand-gradient h-px w-8 rounded-full" aria-hidden />
             {t("home.meta")}
           </p>
-          <h1 className="display text-[clamp(2.75rem,6.5vw,5.25rem)] leading-[1.02]">
+          <h1 className="display text-[clamp(2.25rem,4.6vw,4rem)] leading-[1.02]">
             {t("home.title")}
           </h1>
           <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted">

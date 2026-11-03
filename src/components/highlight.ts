@@ -58,3 +58,28 @@ export async function highlight(code: string, lang: string): Promise<string | nu
   if (!hl.getLoadedLanguages().includes(name)) await hl.loadLanguage((await langs[name]()) as LanguageInput);
   return hl.codeToHtml(code, { lang: name, theme: "github-dark" });
 }
+
+export interface Token {
+  start: number;
+  end: number;
+  color: string | undefined;
+}
+
+/** Character offsets and colours of every token, so the editor can paint colours under its own underlines. */
+export async function tokenize(code: string, lang: string): Promise<Token[] | null> {
+  const name = resolve(lang);
+  if (!name) return null;
+  const hl = await load();
+  if (!hl.getLoadedLanguages().includes(name)) await hl.loadLanguage((await langs[name]()) as LanguageInput);
+  const lines = hl.codeToTokens(code, { lang: name, theme: "github-dark" }).tokens;
+  const tokens: Token[] = [];
+  let pos = 0;
+  lines.forEach((line, i) => {
+    for (const token of line) {
+      tokens.push({ start: pos, end: pos + token.content.length, color: token.color });
+      pos += token.content.length;
+    }
+    if (i < lines.length - 1) pos += 1;
+  });
+  return pos === code.length ? tokens : null;
+}
