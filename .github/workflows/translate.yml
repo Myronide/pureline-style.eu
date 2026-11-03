@@ -1,0 +1,52 @@
+name: Translate
+
+# The slow part: translates new or changed sentences with local models and commits the sentence cache.
+# The deploy only applies this cache, so it stays fast. Run it by hand or let the weekly schedule do it.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 3 * * 1"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: translate
+  cancel-in-progress: false
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Sync content from Myronide/pureline-style
+        run: npm run sync
+
+      - uses: actions/cache@v4
+        with:
+          path: node_modules/@huggingface/transformers/.cache
+          key: translation-models-v1
+
+      - name: Translate new sentences
+        run: npm run translate:docs
+
+      - name: Commit translations
+        run: |
+          git add -A src/content src/content-i18n scripts/translation-cache
+          if git diff --cached --quiet -- . ':!src/content/meta.json'; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: translate new Pureline content"
+          git push

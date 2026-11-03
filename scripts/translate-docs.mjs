@@ -1,6 +1,7 @@
 // Translates the guide (src/content, without the specification) into German, Spanish, French, Italian and Dutch.
 // Runs once at build time with local Helsinki-NLP models (Xenova ONNX builds). No API key, no external service.
 // Results go to src/content-i18n/<locale>/ and a sentence cache in scripts/translation-cache/ keeps reruns fast.
+// The deploy only runs it with --cache-only (instant); the slow model run lives in .github/workflows/translate.yml.
 import { pipeline } from "@huggingface/transformers";
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
@@ -28,7 +29,10 @@ function acceptable(source, translation) {
   const ratio = translation.length / source.length;
   return ratio > 0.5 && ratio < 2.2;
 }
-const onlyLocales = process.argv.slice(2);
+const args = process.argv.slice(2);
+/** `--cache-only` writes the documents from the sentence cache and never loads a model: instant, used by the deploy. */
+const cacheOnly = args.includes("--cache-only");
+const onlyLocales = args.filter((arg) => !arg.startsWith("--"));
 
 function markdownFiles(dir) {
   return readdirSync(dir).flatMap((name) => {
@@ -110,7 +114,8 @@ async function main() {
     const pending = new Set();
     for (const file of files) transform(readFileSync(file, "utf8"), (s) => (cache[s] === undefined && pending.add(s), s));
 
-    if (pending.size) {
+    if (pending.size && cacheOnly) console.log(`[${locale}] ${pending.size} sentences not translated yet, kept in English`);
+    if (pending.size && !cacheOnly) {
       console.log(`[${locale}] translating ${pending.size} sentences with ${MODELS[locale]}`);
       const translator = await pipeline("translation", MODELS[locale], { dtype: "q8" });
       const list = [...pending];

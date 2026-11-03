@@ -34,8 +34,8 @@ jobs:
       - name: Sync content from Myronide/pureline-style
         run: npm run sync
 
-      - name: Translate the guide (local models, sentence cache)
-        run: npm run translate:docs
+      - name: Apply cached translations (instant, no model)
+        run: npm run translate:docs -- --cache-only
 
       - name: Commit content changes
         if: github.event_name != 'push'
