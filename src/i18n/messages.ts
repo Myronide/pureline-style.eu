@@ -129,6 +129,8 @@ const en = {
   "lint.pyBareExcept": "Bare except catches everything, including KeyboardInterrupt. Catch the specific exception.",
   "lint.pyMutableDefault": "Mutable default argument is shared between calls. Use None and create the value inside the function.",
   "lint.pyTypeHints": "Public function without type hints. Annotate the parameters and the return type.",
+  "lint.rsUnwrap": "Avoid unwrap() and expect() in production code: propagate the error with ? or handle it.",
+  "lint.rsTypeName": "Types use PascalCase, like Session or ConfigError.",
 };
 
 export type Messages = typeof en;
@@ -262,6 +264,8 @@ const de: Messages = {
   "lint.pyBareExcept": "Ein nacktes except fängt alles ab, auch KeyboardInterrupt. Die konkrete Ausnahme abfangen.",
   "lint.pyMutableDefault": "Ein veränderliches Standardargument wird zwischen Aufrufen geteilt. None verwenden und den Wert in der Funktion erzeugen.",
   "lint.pyTypeHints": "Öffentliche Funktion ohne Typhinweise. Parameter und Rückgabetyp annotieren.",
+  "lint.rsUnwrap": "unwrap() und expect() im Produktivcode vermeiden: den Fehler mit ? weiterreichen oder behandeln.",
+  "lint.rsTypeName": "Typen schreiben wir in PascalCase, etwa Session oder ConfigError.",
 };
 
 const es: Messages = {
@@ -393,6 +397,8 @@ const es: Messages = {
   "lint.pyBareExcept": "Un except sin tipo captura todo, incluido KeyboardInterrupt. Captura la excepción concreta.",
   "lint.pyMutableDefault": "El argumento por defecto mutable se comparte entre llamadas. Usa None y crea el valor dentro de la función.",
   "lint.pyTypeHints": "Función pública sin anotaciones de tipo. Anota los parámetros y el tipo de retorno.",
+  "lint.rsUnwrap": "Evita unwrap() y expect() en código de producción: propaga el error con ? o gestiónalo.",
+  "lint.rsTypeName": "Los tipos usan PascalCase, como Session o ConfigError.",
 };
 
 const fr: Messages = {
@@ -524,6 +530,8 @@ const fr: Messages = {
   "lint.pyBareExcept": "Un except nu attrape tout, y compris KeyboardInterrupt. Attrapez l'exception précise.",
   "lint.pyMutableDefault": "Un argument par défaut mutable est partagé entre les appels. Utilisez None et créez la valeur dans la fonction.",
   "lint.pyTypeHints": "Fonction publique sans annotations de types. Annotez les paramètres et le type de retour.",
+  "lint.rsUnwrap": "Évitez unwrap() et expect() en production : propagez l'erreur avec ? ou traitez-la.",
+  "lint.rsTypeName": "Les types utilisent PascalCase, comme Session ou ConfigError.",
 };
 
 const it: Messages = {
@@ -655,6 +663,8 @@ const it: Messages = {
   "lint.pyBareExcept": "Un except senza tipo cattura tutto, incluso KeyboardInterrupt. Cattura l'eccezione specifica.",
   "lint.pyMutableDefault": "L'argomento predefinito mutabile è condiviso tra le chiamate. Usa None e crea il valore dentro la funzione.",
   "lint.pyTypeHints": "Funzione pubblica senza annotazioni di tipo. Annota i parametri e il tipo di ritorno.",
+  "lint.rsUnwrap": "Evita unwrap() ed expect() nel codice di produzione: propaga l'errore con ? o gestiscilo.",
+  "lint.rsTypeName": "I tipi usano PascalCase, come Session o ConfigError.",
 };
 
 const nl: Messages = {
@@ -786,6 +796,8 @@ const nl: Messages = {
   "lint.pyBareExcept": "Een kale except vangt alles, ook KeyboardInterrupt. Vang de specifieke uitzondering op.",
   "lint.pyMutableDefault": "Een mutabel standaardargument wordt gedeeld tussen aanroepen. Gebruik None en maak de waarde in de functie.",
   "lint.pyTypeHints": "Publieke functie zonder typehints. Annoteer de parameters en het retourtype.",
+  "lint.rsUnwrap": "Vermijd unwrap() en expect() in productiecode: geef de fout door met ? of behandel hem.",
+  "lint.rsTypeName": "Typen gebruiken PascalCase, zoals Session of ConfigError.",
 };
 
 const pl: Messages = {
@@ -917,6 +929,8 @@ const pl: Messages = {
   "lint.pyBareExcept": "Gołe except łapie wszystko, także KeyboardInterrupt. Złap konkretny wyjątek.",
   "lint.pyMutableDefault": "Modyfikowalny domyślny argument jest współdzielony między wywołaniami. Użyj None i utwórz wartość w funkcji.",
   "lint.pyTypeHints": "Publiczna funkcja bez adnotacji typów. Opisz parametry i typ zwracany.",
+  "lint.rsUnwrap": "Unikaj unwrap() i expect() w kodzie produkcyjnym: przekaż błąd dalej przez ? lub go obsłuż.",
+  "lint.rsTypeName": "Typy używają PascalCase, np. Session lub ConfigError.",
 };
 
 export type Locale = "en" | "de" | "es" | "fr" | "it" | "nl" | "pl";
