@@ -8,7 +8,14 @@ import { Icon } from "./Icon";
 import { Logo } from "./Logo";
 
 const navLink = ({ isActive }: { isActive: boolean }) =>
-  `relative py-1 text-sm transition-colors hover:text-fg ${isActive ? "text-fg after:absolute after:inset-x-0 after:-bottom-px after:h-px after:bg-accent" : "text-muted"}`;
+  `rounded-lg px-3 py-2 text-sm transition-colors ${isActive ? "bg-raised text-fg" : "text-muted hover:bg-raised/60 hover:text-fg"}`;
+
+const footerLinks = [
+  { to: "/docs", label: "nav.guide" },
+  { to: "/rules", label: "nav.rules" },
+  { to: "/docs/languages/README", label: "nav.languages" },
+  { to: "/editor", label: "nav.editor" },
+] as const;
 
 function LanguageSwitcher() {
   const { locale, setLocale, t } = useI18n();
@@ -46,38 +53,50 @@ export function Layout() {
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-fg focus:px-4 focus:py-2 focus:text-sm focus:text-bg">{t("skip")}</a>
       <header className="sticky top-0 z-30 pt-4">
         <div className="mx-auto w-full max-w-[96rem] px-4">
-          <div className="island flex h-14 items-center justify-between px-6 backdrop-blur-xl">
-            <Link to="/" className="group flex items-center gap-2.5 text-[17px] font-semibold tracking-tight">
+          <div className="island grid h-14 grid-cols-[1fr_auto_1fr] items-center gap-4 pl-6 pr-3 backdrop-blur-xl">
+            <Link to="/" className="group flex items-center gap-2.5 justify-self-start text-[17px] font-semibold tracking-tight">
               <Logo className="h-5" />
               <span className="display text-lg">Pure<span className="brand-gradient inline-block bg-no-repeat bg-[length:100%_2px] bg-bottom pb-0.5">line</span></span>
             </Link>
-            <nav className="flex items-center gap-6 sm:gap-8">
+            <nav className="flex items-center gap-0.5">
               <NavLink to="/docs" end={false} className={navLink}>{t("nav.guide")}</NavLink>
               <NavLink to="/rules" className={navLink}>{t("nav.rules")}</NavLink>
               <NavLink to="/docs/languages/README" className={navLink}>{t("nav.languages")}</NavLink>
               <NavLink to="/editor" className={navLink}>{t("nav.editor")}</NavLink>
-              <a href={repoUrl} target="_blank" rel="noreferrer" aria-label={t("nav.github")} className="flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-fg">
-                <Icon name="simple-icons:github" className="size-4" /> <span className="hidden sm:inline">{t("nav.github")}</span>
+            </nav>
+            <div className="flex items-center gap-2 justify-self-end">
+              <a href={repoUrl} target="_blank" rel="noreferrer" aria-label={t("nav.github")} className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-muted transition-colors hover:bg-raised/60 hover:text-fg">
+                <Icon name="simple-icons:github" className="size-4" /> <span className="hidden lg:inline">{t("nav.github")}</span>
               </a>
               <LanguageSwitcher />
-            </nav>
+            </div>
           </div>
         </div>
       </header>
       <main id="main" className="flex-1"><Outlet /></main>
       <footer className="pb-6">
         <div className="mx-auto w-full max-w-[96rem] px-4">
-          <div className="island flex flex-col gap-6 px-8 py-10 text-sm text-muted sm:flex-row sm:items-end sm:justify-between">
+          <div className="island grid gap-10 px-8 py-10 text-sm text-muted md:grid-cols-[1.6fr_1fr]">
             <div className="space-y-4">
               <p className="display text-lg text-fg">{t("footer.tagline")}</p>
               <Authors />
             </div>
-            <p className="max-w-xs text-xs leading-relaxed sm:text-right">
-              {t("footer.version")}{" "}
-              <a href={repoUrl} className="underline underline-offset-4 decoration-line hover:text-fg">Myronide/pureline-style</a>{" "}
-              {t("footer.on")} {new Date(syncedAt).toLocaleString(locale)}.
-            </p>
+            <ul className="grid grid-cols-2 gap-x-6 gap-y-3 self-start">
+              {footerLinks.map((link) => (
+                <li key={link.to}>
+                  <Link to={link.to} className="transition-colors hover:text-fg">{t(link.label)}</Link>
+                </li>
+              ))}
+              <li>
+                <a href={repoUrl} target="_blank" rel="noreferrer" className="transition-colors hover:text-fg">{t("nav.github")}</a>
+              </li>
+            </ul>
           </div>
+          <p className="px-2 pt-5 text-xs leading-relaxed text-muted">
+            {t("footer.version")}{" "}
+            <a href={repoUrl} className="underline underline-offset-4 decoration-line hover:text-fg">Myronide/pureline-style</a>{" "}
+            {t("footer.on")} {new Date(syncedAt).toLocaleString(locale)}.
+          </p>
         </div>
       </footer>
     </div>
