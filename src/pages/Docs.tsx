@@ -16,7 +16,7 @@ export function Docs() {
   const next = all[i + 1];
 
   return (
-    <div className="mx-auto grid max-w-7xl gap-8 px-6 py-10 lg:grid-cols-[18rem_minmax(0,1fr)] xl:grid-cols-[18rem_minmax(0,1fr)_16rem] xl:gap-12">
+    <div className="shell grid gap-8 py-10 lg:grid-cols-[20rem_minmax(0,1fr)] lg:gap-10 xl:grid-cols-[19rem_minmax(0,1fr)_15rem] xl:gap-12">
       <aside className="island p-6 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:self-start lg:overflow-y-auto">
         {nav.map((g) => (
           <div key={g.label} className="mb-8">
@@ -27,7 +27,7 @@ export function Docs() {
                   <NavLink
                     to={docPath(d.slug)}
                     end
-                    className={({ isActive }) => `-ml-px block border-l py-2 pl-4 text-[15px] transition-colors ${isActive ? "border-accent text-fg" : "border-transparent text-muted hover:border-line hover:text-fg"}`}
+                    className={({ isActive }) => `-ml-px block border-l py-1.5 pl-4 text-sm leading-snug transition-colors ${isActive ? "border-accent text-fg" : "border-transparent text-muted hover:border-line hover:text-fg"}`}
                   >
                     {d.slug === INDEX_SLUG ? "Guide" : d.title.replace(/ Code Style$/, "").replace(/^Pureline /, "")}
                   </NavLink>

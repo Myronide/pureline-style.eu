@@ -206,7 +206,7 @@ export function Editor() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-6 py-10">
+    <div className="shell py-10">
       <div className="mb-8 max-w-2xl">
         <h1 className="text-3xl font-semibold tracking-tight">Live editor</h1>
         <p className="mt-3 leading-relaxed text-muted">
