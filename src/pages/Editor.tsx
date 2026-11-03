@@ -14,7 +14,7 @@ const LANGS = [
   { id: "typescript", label: "TypeScript", checked: true },
   { id: "javascript", label: "JavaScript", checked: true },
   { id: "java", label: "Java", checked: true },
-  { id: "rust", label: "Rust" },
+  { id: "rust", label: "Rust", checked: true },
   { id: "go", label: "Go" },
   { id: "python", label: "Python", checked: true },
   { id: "crystal", label: "Crystal" },
@@ -29,7 +29,7 @@ const LANGS = [
 
 type EditorLang = (typeof LANGS)[number]["id"];
 
-const isChecked = (id: EditorLang): id is Lang => id === "typescript" || id === "javascript" || id === "java" || id === "python";
+const isChecked = (id: EditorLang): id is Lang => id === "typescript" || id === "javascript" || id === "java" || id === "python" || id === "rust";
 const labelOf = (id: EditorLang) => LANGS.find((l) => l.id === id)!.label;
 const exampleFor = (id: EditorLang): string => (id === "typescript" || id === "javascript" || id === "java" ? samples[id] : extraSamples[id]!);
 

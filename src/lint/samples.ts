@@ -130,4 +130,18 @@ function handleEverything(request) {
                 raise ValueError("invalid amount")
     return None
 `,
+  rust: `fn load(path: &Path) -> Config {
+    let data = fs::read_to_string(path).unwrap();
+    if path.exists() {
+        if path.is_file() {
+            if data.len() > 0 {
+                return parse(&data);
+            }
+        }
+    } else {
+        return Config::default();
+    }
+    Config::default()
+}
+`,
 };

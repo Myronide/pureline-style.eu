@@ -8,7 +8,7 @@ import type { Issue, Msg, Severity } from "./types";
 
 const JUMP = /^(return|break|continue)\b/;
 const CONTROL = /^(if|for|while|match|loop)\b/;
-const WEAK = /^(tmp|obj|thing|data\d*|foo|bar|baz)$/;
+const WEAK = /^(tmp|obj|thing|data\d+|foo|bar|baz)$/;
 const SHORT_OK = new Set(["i", "j", "k", "x", "y", "z"]);
 const MAX_NAME = 40;
 
@@ -101,9 +101,9 @@ export function analyzeRust(code: string): Issue[] {
 
     // names
     const binding = /\blet\s+(?:mut\s+)?([A-Za-z_]\w*)/.exec(line.code);
-    if (binding) checkName(line, binding.index + binding[0].length - binding[1]!.length, binding[1]!, at);
+    if (binding && !inTest.has(i)) checkName(line, binding.index + binding[0].length - binding[1]!.length, binding[1]!, at);
     const type = /^(pub(\([^)]*\))?\s+)?(struct|enum|trait|type)\s+([A-Za-z_]\w*)/.exec(line.code);
-    if (type && /^[a-z_]/.test(type[4]!)) at(line, line.code.indexOf(type[4]!), type[4]!.length, "warn", "lint.rsTypeName");
+    if (type && !inTest.has(i) && /^[a-z_]/.test(type[4]!)) at(line, line.code.indexOf(type[4]!), type[4]!.length, "warn", "lint.rsTypeName");
   });
 
   // function length
