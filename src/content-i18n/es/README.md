@@ -11,22 +11,22 @@ The Pureline 1.7 coding standard, organized by topic and language. Start with th
 - El perfil React está situado encima de los perfiles JavaScript y TypeScript.?? Aplica los tres juntos para los archivos `.tsx` / `.jsx`.
 - TypeScript hereda el perfil JavaScript además de sus propias reglas.
 - Función y rangos de tamaño de clase son heurística revisión. Mantengan la lógica cohesiva unida; el recuento de líneas por sí solo no es una violación.
-- Preservar los ID de regla estable en revisiones y diagnósticos. Vea el [modelo de herramientas] (tooling.md).
+- Preservar los ID de regla estable en revisiones y diagnósticos. Vea el [modelo de herramientas](tooling.md).
 
 ## Reglas compartidas
 
 |Guía|Sumario|
 |---|---|
-|[Principios básicos] (core/principles.md)| `PL-CORE-001`–`PL-CORE-022` |
-|[Flujo de control] (core/control-flow.md)|Cláusulas de protección, errores tempranos, bloqueos explícitos, evitando `else` innecesarios|
+|[Principios básicos](core/principles.md)| `PL-CORE-001`–`PL-CORE-022` |
+|[Flujo de control](core/control-flow.md)|Cláusulas de protección, errores tempranos, bloqueos explícitos, evitando `else` innecesarios|
 |[Naming](core/naming.md)|Nombres significativos y convenciones locales|
-|[Funciones] (core/functions.md)|Una sola responsabilidad y orientación sobre el tamaño|
+|[Funciones](core/functions.md)|Una sola responsabilidad y orientación sobre el tamaño|
 |[Clases y módulos](core/structure.md)|Límites de responsabilidad, densidad de carpetas, cohesión sobre tamaño|
 |[Formación](core/formatting.md)|Llamadas compactas y agrupamiento vertical significativo|
 |[Comentarios](core/comments.md)|Explicar por qué es necesario un comportamiento inusual|
 |[Arquitectura](core/architecture.md)|Abstraciones justificadas, dirección de dependencia, cesiones explícitas|
 |[Estado y efectos secundarios](core/state-and-side-effects.md)|Efectos Viziales y mutación intencional|
-|[Rendimiento] (core/performance.md)|Optimización deliberada de los caminos calientes|
+|[Rendimiento](core/performance.md)|Optimización deliberada de los caminos calientes|
 
 ## Normas específicas para los idiomas
 
@@ -35,9 +35,9 @@ The Pureline 1.7 coding standard, organized by topic and language. Start with th
 |[Java](languages/java.md)| `PL-JAVA-001`–`PL-JAVA-010` |Registros, `I`-prefijo r, manejo nulo, concurrencia, simetría del ciclo de vida|
 |[JavaScript](languages/javascript.md)| `PL-JS-001`–`PL-JS-007` |Brazos, semicolons, `const`, async/await, callbacks|
 |[TypeScript](languages/typescript.md)| `PL-TS-001`–`PL-TS-007` |Sucesiones de JavaScript, tipos explícitos o inferidos, `unknown`, < > y sindicatos|
-|[Ir] (languages/go.md)| `PL-GO-001`–`PL-GO-009` |Guardias de error, nombre ñactic, pequeño consumidor, `defer`, goroutines|
-|[Crystal] (languages/crystal.md)| `PL-CR-001`–`PL-CR-008` |Guardas de postfix, snake_case, inferencia, manejo de nil, macros|
-|[Emerald] (languages/emerald.md)| `PL-EMS-001`–`PL-EMS-012` |`.ems`, `namespace`/`use`, semicolons, clases de datos, macros AST, Flujo|
+|[Ir](languages/go.md)| `PL-GO-001`–`PL-GO-009` |Guardias de error, nombre ñactic, pequeño consumidor, `defer`, goroutines|
+|[Crystal](languages/crystal.md)| `PL-CR-001`–`PL-CR-008` |Guardas de postfix, snake_case, inferencia, manejo de nil, macros|
+|[Emerald](languages/emerald.md)| `PL-EMS-001`–`PL-EMS-012` |`.ems`, `namespace`/`use`, semicolons, clases de datos, macros AST, Flujo|
 |[Emvus](languages/emvus.md)| `PL-EV-001`–`PL-EV-018` |`.ev`, `method<Type>`, `where`, Resultado, `scoped`, ciclos de vida de tareas; diseño de lenguaje previsto|
 |[Rust](languages/rust.md)| `PL-RS-001`–`PL-RS-024` |Propiedad, Resultado/Opción, coincidencia de patrones, rustfmt, RAII, async y FFI, tipos de error, pelusas centrales, seguridad de cancelación, colocación de pruebas|
 |[Novus](languages/novus.md)| `PL-NV-001`–`PL-NV-013` |`.nv` / `.nvh`, `final`/`var`, `construct()`, `pureline:allow-else`, envases e importaciones, componentes `.nvh`, contenido de `.nvmd` Markdown|
@@ -60,7 +60,7 @@ The Pureline 1.7 coding standard, organized by topic and language. Start with th
 | [Swift](languages/swift.md) | `PL-SW-001`–`PL-SW-011` | `let` over `var`, guard let, value types, access control, swift-format and SwiftLint |
 | [Kotlin](languages/kotlin.md) | `PL-KT-001`–`PL-KT-011` | `val` over `var`, data classes, sealed types, null safety, ktlint and detekt |
 
-Véase también la [vista general del perfil del idioma] (languages/README.md) y [requisitos de herramientas] (tooling.md).
+Véase también la [vista general del perfil del idioma](languages/README.md) y [requisitos de herramientas](tooling.md).
 
 ## Especificación y mantenimiento
 

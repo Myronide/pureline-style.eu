@@ -2,7 +2,7 @@
 
 [Code-Stil-Führer](../README.md) · [Original-Spezifikation 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Wenden Sie die [shared core rules](../README.md#shared-rules) zusammen mit diesem Profil an. Python ist einrückungsbasiert, so dass die Klammerregeln des [JavaScript-Profils] (javascript.md) nicht gelten. Pureline Python folgt **PEP 8**, **PEP 484 Typ-Anweisungen** und die Formmater, die das Projekt verwendet ([ruff](https://docs.astral.sh/ruff/) oder schwarz). [Cohesion over Size](../core/structure.md) applies throughout.
+Wenden Sie die [shared core rules](../README.md#shared-rules) zusammen mit diesem Profil an. Python ist einrückungsbasiert, so dass die Klammerregeln des [JavaScript-Profils](javascript.md) nicht gelten. Pureline Python folgt **PEP 8**, **PEP 484 Typ-Anweisungen** und die Formmater, die das Projekt verwendet ([ruff](https://docs.astral.sh/ruff/) oder schwarz). [Cohesion over Size](../core/structure.md) applies throughout.
 
 ## Pythonprofil
 

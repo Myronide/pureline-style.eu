@@ -4,7 +4,7 @@
 
 Aplicar las [reglas compartidas](../README.md#shared-rules) junto con este perfil. Las reglas nativas del idioma y las excepciones explícitas del perfil tienen precedencia sobre las preferencias de sintaxis del idioma. [Cohesión sobre Tamaño](../core/structure.md) se aplica en todo momento.
 
-TypeScript también hereda el [perfil de JavaScript] (javascript.md).
+TypeScript también hereda el [perfil de JavaScript](javascript.md).
 
 ## Perfil TypeScript
 

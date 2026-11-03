@@ -2,7 +2,7 @@
 
 [Guide de style de code](../README.md) · [Données originales 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Appliquer les [règles de base partagées](../README.md#shared-rules) avec ce profil. Python est basé sur l'indentation, de sorte que les règles de l'accoudoir du [JavaScript profile](javascript.md) ne s'appliquent pas. Pureline Python suit **PEP 8**, **PEP 484 types de conseils**, et la matière utilisée par le projet ([ruff](https://docs.astral.sh/ruff/) ou noir). [Cohésion sur taille] (../core/structure.md) s'applique tout au long.
+Appliquer les [règles de base partagées](../README.md#shared-rules) avec ce profil. Python est basé sur l'indentation, de sorte que les règles de l'accoudoir du [JavaScript profile](javascript.md) ne s'appliquent pas. Pureline Python suit **PEP 8**, **PEP 484 types de conseils**, et la matière utilisée par le projet ([ruff](https://docs.astral.sh/ruff/) ou noir). [Cohésion sur taille](../core/structure.md) s'applique tout au long.
 
 ## Profil Python
 

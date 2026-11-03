@@ -2,7 +2,7 @@
 
 [Guía de estilo del código](../README.md) · [Especificaciones originales 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Aplicar las reglas [compartidas] (../README.md#shared-rules) con este perfil. HTML es la estructura de un documento. Pureline HTML utiliza elementos **semantic**, mantiene la presentación en CSS y mantiene el comportamiento en JavaScript. Pureline HTML se dirige a documentos **HTML Living Standard** y las plantillas de marco que los producen (Astro, las plantillas JSX excluidas: ver los perfiles del marco).
+Aplicar las reglas [compartidas](../README.md#shared-rules) con este perfil. HTML es la estructura de un documento. Pureline HTML utiliza elementos **semantic**, mantiene la presentación en CSS y mantiene el comportamiento en JavaScript. Pureline HTML se dirige a documentos **HTML Living Standard** y las plantillas de marco que los producen (Astro, las plantillas JSX excluidas: ver los perfiles del marco).
 
 ## Perfil HTML
 

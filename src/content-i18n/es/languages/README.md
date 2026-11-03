@@ -2,7 +2,7 @@
 
 [Guía de estilo del código](../README.md) · [Especificaciones originales 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Elija su perfil de idioma en el [Índice de guía] (../README.md#language-specific-rules). TypeScript hereda JavaScript y el núcleo compartido. Mantenga Emerald y Emvus perfiles separados.
+Elija su perfil de idioma en el [Índice de guía](../README.md#language-specific-rules). TypeScript hereda JavaScript y el núcleo compartido. Mantenga Emerald y Emvus perfiles separados.
 
 ## Perfiles de idiomas
 

@@ -2,7 +2,7 @@
 
 [Guía de estilo del código](../README.md) · [Especificaciones originales 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Aplicar las reglas [compartidas] (../README.md#shared-rules) con este perfil. El LMC es de carácter declarativo: un archivo describe un árbol de objetos, sus propiedades y sus enlaces. El JavaScript dentro de QML es para pequeñas expresiones y manejadores, y el [perfil de JavaScript] (javascript.md) se aplica a cada bloque en él. Pureline QML se dirige a **Qt 6** con Qt Quick.
+Aplicar las reglas [compartidas](../README.md#shared-rules) con este perfil. El LMC es de carácter declarativo: un archivo describe un árbol de objetos, sus propiedades y sus enlaces. El JavaScript dentro de QML es para pequeñas expresiones y manejadores, y el [perfil de JavaScript](javascript.md) se aplica a cada bloque en él. Pureline QML se dirige a **Qt 6** con Qt Quick.
 
 ## Perfil QML
 

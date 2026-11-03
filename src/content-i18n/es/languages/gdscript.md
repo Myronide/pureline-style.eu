@@ -2,7 +2,7 @@
 
 [Guía de estilo del código](../README.md) · [Especificaciones originales 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Aplicar las reglas [compartidas] (../README.md#shared-rules) con este perfil. GDScript 4 is a typed scripting language attached to nodes in scenes. Read the [core principles](../core/principles.md) first; the rules below apply them to nodes, signals, and scenes.
+Aplicar las reglas [compartidas](../README.md#shared-rules) con este perfil. GDScript 4 is a typed scripting language attached to nodes in scenes. Read the [core principles](../core/principles.md) first; the rules below apply them to nodes, signals, and scenes.
 
 ## GDScript Profile
 

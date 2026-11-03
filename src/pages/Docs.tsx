@@ -103,11 +103,18 @@ export function Docs() {
   const slug = useParams()["*"] || INDEX_SLUG;
   const doc = getDoc(slug);
   const [live, setLive] = useState<Live | null>(null);
+  // The machine translation is rough, so the English original is the default and the translation is opt-in.
+  const [showMachine, setShowMachine] = useState(() => localStorage.getItem("pureline-machine") === "1");
+  const chooseMachine = (on: boolean) => {
+    localStorage.setItem("pureline-machine", on ? "1" : "0");
+    setShowMachine(on);
+  };
   if (!doc) {
     return <NotFound />;
   }
 
-  const machine = locale !== "en" && SHOW_MACHINE_TRANSLATIONS ? translatedBody(slug, locale) : null;
+  const available = locale !== "en" && SHOW_MACHINE_TRANSLATIONS ? translatedBody(slug, locale) : null;
+  const machine = showMachine ? available : null;
   const docKey = `${locale}/${slug}`;
   const base = machine ?? doc.body;
   const body = live?.key === docKey ? live.body : base;
@@ -136,7 +143,16 @@ export function Docs() {
       )}
 
       <article className="min-w-0">
-        {locale !== "en" && <p className="mb-6 text-sm text-muted">{t(machine ? "docs.machineNote" : "docs.englishNote")}</p>}
+        {locale !== "en" && (
+          <p className="mb-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted">
+            <span>{t(machine ? "docs.machineNote" : "docs.englishNote")}</span>
+            {available && (
+              <button type="button" onClick={() => chooseMachine(!machine)} className="underline decoration-line underline-offset-4 transition-colors hover:text-fg">
+                {t(machine ? "docs.showEnglish" : "docs.showMachine")}
+              </button>
+            )}
+          </p>
+        )}
         {machine && <LiveTranslateBar docKey={docKey} locale={locale} slug={slug} body={base} onDone={setLive} />}
         <div className="doc prose prose-invert max-w-none"><Markdown slug={slug}>{body}</Markdown></div>
         <div className="mt-20 flex items-center justify-between gap-4 border-t border-line pt-6 text-sm">

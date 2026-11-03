@@ -17,14 +17,14 @@ La norme de codage Pureline 1.7, organisée par sujet et par langue. Commencez p
 
 |Guide|Sommaire|
 |---|---|
-|[Principes fondamentaux] (core/principles.md)| `PL-CORE-001`–`PL-CORE-022` |
+|[Principes fondamentaux](core/principles.md)| `PL-CORE-001`–`PL-CORE-022` |
 |[Flux de commande](core/control-flow.md)|Clauses de garde, erreurs précoces, blocs explicites, évitant `else` inutile|
-|[Naming] (core/naming.md)|Noms significatifs et conventions locales|
+|[Naming](core/naming.md)|Noms significatifs et conventions locales|
 |[Fonctions](core/functions.md)|Une responsabilité et une orientation de taille|
 |[Classes et modules](core/structure.md)|Limites de responsabilité, densité de dossiers, cohésion sur taille|
-|[Format] (core/formatting.md)|Appels compacts et regroupement vertical significatif|
+|[Format](core/formatting.md)|Appels compacts et regroupement vertical significatif|
 |[Commentaires](core/comments.md)|Expliquez pourquoi un comportement inhabituel est nécessaire|
-|[Architecture] (core/architecture.md)|Abstractions justifiées, direction de dépendance, dépendances explicites|
+|[Architecture](core/architecture.md)|Abstractions justifiées, direction de dépendance, dépendances explicites|
 |[État et effets indésirables](core/state-and-side-effects.md)|Effets visibles et mutation intentionnelle|
 |[Exécution](core/performance.md)|Optimisation de la libération des chemins chauds|
 
@@ -32,11 +32,11 @@ La norme de codage Pureline 1.7, organisée par sujet et par langue. Commencez p
 
 |Profil|IDs de règles|Orientations particulières|
 |---|---|---|
-|[Java] (languages/java.md)| `PL-JAVA-001`–`PL-JAVA-010` |Enregistrements, interfaces préfixées `I`, manipulation nulle, concurrence, symétrie du cycle de vie|
-|[JavaScript] (languages/javascript.md)| `PL-JS-001`–`PL-JS-007` |Braces, semi-colons, `const`, asynchrones/awit, rappels|
+|[Java](languages/java.md)| `PL-JAVA-001`–`PL-JAVA-010` |Enregistrements, interfaces préfixées `I`, manipulation nulle, concurrence, symétrie du cycle de vie|
+|[JavaScript](languages/javascript.md)| `PL-JS-001`–`PL-JS-007` |Braces, semi-colons, `const`, asynchrones/awit, rappels|
 |[TypeScript](languages/typescript.md)| `PL-TS-001`–`PL-TS-007` |Héritage JavaScript, types explicites ou inférés, `unknown`, interfaces et syndicats|
 |[Allez](languages/go.md)| `PL-GO-001`–`PL-GO-009` |Guardiers d'erreur, nommage idiomatique, petites interfaces grand public, `defer`, goroutines|
-|[Crystal] (languages/crystal.md)| `PL-CR-001`–`PL-CR-008` |Gardes postfixes, cas_serpent, inférence, manipulation de nil, macros|
+|[Crystal](languages/crystal.md)| `PL-CR-001`–`PL-CR-008` |Gardes postfixes, cas_serpent, inférence, manipulation de nil, macros|
 |[Émeraude](languages/emerald.md)| `PL-EMS-001`–`PL-EMS-012` |`.ems`, `namespace`/`use`, points-virgules, classes de données, macros AST, débit|
 |[Emvus](languages/emvus.md)| `PL-EV-001`–`PL-EV-018` |`.ev`, `method<Type>`, `where`, Result, `scoped`, cycles de vie des tâches; conception de la langue prévue|
 |[Rust](languages/rust.md)| `PL-RS-001`–`PL-RS-024` |Propriété, Résultat/Option, correspondance de motifs, rustfmt, RAII, async et FFI, types d'erreurs, lints centraux, sécurité d'annulation, placement de test|
@@ -64,6 +64,6 @@ Voir aussi [language profile panorama](languages/README.md) et [tooling requirem
 
 ## Spécifications et entretien
 
-Ces fichiers thématiques préservent les règles, les exemples, les qualifications et les ID stables à partir de la [Pureline Specification 1.7] (../../PURELINE_SPECIFICATION_1.7.md), la source de référence en version. Les numéros de section sont omis ici afin que chaque sujet puisse être lu indépendamment; les ID de la règle sont inchangés.
+Ces fichiers thématiques préservent les règles, les exemples, les qualifications et les ID stables à partir de la [Pureline Specification 1.7](../../PURELINE_SPECIFICATION_1.7.md), la source de référence en version. Les numéros de section sont omis ici afin que chaque sujet puisse être lu indépendamment; les ID de la règle sont inchangés.
 
 Lors de la révision des directives, conservez la spécification originale et le dossier thématique correspondant cohérent. Ne renumérotez pas les ID de règles existantes ou ne transformez pas l'heuristique de l'examen en violations dures.

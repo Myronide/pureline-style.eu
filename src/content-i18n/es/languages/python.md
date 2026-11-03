@@ -2,7 +2,7 @@
 
 [Guía de estilo del código](../README.md) · [Especificaciones originales 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Aplicar las [reglas compartidas](../README.md#shared-rules) junto con este perfil. Python está basado en la indentación, por lo que las reglas de ortodoncia del [perfil de JavaScript] (javascript.md) no se aplican. Pureline Python sigue **PEP 8**, **PEP 484 tipo hints**, y la formatter que el proyecto utiliza ([ruff](https://docs.astral.sh/ruff/) o negro). [Cohesión sobre el tamaño](../core/structure.md) se aplica en todo momento.
+Aplicar las [reglas compartidas](../README.md#shared-rules) junto con este perfil. Python está basado en la indentación, por lo que las reglas de ortodoncia del [perfil de JavaScript](javascript.md) no se aplican. Pureline Python sigue **PEP 8**, **PEP 484 tipo hints**, y la formatter que el proyecto utiliza ([ruff](https://docs.astral.sh/ruff/) o negro). [Cohesión sobre el tamaño](../core/structure.md) se aplica en todo momento.
 
 ## Perfil de Python
 

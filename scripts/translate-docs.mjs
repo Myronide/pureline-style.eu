@@ -100,7 +100,7 @@ function translateText(text, translate) {
   // A translation that loses a placeholder would corrupt code or links: keep the source text instead.
   const placeholders = (masked.match(/ZQ\d+Z/g) ?? []).length;
   if ((translated.match(/ZQ\d+Z/g) ?? []).length !== placeholders) return text;
-  return translated.replace(/ZQ(\d+)Z/g, (_, n) => kept[Number(n)]);
+  return translated.replace(/ZQ(\d+)Z/g, (_, n) => kept[Number(n)]).replace(/\]\s+\(/g, "](");
 }
 
 async function main() {

@@ -2,7 +2,7 @@
 
 [Guía de estilo del código](../README.md) · [Especificaciones originales 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Aplicar las reglas [compartidas] (../README.md#shared-rules) con este perfil. C# is a managed, brace-based language with strong compiler support. Pureline C# targets **.NET 8** or later.
+Aplicar las reglas [compartidas](../README.md#shared-rules) con este perfil. C# is a managed, brace-based language with strong compiler support. Pureline C# targets **.NET 8** or later.
 
 ## C# Profile
 

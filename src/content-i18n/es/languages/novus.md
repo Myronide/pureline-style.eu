@@ -2,7 +2,7 @@
 
 [Guía de estilo del código](../README.md) · [Especificaciones originales 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Aplicar las [reglas compartidas](../README.md#shared-rules) junto con este perfil. Novus es un lenguaje de auto-alojado que compila a C portátil, con valores dinámicamente mecanografiados, escritura estática opcional, componentes de representación del servidor `.nvh` y contenido de `.nvmd` Markdown a través de [nvh-markdown] (https://github.com/ezTxmMC/nvh-markdown). El perfil sigue los ejemplos de Novus, la biblioteca estándar y las reglas del servidor de idiomas Novus comprueba cuando se habilitan diagnósticos de estilo Pureline (`novus.pureline.enabled`). [Cohesión sobre Tamaño](../core/structure.md) se aplica en todo momento.
+Aplicar las [reglas compartidas](../README.md#shared-rules) junto con este perfil. Novus es un lenguaje de auto-alojado que compila a C portátil, con valores dinámicamente mecanografiados, escritura estática opcional, componentes de representación del servidor `.nvh` y contenido de `.nvmd` Markdown a través de [nvh-markdown](https://github.com/ezTxmMC/nvh-markdown). El perfil sigue los ejemplos de Novus, la biblioteca estándar y las reglas del servidor de idiomas Novus comprueba cuando se habilitan diagnósticos de estilo Pureline (`novus.pureline.enabled`). [Cohesión sobre Tamaño](../core/structure.md) se aplica en todo momento.
 
 IDs de reglas `PL-CF-002`, `PL-FN-001`, `PL-STRUCT-001`, `PL-STRUCT-002` y `PL-NAME-001` son los que el servidor de lenguaje Novus ya informa bajo el código fuente `pureline`. Las reglas específicas de Novus a continuación usan el prefijo `PL-NV-*`.
 

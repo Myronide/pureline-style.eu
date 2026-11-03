@@ -2,7 +2,7 @@
 
 [Code-Stil-Führer](../README.md) · [Original-Spezifikation 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Wenden Sie die [shared core rules](../README.md#shared-rules) mit diesem Profil an. QML ist deklarativ: eine Datei beschreibt einen Objektbaum, seine Eigenschaften und seine Bindungen. JavaScript inside QML ist für kleine Ausdrücke und Handler, und das [JavaScript-Profil] (javascript.md) gilt für jeden Block in ihm. Pureline QML zielt mit Qt Quick auf **Qt 6** ab.
+Wenden Sie die [shared core rules](../README.md#shared-rules) mit diesem Profil an. QML ist deklarativ: eine Datei beschreibt einen Objektbaum, seine Eigenschaften und seine Bindungen. JavaScript inside QML ist für kleine Ausdrücke und Handler, und das [JavaScript-Profil](javascript.md) gilt für jeden Block in ihm. Pureline QML zielt mit Qt Quick auf **Qt 6** ab.
 
 ## QML-Profil
 

@@ -107,7 +107,7 @@ Der Sprachserver überprüft eine Methode bei 30 Zeilen und meldet sie über 50 
 - Machen Sie die Übereinstimmung auf der Call-Site sichtbar: `async` / `await`, `thread`, `virtual` und `sync` geben an, wo es läuft.
 - Verfolgen Sie jede Aufgabe, die zählt. Starten Sie keine Feuer-und-Vergessen Arbeit für Ergebnisse, die das Programm später hängt von.
 - Die Wache teilte explizit wandelbaren Zustand mit `sync` anstatt sich auf Anrufbefehl zu verlassen.
-- Befolgen Sie die gleiche Disziplin wie [PL-RS-013] (rust.md#pl-rs-013--async-tasks-have-ownership-and-shutdown) zum Abschalten und Absagen.
+- Befolgen Sie die gleiche Disziplin wie [PL-RS-013](rust.md#pl-rs-013--async-tasks-have-ownership-and-shutdown) zum Abschalten und Absagen.
 
 ### PL-NV-009 — Evaluierungsauftrag wird dokumentiert, nicht angenommen
 

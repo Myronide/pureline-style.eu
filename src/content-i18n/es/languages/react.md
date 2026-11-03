@@ -2,7 +2,7 @@
 
 [Guía de estilo del código](../README.md) · [Especificaciones originales 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Aplicar las reglas [core compartido] (../README.md#shared-rules), [JavaScript profile] (javascript.md), y [TypeScript profile] (typescript.md) junto con este perfil. El perfil de React está dirigido a **React 19 con TypeScript en modo estricto**, junto con Vite y enrutado con react-router. Los componentes son funciones. Pureline lee un componente como un pequeño oleoducto: utilería, guardias, valores derivados, marcado..
+Aplicar las reglas [core compartido](../README.md#shared-rules), [JavaScript profile](javascript.md), y [TypeScript profile](typescript.md) junto con este perfil. El perfil de React está dirigido a **React 19 con TypeScript en modo estricto**, junto con Vite y enrutado con react-router. Los componentes son funciones. Pureline lee un componente como un pequeño oleoducto: utilería, guardias, valores derivados, marcado..
 
 ## Perfil de reacción
 
