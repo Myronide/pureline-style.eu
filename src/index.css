@@ -64,7 +64,7 @@
 
 /* The one container every page uses, so all edges line up. */
 @utility shell {
-  @apply mx-auto w-full max-w-7xl px-6;
+  @apply mx-auto w-full max-w-[90rem] px-6;
 }
 
 @utility display {

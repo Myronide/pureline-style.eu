@@ -5,12 +5,6 @@ import { Icon } from "../components/Icon";
 import { LanguageLogo } from "../components/LanguageLogo";
 import { NotFound } from "./NotFound";
 
-/** Wide screens: the side panels sit in the gutters outside the header and footer width. */
-const gutter = "min-[1880px]:fixed min-[1880px]:top-28 min-[1880px]:max-h-[calc(100vh-8rem)] min-[1880px]:overflow-y-auto min-[1880px]:p-6";
-
-/** Narrower screens: the same content, collapsed above the article at header width. */
-const inline = "mb-8 min-[1880px]:hidden";
-
 function DocNav() {
   return (
     <>
@@ -63,25 +57,18 @@ export function Docs() {
   const next = all[i + 1];
 
   return (
-    <div className="shell py-10">
-      <aside className={`island hidden w-72 left-6 p-6 ${gutter} min-[1880px]:block`} aria-label="Documentation">
+    <div className="shell grid gap-8 py-10 lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-12 xl:grid-cols-[17rem_minmax(0,1fr)_14rem]">
+      <aside className="hidden lg:sticky lg:top-24 lg:block lg:max-h-[calc(100vh-7rem)] lg:self-start lg:overflow-y-auto lg:pr-2" aria-label="Documentation">
         <DocNav />
       </aside>
 
-      {toc.length > 1 && (
-        <aside className={`island hidden w-60 right-6 p-6 ${gutter} min-[1880px]:block`} aria-label="On this page">
-          <p className="display mb-3 text-[15px] text-fg">On this page</p>
-          <Toc items={toc} />
-        </aside>
-      )}
-
-      <details className={`island ${inline}`}>
+      <details className="island mb-2 lg:hidden">
         <summary className="display cursor-pointer select-none px-6 py-4 text-[15px]">Browse the docs</summary>
         <div className="px-6 pb-6"><DocNav /></div>
       </details>
 
       {toc.length > 1 && (
-        <details className={`island ${inline}`}>
+        <details className="island mb-2 xl:hidden">
           <summary className="display cursor-pointer select-none px-6 py-4 text-[15px]">On this page</summary>
           <div className="px-6 pb-6"><Toc items={toc} /></div>
         </details>
@@ -97,6 +84,13 @@ export function Docs() {
           <Icon name="lucide:pencil" className="size-3.5" /> View source on GitHub
         </a>
       </article>
+
+      {toc.length > 1 && (
+        <aside className="hidden xl:sticky xl:top-24 xl:block xl:max-h-[calc(100vh-7rem)] xl:self-start xl:overflow-y-auto" aria-label="On this page">
+          <p className="display mb-3 text-[15px] text-fg">On this page</p>
+          <Toc items={toc} />
+        </aside>
+      )}
     </div>
   );
 }
