@@ -40,7 +40,18 @@ export function Markdown({ slug, children }: { slug: string; children: string })
       remarkPlugins={[remarkGfm]}
       components={{
         h2: ({ children }) => <h2 id={slugify(text(children))}>{children}</h2>,
-        h3: ({ children }) => <h3 id={slugify(text(children))}>{children}</h3>,
+        h3: ({ children }) => {
+          const title = text(children);
+          const id = slugify(title);
+          const rule = /^(PL-[A-Z0-9-]+)\s+—\s+(.+)$/.exec(title);
+          if (!rule) return <h3 id={id}>{children}</h3>;
+          return (
+            <h3 id={id} className="flex flex-wrap items-baseline gap-x-3 gap-y-2">
+              <span className="rounded-md border border-accent/30 bg-accent/10 px-2 py-0.5 font-mono text-xs font-medium text-accent">{rule[1]}</span>
+              <span>{rule[2]}</span>
+            </h3>
+          );
+        },
         h4: ({ children }) => <h4 id={slugify(text(children))}>{children}</h4>,
         pre: ({ children }) => {
           const child = children as { props?: { className?: string; children?: ReactNode } };

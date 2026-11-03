@@ -37,6 +37,8 @@ const pure = `function charge(user: User | null, amount: number): Receipt {
   return pay(user, amount);
 }`;
 
+const tints = ["bg-violet", "bg-blue", "bg-accent"];
+
 const flow = ["Input", "Validation", "Transformation", "Execution", "Result"];
 
 /** A thin brand line above a section title. It marks the start of a section without being a label. */
@@ -147,18 +149,19 @@ export function Home() {
           </div>
           <Link to={docPath("languages/README")} className="text-sm text-muted transition-colors hover:text-fg">All profiles</Link>
         </div>
-        <ul className="island grid p-2 sm:grid-cols-2 lg:grid-cols-3">
-          {languageDocs.map((d) => (
-            <li key={d.slug}>
-              <Link to={docPath(d.slug)} className="group flex items-center justify-between rounded-xl px-4 py-4 transition-colors hover:bg-raised">
-                <span className="flex items-center gap-3">
-                  <LanguageLogo slug={d.slug} className="size-5 shrink-0 text-muted transition-colors group-hover:text-fg" />
-                  <span className="flex flex-col">
+        <ul className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+          {languageDocs.map((d, i) => (
+            <li key={d.slug} className="relative bg-surface">
+              <span aria-hidden className={`absolute inset-x-0 top-0 h-px ${tints[i % tints.length]}`} />
+              <Link to={docPath(d.slug)} className="group flex h-full flex-col justify-between gap-10 p-6 transition-colors hover:bg-raised">
+                <span className="flex items-center justify-between gap-3">
+                  <span className="flex items-center gap-3">
+                    <LanguageLogo slug={d.slug} className="size-5 shrink-0 text-muted transition-colors group-hover:text-fg" />
                     <span className="font-medium">{shortTitle(d)}</span>
-                    <span className="text-xs text-muted">{ruleCount(d)} rules</span>
                   </span>
+                  <Icon name="lucide:arrow-up-right" className="size-4 text-muted transition-colors group-hover:text-accent" />
                 </span>
-                <Icon name="lucide:arrow-up-right" className="size-4 text-muted transition-colors group-hover:text-accent" />
+                <span className="font-mono text-xs text-muted">{ruleCount(d)} rules</span>
               </Link>
             </li>
           ))}

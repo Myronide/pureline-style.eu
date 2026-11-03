@@ -23,7 +23,7 @@ function DocNav() {
                 <NavLink
                   to={docPath(d.slug)}
                   end
-                  className={({ isActive }) => `-ml-px block border-l py-1.5 pl-4 text-sm leading-snug transition-colors ${isActive ? "border-accent text-fg" : "border-transparent text-muted hover:border-line hover:text-fg"}`}
+                  className={({ isActive }) => `-ml-px block rounded-r-md border-l py-1.5 pl-4 text-sm leading-snug transition-colors ${isActive ? "border-accent bg-raised text-fg" : "border-transparent text-muted hover:border-line hover:bg-raised/50 hover:text-fg"}`}
                 >
                   <span className="flex items-center gap-2.5">
                     <LanguageLogo slug={d.slug} className="size-4 shrink-0" />
