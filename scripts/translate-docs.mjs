@@ -92,8 +92,10 @@ function translateText(text, translate) {
 
   if (!/[A-Za-z]{2,}/.test(masked.replace(/ZQ\d+Z/g, ""))) return text;
 
+  const restore = (value) => value.replace(/ZQ(\d+)Z/g, (_, n) => kept[Number(n)]);
+  const tokensOf = (value) => Object.fromEntries((value.match(/ZQ\d+Z/g) ?? []).map((token) => [token, kept[Number(token.slice(2, -1))]]));
   const sentences = masked.split(/(?<=[.!?:])\s+/);
-  const translated = sentences.map((s) => (/[A-Za-z]{2,}/.test(s.replace(/ZQ\d+Z/g, "")) ? translate(s) : s)).join(" ");
+  const translated = sentences.map((s) => (/[A-Za-z]{2,}/.test(s.replace(/ZQ\d+Z/g, "")) ? translate(s, { restore, tokensOf }) : s)).join(" ");
 
   // A translation that loses a placeholder would corrupt code or links: keep the source text instead.
   const placeholders = (masked.match(/ZQ\d+Z/g) ?? []).length;
@@ -127,12 +129,24 @@ async function main() {
       writeFileSync(cachePath, JSON.stringify(cache, null, 1));
     }
 
-    // Pass 2: write the translated documents.
+    // Pass 2: write the translated documents. Sentences missing from the cache stay English and are listed in
+    // _missing.json; the site can translate exactly those in the visitor's browser.
+    const missing = {};
     for (const file of files) {
-      const target = join(OUTPUT, locale, relative(SOURCE, file));
+      const rel = relative(SOURCE, file);
+      const target = join(OUTPUT, locale, rel);
       mkdirSync(dirname(target), { recursive: true });
-      writeFileSync(target, transform(readFileSync(file, "utf8"), (s) => (acceptable(s, cache[s]) ? cache[s] : s)));
+      const listed = new Map();
+      writeFileSync(
+        target,
+        transform(readFileSync(file, "utf8"), (s, helpers) => {
+          if (cache[s] === undefined && helpers) listed.set(s, { masked: s, restored: helpers.restore(s), tokens: helpers.tokensOf(s) });
+          return acceptable(s, cache[s]) ? cache[s] : s;
+        }),
+      );
+      if (listed.size) missing[rel.replace(/\.md$/, "").split("\\").join("/")] = [...listed.values()];
     }
+    writeFileSync(join(OUTPUT, locale, "_missing.json"), JSON.stringify(missing));
     console.log(`[${locale}] wrote ${files.length} documents`);
   }
 }

@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@iconify/react": "^6.0.3",
+    "@lite-translator/core": "^0.3.0",
+    "@lite-translator/engine-onnx": "^0.3.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-markdown": "^10.1.0",

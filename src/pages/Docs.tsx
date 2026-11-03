@@ -1,9 +1,11 @@
+import { useEffect, useState } from "react";
 import { Link, NavLink, useParams } from "react-router-dom";
 import { Markdown } from "../components/Markdown";
 import { docPath, getDoc, headings, INDEX_SLUG, nav, repoUrl, SHOW_MACHINE_TRANSLATIONS, translatedBody } from "../content";
 import { Icon } from "../components/Icon";
 import { LanguageLogo } from "../components/LanguageLogo";
 import { useI18n } from "../i18n/context";
+import { canTranslateLive, loadMissing, translateBody, type Missing } from "../lib/liveTranslate";
 import { NotFound } from "./NotFound";
 
 function DocNav() {
@@ -47,16 +49,68 @@ function Toc({ items }: { items: { id: string; text: string; level: number }[] }
   );
 }
 
+type Live = { key: string; body: string };
+
+/** Offers to translate the passages the build has no translation for yet, locally in the browser. */
+function LiveTranslateBar({ docKey, locale, slug, body, onDone }: { docKey: string; locale: string; slug: string; body: string; onDone: (live: Live) => void }) {
+  const { t } = useI18n();
+  const [items, setItems] = useState<Missing[]>([]);
+  const [state, setState] = useState<"idle" | "loading" | "done" | "error">("idle");
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    let current = true;
+    setState("idle");
+    setItems([]);
+    if (canTranslateLive(locale)) {
+      loadMissing(locale, slug).then((list) => current && setItems(list));
+    }
+    return () => {
+      current = false;
+    };
+  }, [locale, slug]);
+
+  if (!canTranslateLive(locale) || (items.length === 0 && state !== "done")) return null;
+
+  const run = async () => {
+    setState("loading");
+    try {
+      const translated = await translateBody(body, locale, items, setProgress);
+      onDone({ key: docKey, body: translated });
+      setState("done");
+    } catch (error) {
+      console.error(error);
+      setState("error");
+    }
+  };
+
+  return (
+    <div className="island mb-6 flex flex-wrap items-center justify-between gap-3 px-5 py-3 text-sm">
+      <p className="text-muted" role="status">
+        {state === "done" ? t("docs.live.done") : state === "error" ? t("docs.live.error") : state === "loading" ? `${t("docs.live.loading")} ${Math.round(progress * 100)}%` : t("docs.live.missing", { count: items.length })}
+      </p>
+      {state !== "done" && (
+        <button type="button" onClick={run} disabled={state === "loading"} title={t("docs.live.hint")} className="rounded-lg border border-line bg-raised px-3.5 py-1.5 text-fg transition-colors hover:border-accent/50 disabled:opacity-60">
+          {t("docs.live.button")}
+        </button>
+      )}
+    </div>
+  );
+}
+
 export function Docs() {
   const { t, locale } = useI18n();
   const slug = useParams()["*"] || INDEX_SLUG;
   const doc = getDoc(slug);
+  const [live, setLive] = useState<Live | null>(null);
   if (!doc) {
     return <NotFound />;
   }
 
   const machine = locale !== "en" && SHOW_MACHINE_TRANSLATIONS ? translatedBody(slug, locale) : null;
-  const body = machine ?? doc.body;
+  const docKey = `${locale}/${slug}`;
+  const base = machine ?? doc.body;
+  const body = live?.key === docKey ? live.body : base;
   const toc = headings(body);
   const all = nav.flatMap((g) => g.docs);
   const i = all.findIndex((d) => d.slug === slug);
@@ -83,6 +137,7 @@ export function Docs() {
 
       <article className="min-w-0">
         {locale !== "en" && <p className="mb-6 text-sm text-muted">{t(machine ? "docs.machineNote" : "docs.englishNote")}</p>}
+        {machine && <LiveTranslateBar docKey={docKey} locale={locale} slug={slug} body={base} onDone={setLive} />}
         <div className="doc prose prose-invert max-w-none"><Markdown slug={slug}>{body}</Markdown></div>
         <div className="mt-20 flex items-center justify-between gap-4 border-t border-line pt-6 text-sm">
           {prev ? <Link to={docPath(prev.slug)} className="flex items-center gap-2 text-muted hover:text-fg"><Icon name="lucide:arrow-left" />{prev.title}</Link> : <span />}
