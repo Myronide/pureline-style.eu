@@ -54,6 +54,42 @@ Pureline Core
 │   ├── hooks, derived state, effects
 │   └── pure render, typed props
 │
+├── Pureline C#
+│   └── PL-CS rules
+│
+├── Pureline Angular
+│   └── PL-NG rules
+│
+├── Pureline Vue
+│   └── PL-VUE rules
+│
+├── Pureline GDScript
+│   └── PL-GD rules
+│
+├── Pureline C
+│   └── PL-C rules
+│
+├── Pureline C++
+│   └── PL-CPP rules
+│
+├── Pureline Lua
+│   └── PL-LUA rules
+│
+├── Pureline Dart
+│   └── PL-DART rules
+│
+├── Pureline Flutter
+│   └── PL-FLUT rules
+│
+├── Pureline V
+│   └── PL-V rules
+│
+├── Pureline Swift
+│   └── PL-SW rules
+│
+├── Pureline Kotlin
+│   └── PL-KT rules
+│
 ├── Pureline Novus (.nv / .nvh)
 │   ├── final / var / explicit types
 │   ├── construct() and object literals

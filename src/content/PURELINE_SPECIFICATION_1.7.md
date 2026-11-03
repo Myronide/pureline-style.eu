@@ -37,6 +37,8 @@ The central Pureline principles are:
 
 **Version 1.7:** Adds the Python profile (`PL-PY-001` through `PL-PY-012`), the QML profile (`PL-QML-001` through `PL-QML-011`), the Astro profile (`PL-AS-001` through `PL-AS-009`), the HTML profile (`PL-HTML-001` through `PL-HTML-009`), and the CSS profile (`PL-CSS-001` through `PL-CSS-012`). **Version 1.6:** Adds the Novus profile (`PL-NV-001` through `PL-NV-013`) and the React profile (`PL-REACT-001` through `PL-REACT-014`), extends the Rust profile with `PL-RS-021` through `PL-RS-024` and a precise test exemption in `PL-RS-004`, and keeps all existing rule IDs and the 1.4 Cohesion over Size principle. Version 1.5 added the Rust profile (`PL-RS-001` through `PL-RS-020`).
 
+**Version 1.7 (additional profiles):** Version 1.7 also adds the C# (`PL-CS-001`–`PL-CS-009`), Angular (`PL-NG-001`–`PL-NG-009`), Vue (`PL-VUE-001`–`PL-VUE-010`), GDScript (`PL-GD-001`–`PL-GD-010`), C (`PL-C-001`–`PL-C-009`), C++ (`PL-CPP-001`–`PL-CPP-008`), Lua (`PL-LUA-001`–`PL-LUA-012`), Dart (`PL-DART-001`–`PL-DART-012`), Flutter (`PL-FLUT-001`–`PL-FLUT-010`), V (`PL-V-001`–`PL-V-010`), Swift (`PL-SW-001`–`PL-SW-011`) and Kotlin (`PL-KT-001`–`PL-KT-011`) profiles without renumbering existing rules.
+
 ---
 
 # 1. Pureline Core
@@ -2251,6 +2253,1540 @@ A stylesheet folder holds at most **10 files**. Split by layer or by component g
 ## PL-CSS-012 — Tooling
 
 Run a linter such as `stylelint` with the project's rules in CI. Enable the stylelint rules for specificity and `!important`, so that PL-CSS-003 and PL-CSS-004 are checked automatically.
+
+---
+
+# 15.8 C# Profile
+
+Apply the shared core rules with this profile. C# is a managed, brace-based language with strong compiler support. Pureline C# targets **.NET 8** or later.
+
+## PL-CS-001 — Naming Follows the .NET Convention
+
+Use `PascalCase` for types, members, and constants, `camelCase` for locals and parameters, and `_camelCase` for private fields. Names state the role of a value, not its type.
+
+```csharp
+public static class SessionRules
+{
+    public static bool IsExpired(DateTimeOffset lastSeen, TimeSpan maxAge) =>
+        DateTimeOffset.UtcNow - lastSeen > maxAge;
+}
+```
+
+## PL-CS-002 — Nullable Reference Types Are On
+
+Set `<Nullable>enable</Nullable>` in every project. `string` never holds null, and `string?` declares that it may. Do not silence the compiler with `!`; fix the flow instead.
+
+```csharp
+public sealed class UserProfile
+{
+    public required string Name { get; init; }
+    public string? Nickname { get; init; }
+}
+```
+
+## PL-CS-003 — Records for Immutable Data
+
+Model data that moves between layers as a `record`. Derive changed copies with `with` instead of mutating. Use a class only when the object has identity or behaviour of its own.
+
+```csharp
+public sealed record Session(string Id, string Title, bool IsActive);
+
+public static Session Rename(Session session, string title) =>
+    session with { Title = title };
+```
+
+## PL-CS-004 — Guard Clauses Return Early
+
+Check invalid input first and return immediately, so the main path stays at the outer indentation level with no `else`. See control flow.
+
+```csharp
+public static decimal Discount(decimal total)
+{
+    if (total <= 0)
+    {
+        return 0;
+    }
+
+    return total * 0.1m;
+}
+```
+
+## PL-CS-005 — Dispose with `using` Declarations
+
+Use a `using` declaration so disposal happens at the end of the enclosing scope. Each `IDisposable` has one owner, and that owner disposes it.
+
+```csharp
+public static string ReadFirstLine(string path)
+{
+    using var reader = new StreamReader(path);
+    return reader.ReadLine() ?? string.Empty;
+}
+```
+
+## PL-CS-006 — Async All the Way with Task
+
+Return `Task` or `Task<T>`, suffix the name with `Async`, accept a `CancellationToken`, and never block with `.Result` or `.Wait()`. Use `ValueTask` only where a measurement justifies it.
+
+```csharp
+public static async Task<string> LoadBodyAsync(HttpClient client, string url, CancellationToken ct)
+{
+    using var response = await client.GetAsync(url, ct);
+    return await response.Content.ReadAsStringAsync(ct);
+}
+```
+
+## PL-CS-007 — LINQ Only When It Reads Clearly
+
+Use LINQ for one linear transformation: a filter, a projection, or a materialization. Switch to a `foreach` loop when the query has side effects, branches, or more than three chained operators.
+
+```csharp
+public static List<string> ActiveTitles(IEnumerable<Session> sessions) =>
+    sessions.Where(s => s.IsActive).Select(s => s.Title).ToList();
+```
+
+## PL-CS-008 — Namespace per Folder, Bounded Folder Density
+
+The namespace mirrors the folder path, so `Sessions/Views/` uses `Acme.Sessions.Views`. A folder holds at most **10 hand-maintained source files** by default. Group by feature rather than by kind, and exceed the limit only when every file serves one responsibility (cohesion over size, see structure).
+
+```csharp
+namespace Acme.Sessions.Views;
+
+public sealed class SessionCard
+{
+    public required string Title { get; init; }
+}
+```
+
+## PL-CS-009 — Tooling
+
+Run `dotnet format --verify-no-changes` in CI as the official formatter. Enable the Roslyn analyzers and add StyleCop.Analyzers for naming and ordering rules, keep warnings intentional, and test behaviour with xUnit or NUnit (see tooling).
+
+```xml
+<PropertyGroup>
+  <Nullable>enable</Nullable>
+  <AnalysisLevel>latest-recommended</AnalysisLevel>
+  <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+  <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+</PropertyGroup>
+```
+
+---
+
+# 15.9 Angular Profile
+
+Apply the shared core rules, the JavaScript profile, and the TypeScript profile together with this profile. The Angular profile targets **Angular 17 or later** with TypeScript in strict mode. A component reads as a small pipeline: inputs in, guards in the template, derived values, markup out.
+
+## PL-NG-001 — Standalone Components and `inject()`
+
+Every component is standalone (default from Angular 19; set `standalone: true` on 17 and 18). Declare dependencies with `inject()` as `private readonly` fields, so the class body starts with its state, not with a constructor.
+
+```ts
+@Component({
+    selector: 'app-session-card',
+    template: `<h2>{{ session().name }}</h2>`,
+})
+export class SessionCardComponent {
+    readonly session = input.required<Session>();
+    private readonly router = inject(Router);
+}
+```
+
+## PL-NG-002 — Signals Hold State, OnPush Renders It
+
+- `signal()` holds writable state, `computed()` derives values, `input()` and `output()` form the interface; never keep a derived value in a second field. Every component sets `ChangeDetectionStrategy.OnPush`, so signals read in the template drive the updates.
+
+```ts
+@Component({
+    selector: 'app-counter',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    template: `<button (click)="increment()">{{ count() }} / {{ doubled() }}</button>`,
+})
+export class CounterComponent {
+    readonly count = signal(0);
+    readonly doubled = computed(() => this.count() * 2);
+    increment(): void {
+        this.count.update((value) => value + 1);
+    }
+}
+```
+
+## PL-NG-003 — Built-in Control Flow with `track`
+
+Use `@if`, `@for`, and `@switch`; do not use `*ngIf` or `*ngFor` in new code. Every `@for` tracks a stable identifier from the data, never `$index` for lists that can change. Use `@empty` for the empty state.
+
+```html
+@for (session of sessions(); track session.id) {
+    <app-session-card [session]="session" />
+} @empty {
+    <p>No sessions yet.</p>
+}
+```
+
+## PL-NG-004 — Typed Reactive Forms
+
+Use reactive forms with `nonNullable` controls, so a reset never yields `null`. After the validity guard, read values with `getRawValue()`, which is fully typed.
+
+```ts
+readonly form = new FormGroup({
+    name: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+});
+submit(): void {
+    if (this.form.invalid) {
+        return;
+    }
+
+    this.users.create(this.form.getRawValue());
+}
+```
+
+## PL-NG-005 — Smart and Presentational Components
+
+- A **smart** component (a page or route target) injects services, owns the signals, and passes plain inputs down. A **presentational** component receives data through `input()`, reports through `output()`, and injects no services.
+
+```ts
+export class SessionListViewComponent {
+    readonly items = input.required<Session[]>();
+    readonly select = output<string>();
+}
+```
+
+## PL-NG-006 — Services Have One Responsibility
+
+A service talks to one API, holds one piece of shared state, or implements one domain rule. Components never call `HttpClient` directly. Use `providedIn: 'root'` unless a feature needs a scoped instance.
+
+```ts
+@Injectable({ providedIn: 'root' })
+export class SessionApi {
+    private readonly http = inject(HttpClient);
+    list(): Observable<Session[]> {
+        return this.http.get<Session[]>('/api/sessions');
+    }
+}
+```
+
+## PL-NG-007 — Feature Folders and Folder Density
+
+- Group files by feature (`features/sessions/`): component, template, service, and spec together. Name files by role: `session-list.component.ts`, `session-api.service.ts`.
+- A folder holds at most **10 hand-maintained source files** by default (PL-TS-007). Split along responsibilities, not into empty nested folders (PL-STRUCT-003).
+
+## PL-NG-008 — Strict Types, No `any`
+
+Enable `"strict": true` in `tsconfig.json`. Do not use `any` in components, services, or templates. Treat HTTP or storage data as `unknown` and narrow it at the boundary (PL-TS-001).
+
+```ts
+export function isSession(value: unknown): value is Session {
+    return typeof value === 'object' && value !== null && 'id' in value;
+}
+```
+
+## PL-NG-009 — Tooling
+
+Run `ng lint` (from `@angular-eslint`), `ng build`, and `ng test` in CI. Format with the official formatter, Prettier, and check it with `prettier --check`. Keep warnings intentional: fix them or suppress them with a stated reason.
+
+```bash
+ng build --configuration production
+ng lint
+npx prettier --check .
+```
+
+---
+
+# 15.10 Vue Profile
+
+Apply the shared core rules, the JavaScript profile, and the TypeScript profile together with this profile. The Vue profile targets **Vue 3 with the Composition API, `<script setup>`, and TypeScript in strict mode**. A component reads as a small pipeline: typed inputs, reusable logic, derived values, markup.
+
+
+```text
+Props and emits
+↓
+Composables (state and logic)
+↓
+Computed values
+↓
+Template (markup)
+```
+
+## PL-VUE-001 — Components Use `<script setup lang="ts">`
+
+Every component is a Single-File Component with `<script setup lang="ts">` and a `<style scoped>` block. Order the blocks script, template, style, so inputs are read before markup.
+
+```vue
+<script setup lang="ts">
+const props = defineProps<{ title: string }>();
+</script>
+<template>
+  <h2>{{ props.title }}</h2>
+</template>
+```
+
+## PL-VUE-002 — Props and Emits Are Typed
+
+Declare props with a type-only `defineProps<T>()` and emits with `defineEmits<{ ... }>()`. Use union types for variants, never a set of optional booleans (PL-TS-001).
+
+```vue
+<script setup lang="ts">
+const props = defineProps<{ status: "idle" | "running" | "done" }>();
+const emit = defineEmits<{ select: [id: string] }>();
+</script>
+```
+
+## PL-VUE-003 — Computed Over Watch
+
+Derive a value with `computed` whenever it follows from props or state. Use `watch` only for side effects such as requests or timers, never to set a ref that a `computed` could produce.
+
+```vue
+<script setup lang="ts">
+import { computed } from "vue";
+
+const props = defineProps<{ items: { done: boolean }[] }>();
+const openCount = computed(() => props.items.filter((item) => !item.done).length);
+</script>
+```
+
+## PL-VUE-004 — Composables Own One Concern
+
+Put reusable stateful logic in a `useX` function that returns refs and functions. One composable handles one concern: one subscription, one form, one data source. Shared composables live in a `composables/` folder.
+
+```ts
+import { ref } from "vue";
+
+export function useCounter(start = 0) {
+  const count = ref(start);
+  return { count, increment: () => (count.value += 1) };
+}
+```
+
+## PL-VUE-005 — `v-if` Creates, `v-show` Toggles
+
+Use `v-if` for guards, empty states, and branches that must not exist in the DOM. Use `v-show` for a value that flips often, such as a panel the user toggles.
+
+```vue
+<template>
+  <p v-if="!session">No session selected.</p>
+  <SessionDetails v-else :session="session" />
+</template>
+```
+
+## PL-VUE-006 — Lists Use a Stable `:key`
+
+Every `v-for` has a `:key` bound to a stable identifier from the data, never the index of a list that can be reordered or filtered. Do not combine `v-if` and `v-for` on one element; filter in a `computed` instead.
+
+```vue
+<template>
+  <ul>
+    <li v-for="session in visibleSessions" :key="session.id">{{ session.name }}</li>
+  </ul>
+</template>
+```
+
+## PL-VUE-007 — Templates Hold Simple Expressions Only
+
+A template expression is one property access, one simple ternary, or one short call. Move anything longer into a `computed` or a named function. Nested ternaries are not Pureline (control flow).
+
+```vue
+<script setup lang="ts">
+const props = defineProps<{ done: boolean }>();
+</script>
+
+<template>
+  <p>{{ props.done ? "Done" : "Open" }}</p>
+</template>
+```
+
+## PL-VUE-008 — Pinia Holds Shared State
+
+Keep state in a component or composable until two unrelated parts of the app need it, then move it to a Pinia store. Read stores with `storeToRefs` so destructuring keeps reactivity.
+
+```ts
+const { items } = storeToRefs(useSessionStore());
+```
+
+## PL-VUE-009 — Folder Density
+
+A folder holds at most **10 hand-maintained source files** by default. Group components, composables, and stores by feature (`features/sessions/`) when a feature has more than one file, and keep shared primitives in one `components/` folder (structure).
+
+## PL-VUE-010 — Tooling
+
+Run **eslint-plugin-vue** (with its `flat/recommended` configuration) and **Prettier** for linting and formatting, and run **vue-tsc** for type checking in CI. A disabled lint rule needs a comment that says why.
+
+---
+
+# 15.11 GDScript Profile
+
+Apply the shared core rules with this profile. GDScript 4 is a typed scripting language attached to nodes in scenes. Read the core principles first; the rules below apply them to nodes, signals, and scenes.
+
+## PL-GD-001 — Static Typing Everywhere
+
+Type every variable, parameter, and return value. The editor checks typed code before it runs, and the types document intent. Use `-> void` for functions that return nothing.
+
+```gdscript
+var hp: int = 10
+var target_position: Vector2 = Vector2.ZERO
+
+func take_damage(amount: int) -> void:
+	hp = maxi(hp - amount, 0)
+```
+
+## PL-GD-002 — Export Designer-Facing Values
+
+Expose values a designer should tune with `@export`, typed and ranged where possible. Keep values that belong to the code private to the script.
+
+```gdscript
+@export var max_hp: int = 10
+@export_range(0.0, 2.0, 0.1) var move_speed: float = 1.0
+```
+
+## PL-GD-003 — Node References With @onready
+
+Resolve child nodes once with `@onready`, typed, and name the node by its role. Never fetch nodes with `get_node()` inside a loop or a per-frame callback.
+
+```gdscript
+@onready var sprite: Sprite2D = $Sprite2D
+@onready var hit_timer: Timer = $HitTimer
+```
+
+## PL-GD-004 — Signals Decouple Upward Communication
+
+A node reports events by emitting a signal and does not call into its parents or siblings. The owner that composes the scene connects the signal. Calls flow down to children; events flow up as signals.
+
+```gdscript
+signal health_changed(current: int)
+
+func take_damage(amount: int) -> void:
+	hp = maxi(hp - amount, 0)
+	health_changed.emit(hp)
+```
+
+## PL-GD-005 — Lifecycle Callbacks Serve Their Purpose
+
+Use `_ready()` for setup that needs the node in the tree, `_process(delta)` for frame-rate visuals and timers, and `_physics_process(delta)` for movement and collision. Do not put game rules in `_process` or setup in `_physics_process`.
+
+```gdscript
+func _physics_process(delta: float) -> void:
+	velocity.y += GRAVITY * delta
+	move_and_slide()
+```
+
+## PL-GD-006 — Naming and Constants
+
+- Functions, variables, and signals: `snake_case`. `class_name` and node types: `PascalCase`.
+- Fixed values use `const` and `UPPER_SNAKE_CASE`, so the value and its meaning live in one place.
+- Names state the role (`attack_cooldown`), never a type or position (`thing2`).
+
+```gdscript
+class_name HealthBar
+
+const ATTACK_COOLDOWN: float = 0.6
+```
+
+## PL-GD-007 — Scenes Are Composed From Small Scenes
+
+Build a scene from small reusable scenes, each with its own script and responsibility. Reference direct children by name. Avoid deep node paths, because they couple the script to the internal layout of another scene.
+
+```gdscript
+# Good: the component is a direct child
+@onready var health: HealthComponent = $HealthComponent
+# Avoid: a deep path breaks when the scene layout changes
+# @onready var sprite: Sprite2D = $Body/Visuals/Sprite2D
+```
+
+## PL-GD-008 — Guard Clauses in Scripts
+
+Check invalid state first and return early. The main path of a function stays flat and unindented. Use `is_instance_valid()` before touching a node reference that may have been freed.
+
+```gdscript
+func interact(player: Player) -> void:
+	if not can_interact:
+		return
+	if not is_instance_valid(player):
+		return
+
+	open_dialog()
+```
+
+## PL-GD-009 — Folder Density
+
+A folder of hand-maintained scripts holds at most **10 files** by default. Group scripts by feature, and keep shared components in one folder.
+
+```text
+scenes/
+├── player/      (player.gd, player.tscn, input_reader.gd)
+├── enemies/     (slime.gd, slime.tscn, enemy_spawner.gd)
+└── components/  (health_component.gd, hitbox.gd)
+```
+
+## PL-GD-010 — Tooling
+
+Keep the Godot script editor warnings enabled and fix them rather than hiding them. Run `gdformat` and `gdlint` from the GDScript toolkit (`gdtoolkit`) in CI.
+
+```bash
+gdformat --check scripts/
+gdlint scripts/
+```
+
+---
+
+# 15.12 C Profile
+
+Apply the shared core rules together with this profile. Language-native rules and explicit profile exceptions take precedence over cross-language syntax preferences. Cohesion over Size applies throughout.
+
+
+Pureline C follows **idiomatic C11/C17**: explicit ownership, explicit error codes, and small translation units. C has no destructors or exceptions, so discipline must be visible in the code itself.
+
+## PL-C-001 — Guard Clauses and Linear Flow
+
+Validate arguments first and keep the success path at the base indentation level (see PL-CORE-003); avoid `else` after a returning branch.
+
+```c
+int session_open(const struct request *request, struct session *out)
+{
+    if (out == NULL) {
+        return SESSION_ERR_INVALID;
+    }
+    return session_init(out, request->user);
+}
+```
+
+## PL-C-002 — Return and Check Error Codes
+
+Fallible functions return an `enum` status and pass results through out-parameters. Every status is checked; a deliberate discard uses a `(void)` cast with a comment.
+
+```c
+int load(struct session *session)
+{
+    int status = session_open(session);
+    if (status != 0) {
+        return status;
+    }
+    return session_start(session);
+}
+```
+
+## PL-C-003 — Explicit Heap Ownership
+
+Each heap allocation has exactly one owner. `*_create` transfers ownership to the caller, `*_destroy` releases it, and callees never free borrowed pointers.
+
+```c
+/* The caller owns the result and releases it with session_destroy(). */
+struct session *session_create(const char *user);
+```
+
+## PL-C-004 — `goto` Only for a Single Cleanup Exit
+
+Jump forward to one `cleanup:` label per function, initialise resources to `NULL` first, and never use `goto` for loops or skipped logic.
+
+```c
+int report_write(const char *path, const char *text)
+{
+    int result = -1;
+    FILE *file = fopen(path, "w");
+    if (file == NULL || fputs(text, file) == EOF) {
+        goto cleanup;
+    }
+    result = 0;
+cleanup:
+    if (file != NULL) {
+        fclose(file);
+    }
+    return result;
+}
+```
+
+## PL-C-005 — Const Correctness and Explicit State
+
+Read-only parameters are `const`, locals assigned once are `const`, and runtime state is passed explicitly in a context struct instead of file-scope variables.
+
+```c
+int cache_insert(struct cache *cache, const char *key);
+```
+
+## PL-C-006 — Small, Focused Functions
+
+Each function does one thing at one level of abstraction; extract a helper when a block needs a name. A cohesive state machine may stay long rather than being split arbitrarily.
+
+```c
+int save_report(const struct report *report, const char *path)
+{
+    char *text = NULL;
+    int status = report_render(report, &text);
+    if (status == 0) {
+        status = file_write_text(path, text);
+    }
+    free(text);
+    return status;
+}
+```
+
+## PL-C-007 — Static Linkage and Minimal Headers
+
+Mark non-public functions and variables `static`, prefix public symbols with their module name, and give every header an include guard plus only the consumer-facing surface.
+
+```c
+#ifndef PURELINE_SESSION_H
+#define PURELINE_SESSION_H
+struct session *session_create(const char *user);
+#endif
+```
+
+## PL-C-008 — Source Folder Density
+
+A C feature folder holds at most **10 hand-maintained `.c` and `.h` files** by default. Generated code, vendored libraries, and tests do not count. Split along responsibility, never into nested folders for their own sake.
+
+```c
+#include "session/session.h"
+```
+
+## PL-C-009 — Tooling and Warnings
+
+Build with `-std=c11 -Wall -Wextra -Werror -pedantic`, format with `clang-format`, and check with `clang-tidy`. Any suppression needs a comment explaining why.
+
+```c
+/* Build check: cc -std=c11 -Wall -Wextra -Werror -pedantic -c session.c */
+```
+
+---
+
+# 15.13 C++ Profile
+
+Apply the shared core rules together with this profile. Language-native rules and explicit profile exceptions take precedence over cross-language syntax preferences. Cohesion over Size applies throughout.
+
+
+Pureline C++ follows **modern C++17 and C++20** idioms. Ownership lives in types, resources are released by destructors, and failure is returned as a value.
+
+## PL-CPP-001 — RAII and Unique Ownership
+
+Every resource is owned by an object whose destructor releases it. Use `std::unique_ptr` (via `std::make_unique`) by default; `std::shared_ptr` only for genuinely shared ownership. Raw `new` and `delete` do not appear in application code.
+
+```cpp
+#include <fstream>
+#include <string>
+
+void save(const std::string& path, const std::string& text) {
+    std::ofstream output{path};  // closed on every return path
+    output << text;
+}
+```
+
+## PL-CPP-002 — Const by Default
+
+Mark values `const` unless they must change, and use `constexpr` for compile-time constants. Pass read-only arguments by `const &`; take by value only when the function stores or consumes them.
+
+```cpp
+constexpr int kMaxRetries = 3;
+
+bool retry_allowed(const int attempt) {
+    return attempt < kMaxRetries;
+}
+```
+
+## PL-CPP-003 — Guard Clauses and `std::expected`
+
+Validate at the top of the function and keep the success path at base indentation, following control flow. Use `std::optional<T>` for absence and `std::expected<T, E>` for failures the caller must handle (C++23; C++17/20 projects use an equivalent such as `tl::expected`). Never return error codes through out parameters.
+
+```cpp
+#include <expected>
+#include <string>
+
+enum class ConfigError { Missing };
+
+std::expected<std::string, ConfigError> load_path(const std::string& path) {
+    if (path.empty()) {
+        return std::unexpected{ConfigError::Missing};
+    }
+    return path;
+}
+```
+
+## PL-CPP-004 — Range-Based `for`
+
+Prefer range-based `for` over index loops. Use a standard algorithm only when its name states the intent more clearly than a loop.
+
+```cpp
+#include <string>
+#include <vector>
+
+int count_long(const std::vector<std::string>& names) {
+    int count = 0;
+    for (const auto& name : names) {
+        if (name.size() > 8) {
+            ++count;
+        }
+    }
+    return count;
+}
+```
+
+## PL-CPP-005 — Small Classes with One Responsibility
+
+A class owns one coherent concept and its invariants. Keep data private and expose a narrow interface. Split classes that mix storage, pricing, persistence, or presentation. Cohesion over Size decides, not a line count.
+
+```cpp
+#include <vector>
+
+class Cart {
+public:
+    void add(int price_cents) { prices_.push_back(price_cents); }
+
+private:
+    std::vector<int> prices_;
+};
+```
+
+## PL-CPP-006 — Header and Source Split
+
+Declare interfaces in a `.hpp` header and define them in a matching `.cpp`. Every header uses `#pragma once` or classic include guards, and never contains `using namespace`, which leaks names into every includer.
+
+```cpp
+// format.hpp
+#pragma once
+
+#include <string>
+
+std::string format_price(int cents);
+```
+
+## PL-CPP-007 — Folder Density
+
+A source folder holds at most **10 hand-maintained production files** (`.hpp` and `.cpp` both count) by default. Tests, generated code, and vendored code do not count. Past that threshold, split along real responsibility boundaries, never into meaningless nested folders.
+
+```cpp
+#include "orders/order.hpp"
+#include "orders/order_pricing.hpp"
+#include "orders/order_persistence.hpp"
+```
+
+## PL-CPP-008 — Tooling Enforces the Baseline
+
+Format with `clang-format`, lint with `clang-tidy`, and compile with `-Wall -Wextra -Werror`. Warnings are defects, not suggestions.
+
+```cpp
+// Build:  clang++ -std=c++20 -Wall -Wextra -Werror -c cart.cpp
+// Lint:   clang-tidy cart.cpp -- -std=c++20
+```
+
+---
+
+# 15.14 Lua Profile
+
+Apply the shared core rules with this profile. Lua is small and table-centric: a file is a chunk that builds one module table, and structure comes from plain tables and functions. Pureline Lua targets **Lua 5.4**.
+
+
+```text
+Requires (explicit dependencies)
+↓
+Local helpers
+↓
+Module table
+↓
+return module
+```
+
+## PL-LUA-001 — Local by Default
+
+Declare every variable and function with `local`. A global is shared state that any other file can overwrite silently. Do not write to `_G` or `_ENV` outside a program's entry point. See naming and state and side effects.
+
+```lua
+local function parse_port(text)
+    return tonumber(text)
+end
+```
+
+## PL-LUA-002 — One Module Table per File
+
+Each file builds a local table, fills it with its public functions, and returns it. Require dependencies at the top so they stay visible.
+
+```lua
+local json = require("json")
+
+local session = {}
+
+function session.create(user)
+    return { id = user.id, active = true }
+end
+
+return session
+```
+
+## PL-LUA-003 — Guard Clauses and Early Return
+
+Check missing and invalid input first, return early, and keep the main path unindented. Follow control flow and functions.
+
+```lua
+function session.rename(current, name)
+    if current == nil then
+        return nil, "missing session"
+    end
+    if type(name) ~= "string" or name == "" then
+        return nil, "invalid name"
+    end
+
+    current.name = name
+    return current
+end
+```
+
+## PL-LUA-004 — Explicit Nil Checks
+
+Compare against `nil` directly. `false` is a real value in Lua, so `if not value` also catches a meaningful `false`. Test `== nil` when the difference matters.
+
+```lua
+local function timeout_or_default(config)
+    if config.timeout == nil then
+        return 30
+    end
+    return config.timeout
+end
+```
+
+## PL-LUA-005 — Errors Are Values
+
+Return `nil, err` for expected failures such as a missing file or bad input, and check the pair at the call site. Use `assert` only for programmer errors and broken invariants, where stopping is the correct response.
+
+```lua
+local function read_config(path)
+    local file, err = io.open(path, "r")
+    if file == nil then
+        return nil, err
+    end
+
+    local text = file:read("a")
+    file:close()
+    return text
+end
+```
+
+## PL-LUA-006 — Metatables Only When They Clarify
+
+Plain tables and functions are the default. Use a metatable (`__index` for a type, `__tostring` for debugging output) only when it makes call sites clearer. Do not build inheritance chains or operator overloads for convenience. See avoid unnecessary abstractions.
+
+```lua
+local Stack = {}
+Stack.__index = Stack
+
+function Stack.new()
+    return setmetatable({ items = {} }, Stack)
+end
+```
+
+## PL-LUA-007 — Small Functions
+
+Each function does one thing and fits on a screen. Extract a named local function instead of a long body with a comment marking each section. See functions.
+
+## PL-LUA-008 — String Keys for Records
+
+Records use string keys and dot access. Reserve integer keys for sequences, and never mix the two in one table.
+
+```lua
+local user = { name = "Ada", active = true } -- record: string keys
+local tags = { "admin", "ops" }              -- sequence: integer keys
+```
+
+## PL-LUA-009 — Blocks End on Their Own Lines
+
+Every `function`, `if`, `for`, `while`, and `do` block closes with `end` on its own line, aligned with its opening keyword. Keep blocks multi-line, even for a single statement. See formatting.
+
+```lua
+for _, job in ipairs(jobs) do
+    if job.pending then
+        start(job)
+    end
+end
+```
+
+## PL-LUA-010 — No Clever One-Liners
+
+Prefer a sequence of plain statements over dense expressions. Do not use `cond and a or b` when `a` can be `nil` or `false`, because the fallback fires silently. Use an `if` instead.
+
+```lua
+local mode = "guest"
+if user.admin then
+    mode = user.mode
+end
+```
+
+## PL-LUA-011 — Folder Density
+
+A folder of hand-maintained Lua modules holds at most **10 files** by default. Group modules by feature (`session/`, `net/`), and keep shared helpers in one `util/` folder. See structure.
+
+## PL-LUA-012 — Tooling
+
+Run `luacheck` in CI with zero warnings, so undefined globals and unused locals fail the build. Format every file with `StyLua`. Treat both tools as the authority on style details they cover.
+
+---
+
+# 15.15 Dart Profile
+
+Apply the shared core rules together with this profile. Language-native rules and explicit profile exceptions take precedence over cross-language syntax preferences. Cohesion over Size applies throughout.
+
+
+Dart 3 with sound null safety is the baseline. All examples assume Dart 3 syntax.
+
+## PL-DART-001 — `final` and `const` by Default
+
+Declare locals and fields as `final` unless they are reassigned. Use `const` for compile-time values.
+
+```dart
+final user = loadUser();
+const retryLimit = 3;
+```
+
+- Avoid `var` when the value is never reassigned.
+- Prefer `const` constructors for widgets, value objects, and configuration.
+
+## PL-DART-002 — Sound Null Safety Without `!`
+
+Make nullability explicit in types. Handle `null` with `?.` and `??` when the expression is simple.
+
+```dart
+String? nickname;
+final label = nickname ?? 'anonymous';
+final length = nickname?.length ?? 0;
+```
+
+- Avoid the `!` operator. Use it only with a comment that states why the value cannot be null.
+- Prefer promotion through checks over `!`.
+
+## PL-DART-003 — Named Parameters with `required` for Public API
+
+Public constructors and functions take named parameters. Mark mandatory ones `required`.
+
+```dart
+final class Session {
+  const Session({required this.id, this.timeout = const Duration(seconds: 30)});
+
+  final String id;
+  final Duration timeout;
+}
+```
+
+- Named arguments make call sites explicit (PL-CORE-007).
+- Use positional parameters only for obvious, single-value helpers.
+
+## PL-DART-004 — Async Code Uses `Future` and `Stream` for Their Purpose
+
+Use `Future` for one result and `Stream` for a sequence of events. Use `async` and `await` instead of chained `.then`.
+
+```dart
+Future<User> loadUser(UserId id) async {
+  final response = await api.fetch(id);
+  return User.fromJson(response);
+}
+
+Stream<Packet> incoming(Socket socket) async* {
+  await for (final packet in socket) {
+    yield packet;
+  }
+}
+```
+
+- Do not wrap a single value in a `Stream`, and do not force a multi-event source into a `Future`.
+- Keep side effects visible at the call site (PL-CORE-015).
+
+## PL-DART-005 — Avoid `dynamic`
+
+Use concrete types, generics, or `Object?` for unknown data. Narrow unknown data with pattern matching before use.
+
+```dart
+Config parseConfig(Object? input) {
+  if (input is! Map<String, Object?>) {
+    throw const FormatException('Config must be a map');
+  }
+  return Config.fromMap(input);
+}
+```
+
+- Treat `dynamic` as an exception that must be justified at the boundary.
+
+## PL-DART-006 — Guard Clauses with Early Return
+
+Check invalid and absent states first and return. Keep the main path unindented (PL-CORE-003).
+
+```dart
+String describe(User? user) {
+  if (user == null) return 'unknown';
+  if (!user.isActive) return 'inactive';
+  return user.name;
+}
+```
+
+- See control flow for the shared rule.
+- Avoid `else` after a returning branch (PL-CORE-002).
+
+## PL-DART-007 — Sealed Classes and Switch Expressions for State
+
+Model closed sets of states as `sealed` classes. Handle them with an exhaustive `switch` expression.
+
+```dart
+sealed class SessionState {
+  const SessionState();
+}
+
+final class Ready extends SessionState {
+  const Ready();
+}
+
+final class Closed extends SessionState {
+  const Closed(this.reason);
+  final String reason;
+}
+
+String label(SessionState state) => switch (state) {
+      Ready() => 'ready',
+      Closed(:final reason) => 'closed: $reason',
+    };
+```
+
+- Prefer this over boolean flags or string states.
+- The compiler enforces that every state is handled.
+
+## PL-DART-008 — Naming
+
+Use `lowerCamelCase` for members, variables, parameters, and constants. Use `UpperCamelCase` for types, classes, enums, and extensions.
+
+```dart
+class SessionStore {}
+
+final maxRetries = 3;
+const defaultTimeout = Duration(seconds: 30);
+```
+
+- Names must carry meaning (PL-CORE-007). Avoid abbreviations such as `usr` or `cfg`.
+- Use `snake_case` only for file names.
+
+## PL-DART-009 — `_` Marks Library-Private Names
+
+Prefix names with `_` only when they must stay hidden from other libraries. Do not use `_` as a substitute for documentation.
+
+```dart
+class _RetryPolicy {
+  const _RetryPolicy();
+}
+
+void _connect() {}
+```
+
+- Keep public surface small so that the library's contract stays clear.
+
+## PL-DART-010 — Small Classes with One Responsibility
+
+Keep classes focused on one coherent responsibility. Split a class when it mixes unrelated concerns, not when it passes an arbitrary line count (PL-CORE-009, PL-CORE-022).
+
+```dart
+final class TokenParser {
+  const TokenParser();
+
+  Token parse(String raw) => Token(raw.trim());
+}
+```
+
+- Prefer composition of small classes over inheritance hierarchies.
+
+## PL-DART-011 — Folder Density
+
+A Dart source folder under `lib/` may contain at most **10 hand-maintained source files** by default.
+
+Generated files, `part` files, barrel files such as `lib/feature.dart`, and tests do not count. A split should follow a real boundary:
+
+```text
+lib/session/
+lib/session/state/
+lib/session/transport/
+lib/session/storage/
+```
+
+- See structure for the shared size rules (PL-CORE-021).
+
+## PL-DART-012 — Tooling: `dart format` and `dart analyze` with `lints`
+
+Format and analyze every package before review. Enable the `lints` package in `analysis_options.yaml`.
+
+```yaml
+include: package:lints/recommended.yaml
+```
+
+```bash
+dart format --set-exit-if-changed .
+dart analyze
+```
+
+- Treat analyzer warnings as failures in CI.
+- Do not disable lints locally without a comment that explains the exception.
+
+---
+
+# 15.16 Flutter Profile
+
+Apply the shared core rules together with this profile. The Flutter profile targets **Dart 3 with Flutter 3.x** and sound null safety. The Dart language rules apply underneath: `final` by default, and sealed types where they model a closed set of states. A widget is a function of its configuration and state: configuration in, guards, derived values, widget tree out.
+
+## PL-FLUT-001 — Build Methods Are Small and Free of Side Effects
+
+`build` computes a widget tree from its inputs and nothing else. It does not start requests, write storage, navigate, or mutate fields. When the tree grows past one screen of nesting, extract a block (PL-FLUT-002). Side effects belong in event handlers and the state layer (state and side effects).
+
+## PL-FLUT-002 — Extract Growing Widgets into Const Classes
+
+Extract a block into its own `StatelessWidget` when it has its own name, data, or state. Do not extract helper methods that return widgets: they cannot be `const` and hide the widget boundary from Flutter.
+
+```dart
+class SessionHeader extends StatelessWidget {
+  const SessionHeader({super.key, required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Text(title, style: Theme.of(context).textTheme.titleLarge),
+    );
+  }
+}
+```
+
+## PL-FLUT-003 — Const Constructors Wherever Possible
+
+Mark constructors `const` when all fields are final, and write `const` at every call site whose value is compile-time constant.
+
+```dart
+return const Padding(
+  padding: EdgeInsets.all(16),
+  child: Icon(Icons.check),
+);
+```
+
+## PL-FLUT-004 — One State Management Approach per App
+
+Choose one approach for the whole app and name it in the project README: Riverpod, or `ChangeNotifier` with `provider` for smaller apps. Use it consistently. `setState` is fine for purely local UI state, such as a toggle or an expanded flag. Business state lives in providers or notifiers, not in widgets.
+
+```dart
+final sessionsProvider = FutureProvider<List<Session>>((ref) {
+  return ref.watch(sessionRepositoryProvider).fetchAll();
+});
+```
+
+## PL-FLUT-005 — No Network or Storage Calls Inside Build
+
+`build` runs on every rebuild, so a request placed there repeats unpredictably. Load data in the state layer; widgets render the result.
+
+## PL-FLUT-006 — Guard Clauses Before the Main Tree
+
+Handle loading, error, and empty states first and return early. The successful layout stays at the base indentation.
+
+```dart
+@override
+Widget build(BuildContext context) {
+  final error = state.error;
+  if (state.isLoading) {
+    return const LoadingView();
+  }
+  if (error != null) {
+    return ErrorView(message: error);
+  }
+  return ProfileDetails(user: state.user);
+}
+``` Avoid nested conditionals in widget trees.
+
+## PL-FLUT-007 — Keys Only Where List Identity Matters
+
+Give a key only when a widget's identity must survive reordering or removal, such as stateful list items or a `Dismissible`. Use a stable identifier from the data, never the list index.
+
+```dart
+ListView.builder(
+  itemCount: sessions.length,
+  itemBuilder: (context, index) {
+    final session = sessions[index];
+    return SessionTile(key: ValueKey(session.id), session: session);
+  },
+);
+```
+
+## PL-FLUT-008 — BuildContext After await Needs a Mounted Check
+
+A `BuildContext` may belong to a widget removed while an `await` was pending. Check that it is still mounted before using it after an `await`.
+
+```dart
+Future<void> handleSave() async {
+  await repository.save(draft);
+  if (!context.mounted) {
+    return;
+  }
+  Navigator.of(context).pop();
+}
+```
+
+Inside a `State` subclass, check `mounted` instead.
+
+## PL-FLUT-009 — Feature Folders and Folder Density
+
+Group widgets, providers, and tests by feature (`lib/features/sessions/`), not by file kind across the app. A folder holds at most **10 hand-maintained source files** by default. This is a review threshold: split along responsibilities, not into meaningless nested folders (structure).
+
+## PL-FLUT-010 — Tooling Gates Every Change
+
+Every change passes the formatter and analyzers before review:
+
+```text
+dart format --set-exit-if-changed .
+dart analyze
+flutter analyze
+```
+
+`dart format` settles layout, so formatting debates never reach review. Warnings are not optional: a disabled lint rule needs a reason in `analysis_options.yaml`.
+
+---
+
+# 15.17 V Profile
+
+Apply the shared core rules together with this profile. Language-native rules and explicit profile exceptions take precedence over cross-language syntax preferences. Cohesion over Size applies throughout.
+
+## PL-V-001 — Immutable by Default
+
+Variables are immutable unless declared with `mut`. Declare `mut` only where a value must change. See PL-CORE-010.
+
+```v
+limit := 10
+```
+
+## PL-V-002 — Return Result Types for Failures
+
+A fallible function returns `!T` and reports failure with `error(...)`.
+
+```v
+struct User {
+	id   int
+	name string
+}
+
+fn load_user(id int) !User {
+	if id <= 0 {
+		return error('invalid user id')
+	}
+	return User{id: id, name: 'ada'}
+}
+```
+
+## PL-V-003 — Handle Errors Early With `or {}`
+
+Handle a failed call at the call site. Propagate with `!` only when the caller should own the error.
+
+```v
+fn show_user() {
+	user := load_user(42) or { return }
+	println(user.name)
+}
+```
+
+## PL-V-004 — Use Option Types for Absent Values
+
+Use `?T` when absence is a normal outcome. Use `!T` when failure needs a reason.
+
+```v
+fn find_user(users []User, id int) ?User {
+	for user in users {
+		if user.id == id {
+			return user
+		}
+	}
+	return none
+}
+```
+
+## PL-V-005 — Guard Clauses and Small Functions
+
+Reject invalid input first so the success path stays linear. Each function does one job. See PL-CORE-003 and PL-CORE-006.
+
+```v
+fn withdraw(balance int, amount int) !int {
+	if amount <= 0 {
+		return error('amount must be positive')
+	}
+	return balance - amount
+}
+```
+
+## PL-V-006 — Naming Follows V Conventions
+
+Functions and variables use `snake_case`. Structs and enums use `PascalCase`.
+
+```v
+enum Role {
+	admin
+	guest
+}
+```
+
+## PL-V-007 — Initialise Structs Explicitly
+
+Name every field in a struct literal. Positional initialisation hides which value goes where.
+
+```v
+user := User{id: 1, name: 'ada'}
+```
+
+## PL-V-008 — One Responsibility per Module Folder
+
+In V, a folder is a module. Its files share one `module` declaration and one responsibility. Cohesion matters more than line count (Cohesion over Size).
+
+```text
+user/
+    user.v     User type and constructors
+    store.v    loading and saving users
+```
+
+## PL-V-009 — Keep Folders Dense Enough to Scan
+
+A folder holds at most 10 hand-maintained source files by default. Generated files do not count. Past that limit, split by responsibility into a sub-module folder.
+
+```text
+billing/
+    invoice/    invoice.v, store.v, render.v
+```
+
+## PL-V-010 — Format and Vet Before Review
+
+Run both tools on every change, so reviews discuss intent instead of layout or suspicious constructs.
+
+```sh
+v fmt -w .
+v vet .
+```
+
+---
+
+# 15.18 Swift Profile
+
+Apply the shared core rules together with this profile. Language-native rules and explicit profile exceptions take precedence over cross-language syntax preferences. Cohesion over Size applies throughout.
+
+
+Pureline Swift follows **idiomatic Swift 5.9 and later**: value semantics, optionals, exhaustive enums, and explicit access control are language strengths and should be used as such.
+
+## PL-SW-001 — Naming Follows Swift Conventions
+
+- Types and protocols: `UpperCamelCase`. Members and locals: `lowerCamelCase`, named for their meaning (Naming).
+
+```swift
+protocol PaymentGateway { func charge(_ order: Order) throws -> Receipt }
+```
+
+## PL-SW-002 — Explicit Access Control
+
+- Write access levels explicitly. Default to `private`; widen to `fileprivate` or `internal` only when a real consumer needs it.
+
+```swift
+public struct ConfigLoader {
+    private let decoder: JSONDecoder
+    public func load(from url: URL) throws -> Config { /* ... */ }
+}
+```
+
+## PL-SW-003 — `let` over `var`
+
+Use `let` unless mutation is required. Keep `var` locals narrowly scoped.
+
+```swift
+let total = items.reduce(0, +)
+```
+
+## PL-SW-004 — Guard Clauses for Early Exit
+
+Validate early with `guard` and keep the successful path at base indentation (Control Flow). Avoid `else` after a branch that already exits.
+
+```swift
+func open(_ request: Request) throws -> Session {
+    guard request.isValid else { throw SessionError.invalidRequest }
+    guard let user = request.user else { throw SessionError.missingUser }
+    return try Session.open(for: user)
+}
+```
+
+## PL-SW-005 — Optionals Are Unwrapped Safely
+
+- Unwrap with `if let` or `guard let`; use `??` for simple defaults. Never force-unwrap (`!`) or `try!` outside tests; there, use `XCTUnwrap`.
+
+```swift
+guard let cached = cache[key] else { return nil }
+let name = user.nickname ?? user.login
+```
+
+## PL-SW-006 — Value Types by Default
+
+Model data as `struct` and `enum`. Use `class` only for shared identity or mutable reference state, and mark it `final` unless inheritance is designed in.
+
+```swift
+struct Money: Equatable { let cents: Int; let currency: Currency }
+```
+
+## PL-SW-007 — Protocols Only for Real Abstractions
+
+Introduce a protocol for a real interchangeable implementation, API boundary, or test seam. A single concrete type with no seam should stay concrete (Architecture).
+
+```swift
+protocol Clock { func now() -> Date }
+struct Scheduler { let clock: any Clock }
+```
+
+## PL-SW-008 — Exhaustive `switch` over Enums
+
+Switch over enums without `default` so the compiler flags new cases. Use `if case` or `guard case` for a single pattern.
+
+```swift
+enum SessionState { case ready, closed, failed }
+
+func label(for state: SessionState) -> String {
+    switch state {
+    case .ready: return "Ready"
+    case .closed: return "Closed"
+    case .failed: return "Failed"
+    }
+}
+```
+
+## PL-SW-009 — Small, Focused Functions
+
+Keep functions to one level of abstraction: a short sequence of named steps. Extract a helper when a block needs a name to be understood (Functions).
+
+```swift
+func submit(_ order: Order) throws {
+    try validate(order)
+    try orders.save(order, receipt: payment.charge(order))
+}
+```
+
+## PL-SW-010 — Folder Density
+
+A Swift source folder should contain at most **10 hand-maintained `.swift` files** by default; generated and test files do not count. This is a review threshold: split along responsibility boundaries, never into meaningless nested folders (Structure).
+
+```text
+Sources/Checkout/
+    Order.swift
+    PaymentFlow.swift
+```
+
+## PL-SW-011 — Tooling Enforces Format and Lint
+
+- Format with `swift-format` and lint with `SwiftLint` using the project-agreed configuration; keep exceptions there, with reasons, not as scattered `// swiftlint:disable` comments.
+
+```bash
+swift-format lint --recursive Sources Tests
+swiftlint lint --strict
+```
+
+---
+
+# 15.19 Kotlin Profile
+
+Apply the shared core rules together with this profile. Language-native rules and explicit profile exceptions take precedence over cross-language syntax preferences. Cohesion over Size applies throughout.
+
+## PL-KT-001 — val over var
+
+Default to `val`. Use `var` only when a value truly changes and the mutation stays local. See State and Side Effects.
+
+```kotlin
+val retries = 3
+val limit = retries * 2
+```
+
+## PL-KT-002 — Data Classes for Plain Data
+
+Use `data class` for values that carry data and compare by content. Do not hand-write `equals`, `hashCode`, or copy boilerplate.
+
+```kotlin
+data class SessionId(val value: String)
+```
+
+## PL-KT-003 — Sealed Types with Exhaustive when
+
+Model states as `sealed interface` and branch with an exhaustive `when` expression. Avoid `else`, which silently absorbs new cases.
+
+```kotlin
+sealed interface ConnectionState {
+    data object Idle : ConnectionState
+    data class Connected(val host: String) : ConnectionState
+    data class Failed(val reason: String) : ConnectionState
+}
+
+fun describe(state: ConnectionState): String = when (state) {
+    ConnectionState.Idle -> "idle"
+    is ConnectionState.Connected -> "connected to ${state.host}"
+    is ConnectionState.Failed -> "failed: ${state.reason}"
+}
+```
+
+## PL-KT-004 — Null Safety Without !!
+
+Use `?.` for optional access and `?:` for fallbacks or early exits. Never use `!!` outside tests; it turns a null check into a runtime crash.
+
+```kotlin
+fun greet(name: String?): String {
+    val safeName = name ?: return "Hello, guest"
+    return "Hello, $safeName"
+}
+```
+
+## PL-KT-005 — Scope Functions Only When They Read Clearly
+
+Use `let`, `run`, or `apply` when they remove a temporary name or configure one object. Do not chain or nest them; a plain statement is clearer.
+
+```kotlin
+fun salutation(name: String?): String =
+    name?.trim()?.let { "Dear $it" } ?: "Guest"
+```
+
+## PL-KT-006 — Extension Functions with Narrow Scope
+
+Add an extension only when it reads as a property of the receiver. Avoid extensions on `Any` or broad types, and never hide side effects behind one.
+
+```kotlin
+fun String.toSlug(): String = trim().lowercase().replace(' ', '-')
+```
+
+## PL-KT-007 — Named Arguments for Booleans and Many Parameters
+
+Name arguments for every boolean flag and for any call with more than two parameters. A bare `true` tells the reader nothing.
+
+```kotlin
+fun openSession(host: String, port: Int, secure: Boolean) = println("$host:$port $secure")
+openSession(host = "example.org", port = 443, secure = true)
+```
+
+## PL-KT-008 — Guard Clauses and Small Functions
+
+Reject invalid input first and return immediately, so the success path stays unindented. Each function performs one step and fits on one screen. See Control Flow and Functions.
+
+```kotlin
+fun resolveName(name: String?, isActive: Boolean): String {
+    if (name == null) return "guest"
+    if (!isActive) return "inactive"
+    return name
+}
+```
+
+## PL-KT-009 — Naming
+
+Types use UpperCamelCase. Functions, properties, and parameters use lowerCamelCase. Top-level `const val` uses UPPER_SNAKE_CASE.
+
+```kotlin
+class SessionService
+const val MAX_PACKET_SIZE = 4096
+val retryLimit = 3
+fun openSession() {}
+```
+
+## PL-KT-010 — Folder Density
+
+Keep at most 10 hand-maintained source files per folder by default. Generated files do not count. Past that limit, split by responsibility, not by file type, and document any justified exception.
+
+```text
+src/main/kotlin/space/example/project/
+    session/   (SessionService.kt, SessionState.kt)
+    network/   (PacketCodec.kt, ConnectionPool.kt)
+```
+
+## PL-KT-011 — Tooling
+
+Run ktlint for formatting and detekt for static analysis in CI. Fix findings, or suppress one with a narrow, commented reason.
+
+```bash
+./gradlew ktlintCheck detekt
+```
 
 ---
 
