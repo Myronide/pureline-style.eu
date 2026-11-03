@@ -128,7 +128,7 @@ Ein Projekt darf diese Schwellenwerte künftig über eine Pureline-Konfiguration
 
 ## Kohäsion vor Größe {#cohesion-over-size}
 
-### PL-STRUCT-003 — Kohäsion vor Größe (Zusammengehörigkeit vor Zeilenbegrenzung) {#pl-struct-003--cohesion-over-size-zusammengehörigkeit-vor-zeilenbegrenzung} {#pl-struct-003--cohesion-over-size-zusammengehörigkeit-vor-zeilenbegrenzung}
+### PL-STRUCT-003 — Kohäsion vor Größe (Zusammengehörigkeit vor Zeilenbegrenzung) {#pl-struct-003--cohesion-over-size-zusammengehörigkeit-vor-zeilenbegrenzung}
 
 > **Kohäsion vor Größe — Zusammengehörigkeit vor Zeilenbegrenzung.**
 

@@ -71,7 +71,9 @@ Widget build(BuildContext context) {
   }
   return ProfileDetails(user: state.user);
 }
-``` Vermeide verschachtelte Bedingungen in Widget-Bäumen.
+```
+
+Vermeide verschachtelte Bedingungen in Widget-Bäumen.
 
 ### PL-FLUT-007 — Keys nur dort, wo die Identität in Listen zählt {#pl-flut-007--keys-only-where-list-identity-matters}
 

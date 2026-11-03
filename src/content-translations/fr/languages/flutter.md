@@ -71,7 +71,9 @@ Widget build(BuildContext context) {
   }
   return ProfileDetails(user: state.user);
 }
-``` Évitez les conditions imbriquées dans les arbres de widgets.
+```
+
+Évitez les conditions imbriquées dans les arbres de widgets.
 
 ### PL-FLUT-007 — Des clés seulement là où l'identité de la liste compte {#pl-flut-007--keys-only-where-list-identity-matters}
 

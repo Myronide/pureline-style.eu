@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useParams } from "react-router-dom";
 import { Markdown } from "../components/Markdown";
-import { docPath, docTitle, getDoc, headings, INDEX_SLUG, manualBody, nav, repoUrl, SHOW_MACHINE_TRANSLATIONS, translatedBody } from "../content";
+import { docPath, docTitle, getDoc, headings, INDEX_SLUG, manualBody, nav, repoUrl, SHOW_MACHINE_TRANSLATIONS, translatedBody, translationStale } from "../content";
 import { Icon } from "../components/Icon";
 import { LanguageLogo } from "../components/LanguageLogo";
 import { useI18n } from "../i18n/context";
@@ -26,7 +26,7 @@ function DocNav() {
                 >
                   <span className="flex items-center gap-2.5">
                     <LanguageLogo slug={d.slug} className="size-4 shrink-0" />
-                    {d.slug === INDEX_SLUG ? t("docs.guide") : d.slug.startsWith("languages/") && d.slug !== "languages/README" ? d.title.replace(/ Code Style$/, "").replace(/^Pureline /, "") : docTitle(d, locale).replace(/^Pureline[ -]/, "")}
+                    {d.slug === INDEX_SLUG ? t("docs.guide") : d.slug.startsWith("PURELINE") ? t("docs.spec") : d.slug.startsWith("languages/") && d.slug !== "languages/README" ? d.title.replace(/ Code Style$/, "").replace(/^Pureline /, "") : docTitle(d, locale).replace(/^Pureline[ -]/, "")}
                   </span>
                 </NavLink>
               </li>
@@ -149,6 +149,7 @@ export function Docs() {
         {locale !== "en" && (
           <p className="mb-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted">
             <span>{t(manual ? "docs.aiNote" : machine ? "docs.machineNote" : "docs.englishNote")}</span>
+            {manual && !showOriginal && translationStale(doc, locale) && <span className="text-fg">{t("docs.staleNote")}</span>}
             {manual && (
               <button type="button" onClick={() => setShowOriginal(!showOriginal)} className="underline decoration-line underline-offset-4 transition-colors hover:text-fg">
                 {t(showOriginal ? "docs.showTranslation" : "docs.showEnglish")}

@@ -128,7 +128,7 @@ Un progetto potrà modificare queste soglie tramite un futuro file di configuraz
 
 ## Coesione prima della dimensione {#cohesion-over-size}
 
-### PL-STRUCT-003 — Coesione prima della dimensione (Zusammengehörigkeit vor Zeilenbegrenzung) {#pl-struct-003--cohesion-over-size-zusammengehörigkeit-vor-zeilenbegrenzung} {#pl-struct-003--cohesion-over-size-zusammengehörigkeit-vor-zeilenbegrenzung}
+### PL-STRUCT-003 — Coesione prima della dimensione (Zusammengehörigkeit vor Zeilenbegrenzung) {#pl-struct-003--cohesion-over-size-zusammengehörigkeit-vor-zeilenbegrenzung}
 
 > **Coesione prima della dimensione — Zusammengehörigkeit vor Zeilenbegrenzung.**
 

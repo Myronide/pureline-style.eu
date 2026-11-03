@@ -71,7 +71,9 @@ Widget build(BuildContext context) {
   }
   return ProfileDetails(user: state.user);
 }
-``` Avoid nested conditionals in widget trees.
+```
+
+Avoid nested conditionals in widget trees.
 
 ### PL-FLUT-007 — Keys Only Where List Identity Matters
 

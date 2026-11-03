@@ -71,7 +71,9 @@ Widget build(BuildContext context) {
   }
   return ProfileDetails(user: state.user);
 }
-``` Unikaj zagnieżdżonych warunków w drzewach widżetów.
+```
+
+Unikaj zagnieżdżonych warunków w drzewach widżetów.
 
 ### PL-FLUT-007 — Klucze tylko tam, gdzie liczy się tożsamość elementu listy {#pl-flut-007--keys-only-where-list-identity-matters}
 

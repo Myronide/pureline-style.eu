@@ -128,7 +128,7 @@ Un proyecto puede modificar estos umbrales mediante un futuro archivo de configu
 
 ## Cohesión antes que tamaño {#cohesion-over-size}
 
-### PL-STRUCT-003 — Cohesión antes que tamaño (Zusammengehörigkeit vor Zeilenbegrenzung) {#pl-struct-003--cohesion-over-size-zusammengehörigkeit-vor-zeilenbegrenzung} {#pl-struct-003--cohesion-over-size-zusammengehörigkeit-vor-zeilenbegrenzung} {#pl-struct-003--cohesion-over-size-zusammengehörigkeit-vor-zeilenbegrenzung} {#pl-struct-003--cohesion-over-size-zusammengehörigkeit-vor-zeilenbegrenzung}
+### PL-STRUCT-003 — Cohesión antes que tamaño (Zusammengehörigkeit vor Zeilenbegrenzung) {#pl-struct-003--cohesion-over-size-zusammengehörigkeit-vor-zeilenbegrenzung}
 
 > **Cohesión antes que tamaño — Zusammengehörigkeit vor Zeilenbegrenzung.**
 

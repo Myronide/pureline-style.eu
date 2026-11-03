@@ -128,7 +128,7 @@ Un projet pourra remplacer ces seuils via un futur fichier de configuration Pure
 
 ## Cohésion avant la taille {#cohesion-over-size}
 
-### PL-STRUCT-003 — Cohésion avant la taille (Zusammengehörigkeit vor Zeilenbegrenzung) {#pl-struct-003--cohesion-over-size-zusammengehörigkeit-vor-zeilenbegrenzung} {#pl-struct-003--cohesion-over-size-zusammengehörigkeit-vor-zeilenbegrenzung}
+### PL-STRUCT-003 — Cohésion avant la taille (Zusammengehörigkeit vor Zeilenbegrenzung) {#pl-struct-003--cohesion-over-size-zusammengehörigkeit-vor-zeilenbegrenzung}
 
 > **Cohésion avant la taille — Zusammengehörigkeit vor Zeilenbegrenzung.**
 

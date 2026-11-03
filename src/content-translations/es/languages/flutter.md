@@ -71,7 +71,9 @@ Widget build(BuildContext context) {
   }
   return ProfileDetails(user: state.user);
 }
-``` Evita los condicionales anidados en los árboles de widgets.
+```
+
+Evita los condicionales anidados en los árboles de widgets.
 
 ### PL-FLUT-007 — Keys solo donde importa la identidad de la lista {#pl-flut-007--keys-only-where-list-identity-matters}
 

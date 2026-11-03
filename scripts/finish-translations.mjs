@@ -1,7 +1,9 @@
 // Finishes the hand-written translations in src/content-translations/<locale>/:
 //  1. appends the English anchor to every heading ("## Titel {#english-title}"), so links and the rule index still resolve,
 //  2. checks that code blocks, inline code, rule IDs and link targets are identical to the English source.
-// Usage: node scripts/finish-translations.mjs [locale ...]
+//  3. records a hash of each English source in _sources.json, so the site can tell when the English text changed after the
+//     translation was made. Existing hashes are kept; pass --record to overwrite them after re-translating.
+// Usage: node scripts/finish-translations.mjs [--record] [locale ...]
 import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -9,10 +11,21 @@ import { fileURLToPath } from "node:url";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SOURCE = join(ROOT, "src/content");
 const TARGET = join(ROOT, "src/content-translations");
-const only = process.argv.slice(2);
+const args = process.argv.slice(2);
+const record = args.includes("--record");
+const only = args.filter((arg) => !arg.startsWith("--"));
+
+/** Same function as in src/content.ts. */
+function hash(text) {
+  let h = 5381;
+  for (let i = 0; i < text.length; i++) h = ((h << 5) + h + text.charCodeAt(i)) | 0;
+  return (h >>> 0).toString(16);
+}
+const SOURCES = join(TARGET, "_sources.json");
+const sources = existsSync(SOURCES) ? JSON.parse(readFileSync(SOURCES, "utf8")) : {};
 
 const slugify = (text) => text.toLowerCase().replace(/`/g, "").replace(/[^\p{L}\p{N}\s-]/gu, "").trim().replace(/\s/g, "-");
-const HEADING_ID = /\s*\{#[\w-]+\}\s*$/;
+const HEADING_ID = /(?:\s*\{#[^}\s]+\})+\s*$/;
 
 function markdownFiles(dir) {
   return readdirSync(dir).flatMap((name) => {
@@ -99,8 +112,11 @@ for (const locale of locales) {
     if (!same(sorted(ruleIds(english)), sorted(ruleIds(translated)))) note("rule IDs differ");
     if (!same(targets(english), targets(translated))) note("link targets differ");
     if (english.split("\n").length !== translated.split("\n").length) note(`line count differs (${english.split("\n").length} vs ${translated.split("\n").length})`);
+    const key = `${locale}/${rel.replace(/\.md$/, "").split("\\").join("/")}`;
+    if (record || !sources[key]) sources[key] = hash(english.replace(/\r\n/g, "\n"));
     done++;
   }
   console.log(`[${locale}] ${done}/${files.length} files finished${missing.length ? `, missing: ${missing.join(", ")}` : ""}`);
 }
+writeFileSync(SOURCES, JSON.stringify(Object.fromEntries(Object.entries(sources).sort()), null, 1) + "\n");
 console.log(problems ? `${problems} problems` : "no problems");

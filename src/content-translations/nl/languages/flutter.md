@@ -71,7 +71,9 @@ Widget build(BuildContext context) {
   }
   return ProfileDetails(user: state.user);
 }
-``` Vermijd geneste voorwaarden in widgetbomen.
+```
+
+Vermijd geneste voorwaarden in widgetbomen.
 
 ### PL-FLUT-007 — Keys alleen waar de identiteit in lijsten ertoe doet {#pl-flut-007--keys-only-where-list-identity-matters}
 

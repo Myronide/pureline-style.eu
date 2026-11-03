@@ -128,7 +128,7 @@ Een project mag deze drempelwaarden overschrijven via een toekomstig Pureline-co
 
 ## Samenhang boven omvang {#cohesion-over-size}
 
-### PL-STRUCT-003 — Samenhang boven omvang (Zusammengehörigkeit vor Zeilenbegrenzung) {#pl-struct-003--cohesion-over-size-zusammengehörigkeit-vor-zeilenbegrenzung} {#pl-struct-003--cohesion-over-size-zusammengehörigkeit-vor-zeilenbegrenzung}
+### PL-STRUCT-003 — Samenhang boven omvang (Zusammengehörigkeit vor Zeilenbegrenzung) {#pl-struct-003--cohesion-over-size-zusammengehörigkeit-vor-zeilenbegrenzung}
 
 > **Samenhang boven omvang — Zusammengehörigkeit vor Zeilenbegrenzung.**
 

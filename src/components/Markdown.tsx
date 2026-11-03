@@ -3,6 +3,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Link } from "react-router-dom";
 import { repoUrl, resolveLink, slugify } from "../content";
+import { useI18n } from "../i18n/context";
 import { Code } from "./Code";
 import { Icon } from "./Icon";
 
@@ -20,6 +21,7 @@ function text(node: ReactNode): string {
 }
 
 function CodeBlock({ lang, code }: { lang: string; code: string }) {
+  const { t } = useI18n();
   const [copied, setCopied] = useState(false);
   const copy = async () => {
     await navigator.clipboard.writeText(code);
@@ -32,7 +34,7 @@ function CodeBlock({ lang, code }: { lang: string; code: string }) {
         <span className="font-mono uppercase tracking-wider">{lang || "text"}</span>
         <button onClick={copy} className="flex cursor-pointer items-center gap-1.5 transition-colors hover:text-fg">
           <Icon name={copied ? "lucide:check" : "lucide:copy"} className="size-3.5" />
-          {copied ? "Copied" : "Copy"}
+          {copied ? t("code.copied") : t("code.copy")}
         </button>
       </div>
       <Code code={code} lang={lang} />
@@ -47,7 +49,7 @@ function remarkHeadingIds() {
   return (tree: MdNode) => {
     const walk = (node: MdNode) => {
       const last = node.type === "heading" ? node.children?.[node.children.length - 1] : undefined;
-      const match = last?.type === "text" && last.value ? /\s*\{#([\w-]+)\}\s*$/.exec(last.value) : null;
+      const match = last?.type === "text" && last.value ? /\s*\{#([^}\s]+)\}\s*$/.exec(last.value) : null;
       if (last && match) {
         last.value = last.value!.slice(0, match.index);
         node.data = { ...node.data, hProperties: { id: match[1] } };

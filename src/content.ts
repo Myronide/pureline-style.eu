@@ -63,7 +63,7 @@ export function resolveLink(fromSlug: string, href: string): string | null {
   return docPath(slug) + (hash ? `#${hash}` : "");
 }
 
-export const HEADING_ID = /\s*\{#([\w-]+)\}\s*$/;
+export const HEADING_ID = /\s*\{#([^}\s]+)\}\s*$/;
 
 export function headings(body: string) {
   return [...body.matchAll(/^(##|###)\s+(.+)$/gm)].map((m) => {
@@ -134,13 +134,28 @@ export const SHOW_MACHINE_TRANSLATIONS = true;
 /** Hand-checked translations (src/content-translations/<locale>/). They win over the machine translations. */
 const manualDocs = import.meta.glob("./content-translations/**/*.md", { query: "?raw", import: "default", eager: true }) as Record<string, string>;
 
+const sourceHashes = Object.values(import.meta.glob<Record<string, string>>("./content-translations/_sources.json", { import: "default", eager: true }))[0] ?? {};
+
+/** Same function as in scripts/finish-translations.mjs. */
+function hash(text: string): string {
+  let h = 5381;
+  for (let i = 0; i < text.length; i++) h = ((h << 5) + h + text.charCodeAt(i)) | 0;
+  return (h >>> 0).toString(16);
+}
+
+/** True when the English page changed after its translation was written. */
+export function translationStale(doc: Doc, locale: string): boolean {
+  const recorded = sourceHashes[`${locale}/${doc.slug}`];
+  return recorded !== undefined && recorded !== hash(doc.body.replace(/\r\n/g, "\n"));
+}
+
 export function manualBody(slug: string, locale: string): string | null {
   return manualDocs[`./content-translations/${locale}/${slug}.md`] ?? null;
 }
 
 /** The page title in a locale: the first heading of the translation, or the English title. */
 export function docTitle(doc: Doc, locale: string): string {
-  const translated = locale === "en" ? null : manualBody(doc.slug, locale)?.match(/^#\s+(.+?)(?:\s*\{#[\w-]+\})?\s*$/m)?.[1];
+  const translated = locale === "en" ? null : manualBody(doc.slug, locale)?.match(/^#\s+(.+?)(?:\s*\{#[^}\s]+\})?\s*$/m)?.[1];
   return translated ?? doc.title;
 }
 
