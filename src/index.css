@@ -1,6 +1,35 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+@font-face {
+  font-family: "JetBrains Mono Nerd";
+  src: url("./fonts/jetbrains-mono-nerd-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono Nerd";
+  src: url("./fonts/jetbrains-mono-nerd-400-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono Nerd";
+  src: url("./fonts/jetbrains-mono-nerd-500.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono Nerd";
+  src: url("./fonts/jetbrains-mono-nerd-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --color-bg: #09090f;
   --color-surface: #0f0f18;
@@ -12,33 +41,37 @@
   --color-blue: #3b6bff;
   --color-accent: #22d3ee;
   --color-warn: #f87171;
-  --font-sans: ui-sans-serif, system-ui, "Inter", "Segoe UI", sans-serif;
-  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
-  --font-mono: ui-monospace, "JetBrains Mono", "Fira Code", "SF Mono", Menlo, monospace;
+  --font-sans: "JetBrains Mono Nerd", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-mono: "JetBrains Mono Nerd", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 @layer base {
   html { scroll-behavior: smooth; color-scheme: dark; }
-  body { @apply bg-bg font-sans text-fg antialiased; line-height: 1.65; }
+  body { @apply bg-bg font-sans text-fg antialiased text-[15px] leading-[1.7]; font-feature-settings: "calt" 1, "liga" 1; }
   * {
     scrollbar-width: thin;
     scrollbar-color: var(--color-line) transparent;
   }
   *:hover { scrollbar-color: #3a3a5c transparent; }
   ::selection { background: color-mix(in srgb, var(--color-accent) 30%, transparent); }
-  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; border-radius: 2px; }
+  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; border-radius: 4px; }
+}
+
+/* A floating panel: the one surface the site uses for grouping. */
+@utility island {
+  @apply rounded-2xl border border-line/80 bg-surface/90 shadow-[0_18px_50px_-22px_rgb(0_0_0/0.8)];
 }
 
 @utility display {
-  font-family: var(--font-display);
-  letter-spacing: -0.015em;
+  @apply font-bold tracking-[-0.03em];
 }
+
 @utility brand-gradient {
   background-image: linear-gradient(100deg, var(--color-violet), var(--color-blue) 55%, var(--color-accent));
 }
 
 .doc {
-  --tw-prose-body: #d6d6e4;
+  --tw-prose-body: #cfcfe0;
   --tw-prose-headings: var(--color-fg);
   --tw-prose-bold: var(--color-fg);
   --tw-prose-links: var(--color-accent);
@@ -50,31 +83,31 @@
   --tw-prose-th-borders: var(--color-line);
   --tw-prose-td-borders: var(--color-line);
   --tw-prose-code: var(--color-fg);
+  font-size: 15px;
 }
 
-.doc :where(h1, h2, h3) { font-family: var(--font-display); letter-spacing: -0.015em; }
-.doc :where(h1) { @apply text-4xl font-semibold; line-height: 1.1; }
-.doc :where(h2) { @apply mt-16 text-2xl font-semibold; line-height: 1.25; }
-.doc :where(h3) { @apply mt-10 text-lg font-semibold; }
-.doc :where(h2, h3, h4) { scroll-margin-top: 5rem; }
-.doc :where(p, li) { max-width: 68ch; }
-.doc :where(ul, ol) { max-width: 68ch; }
+.doc :where(h1, h2, h3) { @apply display; }
+.doc :where(h1) { @apply text-4xl; line-height: 1.12; }
+.doc :where(h2) { @apply mt-16 text-2xl; line-height: 1.25; }
+.doc :where(h3) { @apply mt-10 text-lg; }
+.doc :where(h2, h3, h4) { scroll-margin-top: 6rem; }
+.doc :where(p, li, ul, ol) { max-width: 72ch; }
 .doc :where(code):not(pre code)::before,
 .doc :where(code):not(pre code)::after { content: none; }
 .doc :where(code):not(pre code) {
-  @apply rounded-sm bg-raised px-1.5 py-px text-[0.85em];
+  @apply rounded-md border border-line bg-raised px-1.5 py-px text-[0.86em];
   color: var(--color-fg);
 }
 .doc :where(a) { @apply no-underline underline-offset-4 decoration-accent/40 hover:underline; }
 .doc :where(table) { @apply text-sm; }
 .doc :where(th) { @apply text-muted font-medium; }
-.doc :where(pre) { @apply rounded-lg border border-line bg-surface; }
+.doc :where(pre) { @apply rounded-xl border border-line bg-surface; }
 
 .shiki-wrap {
-  @apply overflow-hidden rounded-lg border border-line bg-surface;
+  @apply overflow-hidden rounded-xl border border-line bg-surface;
 }
 .shiki-wrap .shiki {
-  @apply overflow-x-auto p-5 font-mono text-[13px] leading-[1.7];
+  @apply overflow-x-auto p-5 font-mono text-[13px] leading-[1.75];
   background: transparent !important;
 }
 .shiki-wrap .shiki code { font: inherit; }

@@ -54,7 +54,7 @@ export function Home() {
     <>
       <section className="mx-auto max-w-6xl px-6 pb-24 pt-28 sm:pt-36">
         <p className="mb-6 text-sm text-muted">Specification 1.7 · Linear flow, explicit intent</p>
-        <h1 className="display max-w-4xl text-[clamp(3rem,8vw,6.25rem)] font-medium leading-[0.98]">
+        <h1 className="display max-w-4xl text-[clamp(2.75rem,7vw,5.5rem)] leading-[1.02]">
           Code without noise.
         </h1>
         <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted">
@@ -75,18 +75,18 @@ export function Home() {
 
       <section className="mx-auto max-w-6xl px-6 pb-28">
         <div className="mb-10 max-w-xl">
-          <h2 className="display text-3xl font-medium">Same behaviour, less noise.</h2>
+          <h2 className="display text-3xl">Same behaviour, less noise.</h2>
           <p className="mt-3 text-muted">Both versions validate the same two conditions and pay the same way. Only one of them reads top to bottom.</p>
         </div>
-        <div className="grid gap-10 md:grid-cols-2 md:gap-8">
+        <div className="island grid gap-10 p-6 sm:p-8 md:grid-cols-2 md:gap-8">
           <Compare label="Noisy" tone="bad" code={noisy} />
           <Compare label="Pureline" tone="good" code={pure} />
         </div>
       </section>
 
       <section className="mx-auto max-w-6xl px-6 pb-28">
-        <h2 className="display mb-12 text-3xl font-medium">Six principles</h2>
-        <dl className="grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+        <h2 className="display mb-8 text-3xl">Six principles</h2>
+        <dl className="island grid gap-x-12 gap-y-10 p-8 sm:grid-cols-2 lg:grid-cols-3">
           {principles.map((p) => (
             <div key={p.title} className="border-t border-line pt-6">
               <dt className="display text-xl">{p.title}</dt>
@@ -99,14 +99,14 @@ export function Home() {
       <section className="mx-auto max-w-6xl px-6 pb-32">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h2 className="display text-3xl font-medium">Language profiles</h2>
+            <h2 className="display text-3xl">Language profiles</h2>
             <p className="mt-3 text-muted">Every profile stays idiomatic for its language.</p>
           </div>
           <Link to={docPath("languages/README")} className="text-sm text-muted transition-colors hover:text-fg">All profiles</Link>
         </div>
-        <ul className="grid border-t border-line sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="island grid px-6 sm:grid-cols-2 sm:px-8 lg:grid-cols-3">
           {languageDocs.map((d) => (
-            <li key={d.slug} className="border-b border-line">
+            <li key={d.slug} className="border-b border-line/70 last:border-b-0 sm:[&:nth-last-child(2)]:border-b-0">
               <Link to={docPath(d.slug)} className="group flex items-center justify-between py-4 pr-2 transition-colors hover:text-accent">
                 <span className="font-medium">{shortTitle(d)}</span>
                 <Icon name="lucide:arrow-up-right" className="size-4 text-muted transition-colors group-hover:text-accent" />

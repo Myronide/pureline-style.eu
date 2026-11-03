@@ -16,8 +16,8 @@ export function Docs() {
   const next = all[i + 1];
 
   return (
-    <div className="mx-auto grid max-w-6xl gap-12 px-6 py-14 lg:grid-cols-[13rem_minmax(0,1fr)] xl:grid-cols-[13rem_minmax(0,1fr)_12rem]">
-      <aside className="lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:self-start lg:overflow-y-auto">
+    <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[13rem_minmax(0,1fr)] xl:grid-cols-[13rem_minmax(0,1fr)_12rem]">
+      <aside className="island p-5 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:self-start lg:overflow-y-auto">
         {nav.map((g) => (
           <div key={g.label} className="mb-8">
             <p className="display mb-3 text-[15px] text-fg">{g.label}</p>
@@ -50,7 +50,7 @@ export function Docs() {
       </article>
 
       {toc.length > 1 && (
-        <aside className="hidden xl:sticky xl:top-20 xl:block xl:max-h-[calc(100vh-6rem)] xl:self-start xl:overflow-y-auto">
+        <aside className="island hidden p-5 xl:sticky xl:top-24 xl:block xl:max-h-[calc(100vh-7rem)] xl:self-start xl:overflow-y-auto">
           <p className="display mb-3 text-[15px] text-fg">On this page</p>
           <ul className="space-y-1.5 border-l border-line text-sm">
             {toc.map((h) => (
