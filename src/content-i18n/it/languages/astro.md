@@ -49,6 +49,19 @@ Render HTML without JavaScript unless the component must respond to the user or 
 - Maps over lists with a stable `key` when the list is interactive.
 - Do not nest more than two expression levels inside the markup. Move the inner part to a component.
 
+Keep a short formatting expression in the template when it is used once
+and reads clearly at the point of use.
+
+```text
+Named frontmatter value                         │ ✓ Pureline
+---                                             │ ---
+const { title } = Astro.props;                  │ const { title } = Astro.props;
+const displayTitle = title.trim() || "Profil";  │ ---
+---                                             │
+                                                │ <h1>{title.trim() || "Profil"}</h1>
+<h1>{displayTitle}</h1>                         │
+```
+
 ### PL-AS-005 — Styles Are Scoped
 
 Usare i blocchi `<style>` nel componente per impostazione predefinita; Astro li controlla automaticamente. Usa `is:global` solo per regole a livello di documento come i tag a tema o a tessere, e conserva quelle in un foglio di stile globale.

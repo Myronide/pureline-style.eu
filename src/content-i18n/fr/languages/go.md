@@ -25,6 +25,18 @@ return session, nil
 
 Cela correspond naturellement à la philosophie de Pureline en première garde.
 
+When the caller would otherwise lack the operation's context, wrap the
+error with `%w` to preserve the underlying cause.
+
+```text
+− Without operation context       │ ✓ Pureline
+                                  │
+data, err := os.ReadFile(path)    │ data, err := os.ReadFile(path)
+if err != nil {                   │ if err != nil {
+    return nil, err               │     return nil, fmt.Errorf("load config: %w", err)
+}                                 │ }
+```
+
 ### PL-GO-002 — Évitez les branches `else` après la nomination
 
 Évitez:

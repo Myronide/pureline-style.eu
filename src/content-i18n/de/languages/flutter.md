@@ -71,7 +71,22 @@ Widget build(BuildContext context) {
   }
   return ProfileDetails(user: state.user);
 }
-``` Avoid nested conditionals in widget trees.
+```
+
+Avoid nested conditionals in widget trees.
+
+Use a collection `if` when only one child is conditional and the rest of
+the list is shared.
+
+```text
+− Two child lists                            │ ✓ Pureline
+return Column(                               │ return Column(
+  children: showDetails                      │   children: [
+      ? [const TitleBar(), const Details()]  │     const TitleBar(),
+      : [const TitleBar()],                  │     if (showDetails) const Details(),
+);                                           │   ],
+                                             │ );
+```
 
 ### PL-FLUT-007 — Keys Only Where List Identity Matters
 

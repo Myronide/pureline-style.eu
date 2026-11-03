@@ -28,6 +28,18 @@ Use lowercase element and attribute names, double quotes for attribute values, a
 
 Ogni ingresso ha uno `<label>` visibile associato a `for` e `id`, o avvolge l'ingresso.. Placeholder text is not a label. Controlli relativi al gruppo con `<fieldset>` e `<legend>`...
 
+Prefer a wrapping label when the label text and input belong together in
+the markup. Use an explicit `for` and `id` association when they need to be
+separate.
+
+```text
+Explicit association                        │ ✓ Pureline
+<label for="email">E-Mail</label>           │ <label>
+<input id="email" name="email" type="email"> │     E-Mail
+                                            │     <input name="email" type="email">
+                                            │ </label>
+```
+
 ### PL-HTML-005. Le immagini e i media hanno alternative di testo
 
 Ogni `<img>` ha un attributo `alt`: a description for informative images, an empty `alt=""` for decorative ones. Give `width` and `height` to prevent layout shift. Videos provide captions through `<track>`.

@@ -43,6 +43,18 @@ let Some(session) = sessions.get(&id) else {
 session.start()
 ```
 
+```text
+− Noisy                                       │ ✓ Pureline
+                                              │
+fn display_name(user: Option<&User>) -> &str { │ fn display_name(user: Option<&User>) -> &str {
+    match user {                              │     let Some(user) = user else {
+        Some(user) => user.name.as_str(),     │         return "Gast";
+        None => "Gast",                       │     };
+    }                                         │
+}                                             │     user.name.as_str()
+                                              │ }
+```
+
 ### PL-RS-003 — bevorzugt `Result`, `Option` und `?`
 
 - Erwartete Fehler mit `Result<T, E>` darstellen.

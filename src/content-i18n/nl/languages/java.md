@@ -133,6 +133,19 @@ streams
 
 Moderne syntaxis moet het geluid verminderen, geen nieuwigheid creëren om zijn eigen bestwil.
 
+Prefer an `instanceof` pattern when a guard checks a type and the success
+path needs the value as that type.
+
+```text
+− Separate cast                      │ ✓ Pureline
+if (!(value instanceof String)) {   │ if (!(value instanceof String text)) {
+    return "";                       │     return "";
+}                                    │ }
+                                     │
+String text = (String) value;        │ return text.trim();
+return text.trim();                  │
+```
+
 ### PL-JAVA-007. Liever wisselen voor Real State Branching
 
 Voorkeur:

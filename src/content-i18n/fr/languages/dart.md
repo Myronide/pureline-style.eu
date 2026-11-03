@@ -49,6 +49,20 @@ final class Session {
 - Named arguments make call sites explicit (PL-CORE-007).
 - Use positional parameters only for obvious, single-value helpers.
 
+Named parameters distinguish same-type arguments at the call site.
+
+```text
+− Positional parameters                │ ✓ Pureline
+void resize(int width, int height) {   │ void resize({
+  // …                                 │   required int width,
+}                                      │   required int height,
+                                       │ }) {
+resize(1920, 1080);                    │   // …
+                                       │ }
+                                       │
+                                       │ resize(width: 1920, height: 1080);
+```
+
 ### PL-DART-004 — Async Code Uses `Future` and `Stream` for Their Purpose
 
 Use `Future` for one result and `Stream` for a sequence of events. Use `async` and `await` instead of chained `.then`.

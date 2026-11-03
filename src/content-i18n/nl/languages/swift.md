@@ -47,6 +47,18 @@ func open(_ request: Request) throws -> Session {
 }
 ```
 
+Prefer `guard let` when a missing value ends the function and the unwrapped
+value belongs to the success path.
+
+```text
+− if let                              │ ✓ Pureline
+if let user = users[id] {             │ guard let user = users[id] else {
+    return user.name                  │     return "Gast"
+}                                     │ }
+                                      │
+return "Gast"                         │ return user.name
+```
+
 ### PL-SW-005 — Optionals Are Unwrapped Safely
 
 - Unwrap with `if let` or `guard let`; use `??` for simple defaults. Never force-unwrap (`!`) or `try!` outside tests; there, use `XCTUnwrap`.

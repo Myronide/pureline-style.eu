@@ -17,23 +17,18 @@ Aplicar las [reglas compartidas](../README.md#shared-rules) junto con este perfi
 
 Validar primero, volver o elevar temprano, y mantener el camino acertado en la sangría de la base.
 
-```python
-def open_session(request: Request) -> Session:
-    if not request.is_valid():
-        raise InvalidRequestError(request)
-
-    user = request.user
-    if user is None:
-        raise MissingUserError()
-
-    return Session.open(user)
+```text
+− Noisy                                      │ ✓ Pureline
+                                             │
+def display_name(user: User | None) -> str:   │ def display_name(user: User | None) -> str:
+    if user is not None:                     │     if user is None or not user.active:
+        if user.active:                      │         return "Gast"
+            return user.name                 │
+                                             │     return user.name
+    return "Gast"                            │
 ```
 
 Se permite un protector de una línea cuando el cuerpo es un solo `return` o `raise`. No utilice cuerpos de una línea para declaraciones con efectos secundarios.
-
-```python
-if user is None: raise MissingUserError()   # not Pureline: the body is hidden on the header line
-```
 
 ### PL-PY-003 — Tipo de colchas en límites
 

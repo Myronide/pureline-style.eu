@@ -52,6 +52,17 @@ export function UserPanel({ query }: UserPanelProps) {
 
 Vermeiden Sie verschachtelte Tennare in JSX. Compute the branch into a named constant or return it from a guard. A single ternary for a simple two-way choice inside JSX is allowed.
 
+```text
+− Conditional JSX                            │ ✓ Pureline
+function Profile({ user }: ProfileProps) {   │ function Profile({ user }: ProfileProps) {
+    return user === null                     │     if (user === null) {
+        ? <SignInPrompt />                   │         return <SignInPrompt />;
+        : <ProfileCard user={user} />;       │     }
+}                                            │
+                                             │     return <ProfileCard user={user} />;
+                                             │ }
+```
+
 ### PL-REACT-003 — Hooks Are Unconditional and Top-Level
 
 - Call hooks at the top level of a component or custom hook, in the same order on every render. Never inside a condition, loop, or nested function.

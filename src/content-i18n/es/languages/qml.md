@@ -65,6 +65,24 @@ function submit() {
 
 Una unión tiene una expresión de a lo sumo una condicional y una llamada corta. Mover la lógica más larga a una función con nombre o un objeto de motor C++ / Python. Nested ternaries are not Pureline.
 
+Keep a short binding on the property that uses it. Name the condition
+when multiple controls share it.
+
+```text
+Named property                          │ ✓ Pureline
+Item {                                  │ Item {
+    id: root                            │     id: root
+                                        │
+    readonly property bool canSave:     │     Button {
+        form.valid && !form.saving      │         text: qsTr("Save")
+                                        │         enabled: form.valid
+    Button {                            │             && !form.saving
+        text: qsTr("Save")              │     }
+        enabled: root.canSave           │ }
+    }                                   │
+}                                       │
+```
+
 ### PL-QML-007 — Orden de propiedad agrupa el objeto
 
 Escriba las propiedades de un objeto en este orden, con una línea en blanco entre grupos: identidad (`id`), propiedades requeridas y públicas, fijaciones, objetos hijos, manejadores de señales, funciones.

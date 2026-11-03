@@ -133,6 +133,19 @@ streams
 
 Modern syntax should reduce noise, not create novelty for its own sake.
 
+Prefer an `instanceof` pattern when a guard checks a type and the success
+path needs the value as that type.
+
+```text
+− Separate cast                      │ ✓ Pureline
+if (!(value instanceof String)) {   │ if (!(value instanceof String text)) {
+    return "";                       │     return "";
+}                                    │ }
+                                     │
+String text = (String) value;        │ return text.trim();
+return text.trim();                  │
+```
+
 ### PL-JAVA-007 — Prefer Switch for Real State Branching
 
 Preferred:

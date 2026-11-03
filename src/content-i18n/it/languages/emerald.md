@@ -94,6 +94,16 @@ public data class Coordinate(Int x, Int y);
 
 Emerald's data-class generation includes a constructor, `equals`, `toString`, `copy`, and `withX` methods where applicable. Do not assume Emvus-only data-class features such as named-argument `copy`, generated `hashCode`, or Emvus destructuring are already part of Emerald.
 
+Use literals directly when the constructor and arguments make the value
+immediately clear, as with the origin.
+
+```text
+Intermediate values                                 │ ✓ Pureline
+Int originX = 0;                                    │ Coordinate origin = Coordinate(0, 0);
+Int originY = 0;                                    │
+Coordinate origin = Coordinate(originX, originY);   │
+```
+
 ### PL-EMS-008. Usare macro solo per astrazioni in tempo reale
 
 Emerald's AST macro system is appropriate for repetitive structural generation, not for disguising ordinary program logic.

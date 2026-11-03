@@ -40,6 +40,20 @@ De volgorde van de lagen één keer aangeven: `@layer reset, base, components, u
 
 Stijl met enkele lessen. Niet stylen met element kettingen (`div section ul li a`) of id's. Specificiteit die groeit met de markup maakt later veranderingen duur. Een keuze die dieper is dan twee niveaus is een beoordelings-vinding.
 
+Prefer a dedicated class when the element's style should apply independently
+of its position in the component.
+
+```text
+− Descendant selector                  │ ✓ Pureline
+.card .title {                         │ .card-title {
+    font-weight: 600;                  │     font-weight: 600;
+}                                      │ }
+                                       │
+<div class="card">                     │ <div class="card">
+    <h2 class="title">Profil</h2>       │     <h2 class="card-title">Profil</h2>
+</div>                                 │ </div>
+```
+
 ### PL-CSS-004. Geen `!important` buiten nutsbedrijven
 
 `!important` is alleen toegestaan voor nutsklassen die een component moeten overschrijven, en alleen in de nutslaag. Het is overal een vondst.

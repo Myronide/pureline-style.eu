@@ -49,6 +49,19 @@ Render HTML ohne JavaScript, es sei denn, die Komponente muss auf den Benutzer r
 - Karten über Listen mit einem stabilen `key`, wenn die Liste interaktiv ist.
 - Nisten Sie nicht mehr als zwei Expressionsebenen innerhalb des Markups. Verschieben Sie den inneren Teil auf eine Komponente...
 
+Keep a short formatting expression in the template when it is used once
+and reads clearly at the point of use.
+
+```text
+Named frontmatter value                         │ ✓ Pureline
+---                                             │ ---
+const { title } = Astro.props;                  │ const { title } = Astro.props;
+const displayTitle = title.trim() || "Profil";  │ ---
+---                                             │
+                                                │ <h1>{title.trim() || "Profil"}</h1>
+<h1>{displayTitle}</h1>                         │
+```
+
 ### PL-AS-005 — Styles Are Scoped
 
 Verwenden Sie `<style>`-Blöcke in der Komponente standardmäßig; Astro Scopes sie automatisch. Verwenden Sie `is:global` nur für dokumentweite Regeln wie Reset oder Theme Token und halten Sie diese in einem globalen Stylesheet.

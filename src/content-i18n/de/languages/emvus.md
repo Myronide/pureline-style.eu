@@ -133,6 +133,17 @@ method showPort(Int port) {
 - Verwerfen Sie kein `Result` oder verstecken Sie das erwartete Versagen hinter `panic`.
 - Halten Sie `success`, `fail` und `return` getrennt, anstatt jede Operation unnötig zu wickeln.
 
+Prefer `?` when forwarding the error unchanged and the enclosing method's
+result type accepts it.
+
+```text
+Explicit result branches                │ ✓ Pureline
+switch (validatePort(port)) {            │ Int validPort = validatePort(port)?
+    success(value) -> success value     │ success validPort
+    error(problem) -> fail problem      │
+}                                       │
+```
+
 ### PL-EV-008 — Mit `scoped` die Lebensdauer der Ressource sichtbar machen
 
 Verwenden Sie Emvus `scoped`-Konstrukt für Ressourcen, die geschlossen werden müssen, wenn ihr Umfang endet.

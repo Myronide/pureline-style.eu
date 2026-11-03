@@ -40,6 +40,20 @@ Declarar el orden de las capas una vez: `@layer reset, base, components, utiliti
 
 Estilo con clases individuales.. No teclee con cadenas de elementos (`div section ul li a`) o ids. La especificidad que crece con el margen de beneficio hace que los cambios posteriores sean caros. Un selector más profundo que dos niveles es un hallazgo de revisión.
 
+Prefer a dedicated class when the element's style should apply independently
+of its position in the component.
+
+```text
+− Descendant selector                  │ ✓ Pureline
+.card .title {                         │ .card-title {
+    font-weight: 600;                  │     font-weight: 600;
+}                                      │ }
+                                       │
+<div class="card">                     │ <div class="card">
+    <h2 class="title">Profil</h2>       │     <h2 class="card-title">Profil</h2>
+</div>                                 │ </div>
+```
+
 ### PL-CSS-004 — No `!important` fuera de los servicios públicos
 
 `!important` está permitido sólo para las clases de utilidad que deben anular un componente, y sólo en la capa de utilidades. En cualquier otro lugar es un hallazgo.

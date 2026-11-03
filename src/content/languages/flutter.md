@@ -75,6 +75,19 @@ Widget build(BuildContext context) {
 
 Avoid nested conditionals in widget trees.
 
+Use a collection `if` when only one child is conditional and the rest of
+the list is shared.
+
+```text
+− Two child lists                            │ ✓ Pureline
+return Column(                               │ return Column(
+  children: showDetails                      │   children: [
+      ? [const TitleBar(), const Details()]  │     const TitleBar(),
+      : [const TitleBar()],                  │     if (showDetails) const Details(),
+);                                           │   ],
+                                             │ );
+```
+
 ### PL-FLUT-007 — Keys Only Where List Identity Matters
 
 Give a key only when a widget's identity must survive reordering or removal, such as stateful list items or a `Dismissible`. Use a stable identifier from the data, never the list index.

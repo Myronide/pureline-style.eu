@@ -65,6 +65,24 @@ function submit() {
 
 Eine Bindung hält höchstens einen Ausdruck von bedingtem und kurzer Anruf. Längere Logik in eine benannte Funktion oder ein C++ / Python Backend Objekt verschieben. Verschachtelte Tenarien sind nicht Pureline.
 
+Keep a short binding on the property that uses it. Name the condition
+when multiple controls share it.
+
+```text
+Named property                          │ ✓ Pureline
+Item {                                  │ Item {
+    id: root                            │     id: root
+                                        │
+    readonly property bool canSave:     │     Button {
+        form.valid && !form.saving      │         text: qsTr("Save")
+                                        │         enabled: form.valid
+    Button {                            │             && !form.saving
+        text: qsTr("Save")              │     }
+        enabled: root.canSave           │ }
+    }                                   │
+}                                       │
+```
+
 ### PL-QML-007 — Property Order Groups the Object
 
 Write the properties of an object in this order, with a blank line between groups: identity (`id`), required and public properties, bindings, child objects, signal handlers, functions.

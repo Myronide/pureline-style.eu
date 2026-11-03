@@ -65,6 +65,24 @@ function submit() {
 
 A binding holds one expression of at most one conditional and a short call. Move longer logic into a named function or a C++ / Python backend object. Nested ternaries are not Pureline.
 
+Keep a short binding on the property that uses it. Name the condition
+when multiple controls share it.
+
+```text
+Named property                          │ ✓ Pureline
+Item {                                  │ Item {
+    id: root                            │     id: root
+                                        │
+    readonly property bool canSave:     │     Button {
+        form.valid && !form.saving      │         text: qsTr("Save")
+                                        │         enabled: form.valid
+    Button {                            │             && !form.saving
+        text: qsTr("Save")              │     }
+        enabled: root.canSave           │ }
+    }                                   │
+}                                       │
+```
+
 ### PL-QML-007 — Property Order Groups the Object
 
 Write the properties of an object in this order, with a blank line between groups: identity (`id`), required and public properties, bindings, child objects, signal handlers, functions.

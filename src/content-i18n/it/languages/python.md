@@ -17,23 +17,18 @@ Apply the [shared core rules](../README.md#shared-rules) together with this prof
 
 Validate first, return or raise early, and keep the successful path at the base indentation.
 
-```python
-def open_session(request: Request) -> Session:
-    if not request.is_valid():
-        raise InvalidRequestError(request)
-
-    user = request.user
-    if user is None:
-        raise MissingUserError()
-
-    return Session.open(user)
+```text
+− Noisy                                      │ ✓ Pureline
+                                             │
+def display_name(user: User | None) -> str:   │ def display_name(user: User | None) -> str:
+    if user is not None:                     │     if user is None or not user.active:
+        if user.active:                      │         return "Gast"
+            return user.name                 │
+                                             │     return user.name
+    return "Gast"                            │
 ```
 
 A one-line guard is allowed when the body is a single `return` or `raise`. Do not use one-line bodies for statements with side effects.
-
-```python
-if user is None: raise MissingUserError()   # not Pureline: the body is hidden on the header line
-```
 
 ### PL-PY-003 — Type Hints at Boundaries
 

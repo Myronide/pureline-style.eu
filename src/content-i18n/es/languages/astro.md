@@ -49,6 +49,19 @@ Renderizar HTML sin JavaScript a menos que el componente deba responder al usuar
 - Mapas sobre listas con un `key` estable cuando la lista es interactiva.
 - No anidar más de dos niveles de expresión dentro del marcado. Mueva la parte interna a un componente.
 
+Keep a short formatting expression in the template when it is used once
+and reads clearly at the point of use.
+
+```text
+Named frontmatter value                         │ ✓ Pureline
+---                                             │ ---
+const { title } = Astro.props;                  │ const { title } = Astro.props;
+const displayTitle = title.trim() || "Profil";  │ ---
+---                                             │
+                                                │ <h1>{title.trim() || "Profil"}</h1>
+<h1>{displayTitle}</h1>                         │
+```
+
 ### PL-AS-005 — Los estilos están al alcance de la mano
 
 Utilice los bloques `<style>` en el componente por defecto; Astro los visorea automáticamente. Utilice `is:global` sólo para reglas de todo el documento como restablecer o tokens del tema, y mantenga los en una hoja de estilo global.

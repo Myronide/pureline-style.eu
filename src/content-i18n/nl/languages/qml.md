@@ -65,6 +65,24 @@ function submit() {
 
 Een binding houdt één uitdrukking van ten hoogste één voorwaardelijke en een korte oproep. Verplaats langere logica naar een genoemde functie of een C++ / Python backend object. Genesteerde sternen zijn geen Pureline.
 
+Keep a short binding on the property that uses it. Name the condition
+when multiple controls share it.
+
+```text
+Named property                          │ ✓ Pureline
+Item {                                  │ Item {
+    id: root                            │     id: root
+                                        │
+    readonly property bool canSave:     │     Button {
+        form.valid && !form.saving      │         text: qsTr("Save")
+                                        │         enabled: form.valid
+    Button {                            │             && !form.saving
+        text: qsTr("Save")              │     }
+        enabled: root.canSave           │ }
+    }                                   │
+}                                       │
+```
+
 ### PL-QML-007. Objectvolgorde groepen het object
 
 Schrijf de eigenschappen van een object in deze volgorde, met een lege regel tussen groepen: identiteit (`id`), vereiste en publieke eigenschappen, bindingen, kind objecten, signaalverwerkers, functies.

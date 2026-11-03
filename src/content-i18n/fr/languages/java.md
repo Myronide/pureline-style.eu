@@ -133,6 +133,19 @@ streams
 
 La syntaxe moderne devrait réduire le bruit, et non créer de la nouveauté pour son propre bien.
 
+Prefer an `instanceof` pattern when a guard checks a type and the success
+path needs the value as that type.
+
+```text
+− Separate cast                      │ ✓ Pureline
+if (!(value instanceof String)) {   │ if (!(value instanceof String text)) {
+    return "";                       │     return "";
+}                                    │ }
+                                     │
+String text = (String) value;        │ return text.trim();
+return text.trim();                  │
+```
+
 ### PL-JAVA-007 — Commutateur de préférence pour la branchement d'État réel
 
 Préféré:

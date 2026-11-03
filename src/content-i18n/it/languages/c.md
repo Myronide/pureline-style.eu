@@ -67,6 +67,23 @@ cleanup:
 }
 ```
 
+For a single resource with two simple return paths, prefer closing it
+directly at each return. A shared cleanup label is useful as cleanup grows.
+
+```text
+Shared cleanup label              │ ✓ Pureline
+int status = read_header(file);   │ int status = read_header(file);
+if (status != OK) {               │ if (status != OK) {
+    goto cleanup;                 │     fclose(file);
+}                                 │     return status;
+                                  │ }
+status = read_body(file);         │
+                                  │ status = read_body(file);
+cleanup:                          │ fclose(file);
+    fclose(file);                 │ return status;
+    return status;                │
+```
+
 ### PL-C-005 — Const Correctness and Explicit State
 
 Read-only parameters are `const`, locals assigned once are `const`, and runtime state is passed explicitly in a context struct instead of file-scope variables.

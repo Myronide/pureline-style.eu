@@ -17,23 +17,18 @@ Pas de [shared core rules](../README.md#shared-rules) toe samen met dit profiel.
 
 Valideer eerst, keer terug of verhoog vroeg, en houd het succesvolle pad bij de basis inspringing.
 
-```python
-def open_session(request: Request) -> Session:
-    if not request.is_valid():
-        raise InvalidRequestError(request)
-
-    user = request.user
-    if user is None:
-        raise MissingUserError()
-
-    return Session.open(user)
+```text
+− Noisy                                      │ ✓ Pureline
+                                             │
+def display_name(user: User | None) -> str:   │ def display_name(user: User | None) -> str:
+    if user is not None:                     │     if user is None or not user.active:
+        if user.active:                      │         return "Gast"
+            return user.name                 │
+                                             │     return user.name
+    return "Gast"                            │
 ```
 
 Een one-line bewaker is toegestaan als het lichaam een enkele `return` of `raise` is. Gebruik geen one-line lichamen voor verklaringen met bijwerkingen.
-
-```python
-if user is None: raise MissingUserError()   # not Pureline: the body is hidden on the header line
-```
 
 ### PL-PY-003. Type hints op grenzen
 

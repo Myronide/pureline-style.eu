@@ -52,6 +52,17 @@ export function UserPanel({ query }: UserPanelProps) {
 
 Evite las tumbas anidadas en JSX. Perforar la rama en una constante llamada o devolverla de un guardia. Se permite una sola opción de dos vías en JSX.
 
+```text
+− Conditional JSX                            │ ✓ Pureline
+function Profile({ user }: ProfileProps) {   │ function Profile({ user }: ProfileProps) {
+    return user === null                     │     if (user === null) {
+        ? <SignInPrompt />                   │         return <SignInPrompt />;
+        : <ProfileCard user={user} />;       │     }
+}                                            │
+                                             │     return <ProfileCard user={user} />;
+                                             │ }
+```
+
 ### PL-REACT-003 — Los ganchos son incondicionales y de alto nivel
 
 - Ganchos de llamada en el nivel superior de un componente o gancho personalizado, en el mismo orden en cada renderizado. Nunca dentro de una condición, asa o función anidada.

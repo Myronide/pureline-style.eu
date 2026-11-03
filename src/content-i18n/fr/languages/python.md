@@ -17,23 +17,18 @@ Appliquer les [règles de base partagées](../README.md#shared-rules) avec ce pr
 
 Valider d'abord, revenir ou lever tôt, et garder le chemin réussi à l'indentation de base.
 
-```python
-def open_session(request: Request) -> Session:
-    if not request.is_valid():
-        raise InvalidRequestError(request)
-
-    user = request.user
-    if user is None:
-        raise MissingUserError()
-
-    return Session.open(user)
+```text
+− Noisy                                      │ ✓ Pureline
+                                             │
+def display_name(user: User | None) -> str:   │ def display_name(user: User | None) -> str:
+    if user is not None:                     │     if user is None or not user.active:
+        if user.active:                      │         return "Gast"
+            return user.name                 │
+                                             │     return user.name
+    return "Gast"                            │
 ```
 
 Un garde à une ligne est autorisé lorsque le corps est un seul `return` ou `raise`. Ne pas utiliser de corps unilignes pour des déclarations avec des effets secondaires.
-
-```python
-if user is None: raise MissingUserError()   # not Pureline: the body is hidden on the header line
-```
 
 ### PL-PY-003 — Décollage de type aux limites
 

@@ -71,6 +71,16 @@ int count_long(const std::vector<std::string>& names) {
 }
 ```
 
+Prefer `const auto&` for read-only iteration when the element type is
+clear from the surrounding code.
+
+```text
+− Explicit element type           │ ✓ Pureline
+for (const User& user : users) {  │ for (const auto& user : users) {
+    print(user.name);             │     print(user.name);
+}                                 │ }
+```
+
 ### PL-CPP-005 — Small Classes with One Responsibility
 
 A class owns one coherent concept and its invariants. Keep data private and expose a narrow interface. Split classes that mix storage, pricing, persistence, or presentation. [Cohesion over Size](../core/structure.md) decides, not a line count.

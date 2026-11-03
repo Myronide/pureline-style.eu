@@ -40,6 +40,20 @@ Declare the order of layers once: `@layer reset, base, components, utilities;`. 
 
 Style with single classes. Do not style with element chains (`div section ul li a`) or ids. Specificity that grows with the markup makes later changes expensive. A selector deeper than two levels is a review finding.
 
+Prefer a dedicated class when the element's style should apply independently
+of its position in the component.
+
+```text
+− Descendant selector                  │ ✓ Pureline
+.card .title {                         │ .card-title {
+    font-weight: 600;                  │     font-weight: 600;
+}                                      │ }
+                                       │
+<div class="card">                     │ <div class="card">
+    <h2 class="title">Profil</h2>       │     <h2 class="card-title">Profil</h2>
+</div>                                 │ </div>
+```
+
 ### PL-CSS-004 — No `!important` Outside Utilities
 
 `!important` is allowed only for utility classes that must override a component, and only in the utilities layer. Anywhere else it is a finding.

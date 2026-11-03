@@ -40,6 +40,20 @@ export class CounterComponent {
 }
 ```
 
+When a template value is derived from a signal, prefer `computed()` over
+a getter that repeats the calculation on every access.
+
+```text
+Getter                               │ ✓ Pureline
+get activeCount(): number {          │ readonly activeCount = computed(() =>
+    return this.users().filter(      │     this.users().filter(
+        (user) => user.active,       │         (user) => user.active,
+    ).length;                        │     ).length,
+}                                    │ );
+                                     │
+<span>{{ activeCount }}</span>       │ <span>{{ activeCount() }}</span>
+```
+
 ### PL-NG-003 — Built-in Control Flow with `track`
 
 Use `@if`, `@for`, and `@switch`; do not use `*ngIf` or `*ngFor` in new code. Every `@for` tracks a stable identifier from the data, never `$index` for lists that can change. Use `@empty` for the empty state.

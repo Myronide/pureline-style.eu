@@ -28,6 +28,18 @@ Use nombres de elementos y atributos en minúsculas, comillas dobles para valore
 
 Cada entrada tiene un `<label>` visible asociado con `for` y `id`, o envuelve la entrada. El texto del marcador de posición no es una etiqueta. Controles relacionados con el grupo con `<fieldset>` y `<legend>`.
 
+Prefer a wrapping label when the label text and input belong together in
+the markup. Use an explicit `for` and `id` association when they need to be
+separate.
+
+```text
+Explicit association                        │ ✓ Pureline
+<label for="email">E-Mail</label>           │ <label>
+<input id="email" name="email" type="email"> │     E-Mail
+                                            │     <input name="email" type="email">
+                                            │ </label>
+```
+
 ### PL-HTML-005 — Imágenes y medios tienen alternativas de texto
 
 Cada `<img>` tiene un atributo `alt`: una descripción para imágenes informativas, un `alt=""` vacío para las decorativas. Dé `width` y `height` para evitar el cambio de diseño. Los vídeos proporcionan subtítulos a través de `<track>`.

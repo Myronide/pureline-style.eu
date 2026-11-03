@@ -52,6 +52,17 @@ export function UserPanel({ query }: UserPanelProps) {
 
 Vermijd nested ternaren in JSX. Bereken de tak in een genoemde constante of geef het terug van een bewaker. Een enkele ternary voor een eenvoudige tweeweg keuze binnen JSX is toegestaan.
 
+```text
+− Conditional JSX                            │ ✓ Pureline
+function Profile({ user }: ProfileProps) {   │ function Profile({ user }: ProfileProps) {
+    return user === null                     │     if (user === null) {
+        ? <SignInPrompt />                   │         return <SignInPrompt />;
+        : <ProfileCard user={user} />;       │     }
+}                                            │
+                                             │     return <ProfileCard user={user} />;
+                                             │ }
+```
+
 ### PL-REACT-003. Haakjes zijn onvoorwaardelijke en topniveau
 
 - Oproephaken op het bovenste niveau van een onderdeel of aangepaste haak, in dezelfde volgorde op elke render. Nooit in een toestand, loop, of nested functie.

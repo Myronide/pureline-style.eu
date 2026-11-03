@@ -30,6 +30,18 @@ public sealed class UserProfile
 }
 ```
 
+Prefer `?.` with `??` when the only purpose of the null check is to select
+a fallback. In this example, `Name` is non-nullable.
+
+```text
+− Separate null guard            │ ✓ Pureline
+if (user is null) {              │ return user?.Name ?? "Gast";
+    return "Gast";               │
+}                                │
+                                 │
+return user.Name;                │
+```
+
 ### PL-CS-003 — Records for Immutable Data
 
 Model data that moves between layers as a `record`. Derive changed copies with `with` instead of mutating. Use a class only when the object has identity or behaviour of its own.

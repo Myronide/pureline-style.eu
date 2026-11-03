@@ -32,6 +32,17 @@ end
 
 La règle n'est pas "éviter les conditions postfixes". La règle est: utiliser le formulaire qui maintient l'intention immédiatement évidente.
 
+Prefer the postfix form for a single short check with an immediate return.
+
+```text
+Block guard                 │ ✓ Pureline
+if session.closed?          │ return if session.closed?
+  return                    │
+end                         │ session.send(packet)
+                            │
+session.send(packet)        │
+```
+
 ### PL-CR-002 — Éviter `else`
 
 Évitez:

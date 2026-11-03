@@ -65,6 +65,24 @@ function submit() {
 
 Une liaison contient une expression d'au plus un conditionnel et un appel court. Déplacer la logique plus longue dans une fonction nommée ou un objet de backend C++ / Python. Les ternaires ne sont pas Pureline.
 
+Keep a short binding on the property that uses it. Name the condition
+when multiple controls share it.
+
+```text
+Named property                          │ ✓ Pureline
+Item {                                  │ Item {
+    id: root                            │     id: root
+                                        │
+    readonly property bool canSave:     │     Button {
+        form.valid && !form.saving      │         text: qsTr("Save")
+                                        │         enabled: form.valid
+    Button {                            │             && !form.saving
+        text: qsTr("Save")              │     }
+        enabled: root.canSave           │ }
+    }                                   │
+}                                       │
+```
+
 ### PL-QML-007 — Ordre de propriété regroupe l'objet
 
 Écrivez les propriétés d'un objet dans cet ordre, avec une ligne blanche entre les groupes: identité (`id`), propriétés requises et publiques, fixations, objets pour enfants, gestionnaires de signaux, fonctions.

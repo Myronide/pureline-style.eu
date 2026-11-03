@@ -28,6 +28,18 @@ Gebruik kleine letters en attribuutnamen, dubbele aanhalingstekens voor attribuu
 
 Elke invoer heeft een zichtbare `<label>` geassocieerd met `for` en `id`, of wrapt de invoer. Plaatshoudertekst is geen label. Groepsgerelateerde controles met `<fieldset>` en `<legend>`.
 
+Prefer a wrapping label when the label text and input belong together in
+the markup. Use an explicit `for` and `id` association when they need to be
+separate.
+
+```text
+Explicit association                        │ ✓ Pureline
+<label for="email">E-Mail</label>           │ <label>
+<input id="email" name="email" type="email"> │     E-Mail
+                                            │     <input name="email" type="email">
+                                            │ </label>
+```
+
 ### PL-HTML-005. Afbeeldingen en media hebben tekstalternatieven
 
 Elke `<img>` heeft een `alt` attribuut: een beschrijving van informatieve afbeeldingen, een lege `alt=""` voor decoratieve afbeeldingen. Geef `width` en `height` om layoutverschuiving te voorkomen. Video's bieden ondertitels via `<track>`.

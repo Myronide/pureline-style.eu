@@ -43,6 +43,18 @@ fn show_user() {
 }
 ```
 
+In a function that returns a result, prefer `!` to propagate an unchanged
+error. Use an `or` block when the error path needs additional handling.
+
+```text
+Explicit propagation                  │ ✓ Pureline
+config := load_config(path) or {      │ config := load_config(path)!
+    return err                        │ start(config)
+}                                     │
+                                      │
+start(config)                         │
+```
+
 ### PL-V-004 — Use Option Types for Absent Values
 
 Use `?T` when absence is a normal outcome. Use `!T` when failure needs a reason.

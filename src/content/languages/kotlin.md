@@ -43,13 +43,18 @@ fun describe(state: ConnectionState): String = when (state) {
 
 ### PL-KT-004 — Null Safety Without !!
 
-Use `?.` for optional access and `?:` for fallbacks or early exits. Never use `!!` outside tests; it turns a null check into a runtime crash.
+Use `?.` for optional access and `?:` for fallback values. Prefer a
+separate null guard when a missing value causes an early return. Never use
+`!!` outside tests.
 
-```kotlin
-fun greet(name: String?): String {
-    val safeName = name ?: return "Hello, guest"
-    return "Hello, $safeName"
-}
+```text
+− Elvis with early return              │ ✓ Pureline
+val user = users[id] ?: return "Gast"  │ val user = users[id]
+                                       │ if (user == null) {
+return user.name                       │     return "Gast"
+                                       │ }
+                                       │
+                                       │ return user.name
 ```
 
 ### PL-KT-005 — Scope Functions Only When They Read Clearly

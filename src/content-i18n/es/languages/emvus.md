@@ -133,6 +133,17 @@ method showPort(Int port) {
 - No descarte un `Result` ni esconda el fallo esperado tras `panic`.
 - Mantenga `success`, `fail` y `return` distintos en lugar de envolver cada operación innecesariamente.
 
+Prefer `?` when forwarding the error unchanged and the enclosing method's
+result type accepts it.
+
+```text
+Explicit result branches                │ ✓ Pureline
+switch (validatePort(port)) {            │ Int validPort = validatePort(port)?
+    success(value) -> success value     │ success validPort
+    error(problem) -> fail problem      │
+}                                       │
+```
+
 ### PL-EV-008 — Hacer que los recursos Vi1000 Vi1000 con `scoped`
 
 Utilice la construcción `scoped` de Emvus para recursos que deben cerrarse cuando su alcance termine.

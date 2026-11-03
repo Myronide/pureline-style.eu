@@ -40,6 +40,20 @@ Déclarez l'ordre des calques une fois: `@layer reset, base, components, utiliti
 
 Style avec des cours simples. Ne pas styler avec les chaînes d'éléments (`div section ul li a`) ou les ids. La spécificité qui se développe avec le balisage rend les changements plus coûteux. Un sélecteur plus profond que deux niveaux est une constatation d'examen.
 
+Prefer a dedicated class when the element's style should apply independently
+of its position in the component.
+
+```text
+− Descendant selector                  │ ✓ Pureline
+.card .title {                         │ .card-title {
+    font-weight: 600;                  │     font-weight: 600;
+}                                      │ }
+                                       │
+<div class="card">                     │ <div class="card">
+    <h2 class="title">Profil</h2>       │     <h2 class="card-title">Profil</h2>
+</div>                                 │ </div>
+```
+
 ### PL-CSS-004 — Non `!important` Services publics extérieurs
 
 `!important` est autorisé uniquement pour les classes d'utilité qui doivent remplacer un composant, et seulement dans la couche d'utilité. N'importe où ailleurs c'est une découverte.

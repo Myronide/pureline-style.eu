@@ -28,6 +28,18 @@ Verwenden Sie Kleinbuchstaben und Attributnamen, doppelte Anführungszeichen fü
 
 Every input has a visible `<label>` associated with `for` and `id`, or wraps the input. Placeholder text is not a label. Group related controls with `<fieldset>` and `<legend>`.
 
+Prefer a wrapping label when the label text and input belong together in
+the markup. Use an explicit `for` and `id` association when they need to be
+separate.
+
+```text
+Explicit association                        │ ✓ Pureline
+<label for="email">E-Mail</label>           │ <label>
+<input id="email" name="email" type="email"> │     E-Mail
+                                            │     <input name="email" type="email">
+                                            │ </label>
+```
+
 ### PL-HTML-005 — Images and Media Have Text Alternatives
 
 Every `<img>` has an `alt` attribute: a description for informative images, an empty `alt=""` for decorative ones. Geben Sie `width` und `height`, um Layout-Verlagerungen zu verhindern. Videos bieten Bildunterschriften durch `<track>`.

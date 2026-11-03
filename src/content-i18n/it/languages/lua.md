@@ -73,6 +73,17 @@ local function timeout_or_default(config)
 end
 ```
 
+Use an explicit `nil` check for an optional boolean so that an explicit
+`false` survives the fallback.
+
+```text
+− Overrides false                          │ ✓ Pureline
+local visible = options.visible or true   │ local visible = options.visible
+                                          │ if visible == nil then
+                                          │     visible = true
+                                          │ end
+```
+
 ### PL-LUA-005 — Errors Are Values
 
 Return `nil, err` for expected failures such as a missing file or bad input, and check the pair at the call site. Use `assert` only for programmer errors and broken invariants, where stopping is the correct response.

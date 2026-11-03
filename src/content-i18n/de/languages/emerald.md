@@ -94,6 +94,16 @@ public data class Coordinate(Int x, Int y);
 
 Emeralds Datenklasse-Generierung umfasst gegebenenfalls einen Konstruktor, `equals`, `toString`, `copy` und `withX`-Methoden. Nehmen Sie nicht an, dass Emvus-only-Datenklasse-Funktionen wie z.B. benanntes-Argument `copy`, generiertes `hashCode` oder Emvus-Destrukturierung bereits Teil von Emerald sind.
 
+Use literals directly when the constructor and arguments make the value
+immediately clear, as with the origin.
+
+```text
+Intermediate values                                 │ ✓ Pureline
+Int originX = 0;                                    │ Coordinate origin = Coordinate(0, 0);
+Int originY = 0;                                    │
+Coordinate origin = Coordinate(originX, originY);   │
+```
+
 ### PL-EMS-008 — Makros nur für echte Compile-Time-Abstractions verwenden
 
 Emeralds AST-Makrosystem ist für die repetitive strukturelle Generierung geeignet, nicht für die Verschleierung der normalen Programmlogik.

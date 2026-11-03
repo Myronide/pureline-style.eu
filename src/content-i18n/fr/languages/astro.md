@@ -49,6 +49,19 @@ Rendu HTML sans JavaScript à moins que le composant ne doive répondre à l'uti
 - Cartes sur les listes avec un `key` stable lorsque la liste est interactive.
 - Ne pas nier plus de deux niveaux d'expression à l'intérieur du balisage. Déplacer la partie intérieure vers un composant.
 
+Keep a short formatting expression in the template when it is used once
+and reads clearly at the point of use.
+
+```text
+Named frontmatter value                         │ ✓ Pureline
+---                                             │ ---
+const { title } = Astro.props;                  │ const { title } = Astro.props;
+const displayTitle = title.trim() || "Profil";  │ ---
+---                                             │
+                                                │ <h1>{title.trim() || "Profil"}</h1>
+<h1>{displayTitle}</h1>                         │
+```
+
 ### PL-AS-005 — Les styles sont éparpillés
 
 Utilisez les blocs `<style>` dans le composant par défaut ; Astro les exécute automatiquement. Utilisez `is:global` uniquement pour les règles à l'échelle du document telles que les jetons réinitialisants ou thématiques, et conservez-les dans une feuille de style globale.

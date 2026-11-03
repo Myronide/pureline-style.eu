@@ -52,6 +52,17 @@ export function UserPanel({ query }: UserPanelProps) {
 
 Évitez les ternaires imbriqués dans JSX. Calculez la branche dans une constante nommée ou retournez-la d'un garde. Un seul ternaire pour un simple choix à deux sens à l'intérieur de JSX est autorisé.
 
+```text
+− Conditional JSX                            │ ✓ Pureline
+function Profile({ user }: ProfileProps) {   │ function Profile({ user }: ProfileProps) {
+    return user === null                     │     if (user === null) {
+        ? <SignInPrompt />                   │         return <SignInPrompt />;
+        : <ProfileCard user={user} />;       │     }
+}                                            │
+                                             │     return <ProfileCard user={user} />;
+                                             │ }
+```
+
 ### PL-REACT-003 — Les crochets sont non conditionnels et de premier niveau
 
 - Les crochets d'appel au niveau supérieur d'un composant ou crochet personnalisé, dans le même ordre sur chaque rendu. Jamais dans une condition, une boucle ou une fonction imbriquée.

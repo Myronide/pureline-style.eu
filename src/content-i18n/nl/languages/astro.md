@@ -49,6 +49,19 @@ Render HTML zonder JavaScript tenzij het onderdeel moet reageren op de gebruiker
 - Kaarten over lijsten met een stabiele `key` als de lijst interactief is.
 - Nest niet meer dan twee expressieniveaus binnen de markup. Verplaats het binnenste deel naar een onderdeel.
 
+Keep a short formatting expression in the template when it is used once
+and reads clearly at the point of use.
+
+```text
+Named frontmatter value                         │ ✓ Pureline
+---                                             │ ---
+const { title } = Astro.props;                  │ const { title } = Astro.props;
+const displayTitle = title.trim() || "Profil";  │ ---
+---                                             │
+                                                │ <h1>{title.trim() || "Profil"}</h1>
+<h1>{displayTitle}</h1>                         │
+```
+
 ### PL-AS-005. Stijlen zijn Scoped
 
 Gebruik standaard `<style>`-blokken in het onderdeel; Astro maakt ze automatisch toegankelijk. Gebruik `is:global` alleen voor documentbrede regels zoals reset of thema tokens, en bewaar deze in één wereldwijd stylesheet.

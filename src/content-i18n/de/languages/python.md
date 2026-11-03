@@ -17,23 +17,18 @@ Wenden Sie die [shared core rules](../README.md#shared-rules) zusammen mit diese
 
 Erst bestätigen, früh zurückgeben oder erhöhen und den erfolgreichen Pfad bei der Basiseinrückung halten.
 
-```python
-def open_session(request: Request) -> Session:
-    if not request.is_valid():
-        raise InvalidRequestError(request)
-
-    user = request.user
-    if user is None:
-        raise MissingUserError()
-
-    return Session.open(user)
+```text
+− Noisy                                      │ ✓ Pureline
+                                             │
+def display_name(user: User | None) -> str:   │ def display_name(user: User | None) -> str:
+    if user is not None:                     │     if user is None or not user.active:
+        if user.active:                      │         return "Gast"
+            return user.name                 │
+                                             │     return user.name
+    return "Gast"                            │
 ```
 
 Ein Einlinienschutz ist zulässig, wenn der Körper ein einziges `return` oder `raise` ist. Verwenden Sie keine Einlinien-Körper für Aussagen mit Nebenwirkungen.
-
-```python
-if user is None: raise MissingUserError()   # not Pureline: the body is hidden on the header line
-```
 
 ### PL-PY-003 — Typ Hints an den Boundarien
 
