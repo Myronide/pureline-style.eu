@@ -26,8 +26,13 @@ const noisy = `function charge(user, amount) {
 }`;
 
 const pure = `function charge(user: User | null, amount: number): Receipt {
-  if (!user?.active) throw new InactiveUserError();
-  if (amount <= 0) throw new InvalidAmountError(amount);
+  if (!user?.active) {
+    throw new InactiveUserError();
+  }
+
+  if (amount <= 0) {
+    throw new InvalidAmountError(amount);
+  }
 
   return pay(user, amount);
 }`;
