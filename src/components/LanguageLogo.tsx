@@ -1,3 +1,5 @@
+import { Icon } from "./Icon";
+
 /** Monochrome language marks. They use currentColor, so they follow the text colour of their context. */
 
 const emvusPath =
@@ -28,6 +30,22 @@ function EmeraldMark({ className }: { className: string }) {
   );
 }
 
+/** Simple Icons (CC0, single colour) via Iconify. Novus has no logo and is left without one. */
+const iconify: Record<string, string> = {
+  "languages/astro": "simple-icons:astro",
+  "languages/crystal": "simple-icons:crystal",
+  "languages/css": "simple-icons:css3",
+  "languages/go": "simple-icons:go",
+  "languages/html": "simple-icons:html5",
+  "languages/java": "simple-icons:openjdk",
+  "languages/javascript": "simple-icons:javascript",
+  "languages/python": "simple-icons:python",
+  "languages/qml": "simple-icons:qt",
+  "languages/react": "simple-icons:react",
+  "languages/rust": "simple-icons:rust",
+  "languages/typescript": "simple-icons:typescript",
+};
+
 const marks: Record<string, (props: { className: string }) => React.JSX.Element> = {
   "languages/emvus": EmvusMark,
   "languages/emerald": EmeraldMark,
@@ -36,5 +54,7 @@ const marks: Record<string, (props: { className: string }) => React.JSX.Element>
 /** Renders the logo of a language profile, or nothing when none is available. */
 export function LanguageLogo({ slug, className = "size-5" }: { slug: string; className?: string }) {
   const Mark = marks[slug];
-  return Mark ? <Mark className={className} /> : null;
+  if (Mark) return <Mark className={className} />;
+  const name = iconify[slug];
+  return name ? <Icon name={name} className={className} /> : null;
 }
