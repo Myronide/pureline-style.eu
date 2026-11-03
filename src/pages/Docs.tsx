@@ -5,6 +5,52 @@ import { Icon } from "../components/Icon";
 import { LanguageLogo } from "../components/LanguageLogo";
 import { NotFound } from "./NotFound";
 
+/** Wide screens: the side panels sit in the gutters outside the header and footer width. */
+const gutter = "min-[1880px]:fixed min-[1880px]:top-28 min-[1880px]:max-h-[calc(100vh-8rem)] min-[1880px]:overflow-y-auto min-[1880px]:p-6";
+
+/** Narrower screens: the same content, collapsed above the article at header width. */
+const inline = "mb-8 min-[1880px]:hidden";
+
+function DocNav() {
+  return (
+    <>
+      {nav.map((g) => (
+        <div key={g.label} className="mb-8 last:mb-0">
+          <p className="display mb-3 text-[15px] text-fg">{g.label}</p>
+          <ul className="space-y-px border-l border-line">
+            {g.docs.map((d) => (
+              <li key={d.slug}>
+                <NavLink
+                  to={docPath(d.slug)}
+                  end
+                  className={({ isActive }) => `-ml-px block border-l py-1.5 pl-4 text-sm leading-snug transition-colors ${isActive ? "border-accent text-fg" : "border-transparent text-muted hover:border-line hover:text-fg"}`}
+                >
+                  <span className="flex items-center gap-2.5">
+                    <LanguageLogo slug={d.slug} className="size-4 shrink-0" />
+                    {d.slug === INDEX_SLUG ? "Guide" : d.title.replace(/ Code Style$/, "").replace(/^Pureline /, "")}
+                  </span>
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </>
+  );
+}
+
+function Toc({ items }: { items: { id: string; text: string }[] }) {
+  return (
+    <ul className="space-y-1.5 border-l border-line text-sm">
+      {items.map((h) => (
+        <li key={h.id}>
+          <a href={`#${h.id}`} className="-ml-px block border-l border-transparent pl-3 text-muted transition-colors hover:border-accent hover:text-fg">{h.text}</a>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export function Docs() {
   const slug = useParams()["*"] || INDEX_SLUG;
   const doc = getDoc(slug);
@@ -17,30 +63,29 @@ export function Docs() {
   const next = all[i + 1];
 
   return (
-    <div className="shell grid gap-8 py-10 lg:grid-cols-[20rem_minmax(0,1fr)] lg:gap-10 xl:grid-cols-[19rem_minmax(0,1fr)_15rem] xl:gap-12">
-      <aside className="island p-6 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:self-start lg:overflow-y-auto">
-        {nav.map((g) => (
-          <div key={g.label} className="mb-8">
-            <p className="display mb-3 text-[15px] text-fg">{g.label}</p>
-            <ul className="space-y-px border-l border-line">
-              {g.docs.map((d) => (
-                <li key={d.slug}>
-                  <NavLink
-                    to={docPath(d.slug)}
-                    end
-                    className={({ isActive }) => `-ml-px block border-l py-1.5 pl-4 text-sm leading-snug transition-colors ${isActive ? "border-accent text-fg" : "border-transparent text-muted hover:border-line hover:text-fg"}`}
-                  >
-                    <span className="flex items-center gap-2.5">
-                      <LanguageLogo slug={d.slug} className="size-4 shrink-0" />
-                      {d.slug === INDEX_SLUG ? "Guide" : d.title.replace(/ Code Style$/, "").replace(/^Pureline /, "")}
-                    </span>
-                  </NavLink>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+    <div className="shell py-10">
+      <aside className={`island hidden w-72 left-6 p-6 ${gutter} min-[1880px]:block`} aria-label="Documentation">
+        <DocNav />
       </aside>
+
+      {toc.length > 1 && (
+        <aside className={`island hidden w-60 right-6 p-6 ${gutter} min-[1880px]:block`} aria-label="On this page">
+          <p className="display mb-3 text-[15px] text-fg">On this page</p>
+          <Toc items={toc} />
+        </aside>
+      )}
+
+      <details className={`island ${inline}`}>
+        <summary className="display cursor-pointer select-none px-6 py-4 text-[15px]">Browse the docs</summary>
+        <div className="px-6 pb-6"><DocNav /></div>
+      </details>
+
+      {toc.length > 1 && (
+        <details className={`island ${inline}`}>
+          <summary className="display cursor-pointer select-none px-6 py-4 text-[15px]">On this page</summary>
+          <div className="px-6 pb-6"><Toc items={toc} /></div>
+        </details>
+      )}
 
       <article className="min-w-0">
         <div className="doc prose prose-invert max-w-none"><Markdown slug={slug}>{doc.body}</Markdown></div>
@@ -52,17 +97,6 @@ export function Docs() {
           <Icon name="lucide:pencil" className="size-3.5" /> View source on GitHub
         </a>
       </article>
-
-      {toc.length > 1 && (
-        <aside className="island hidden p-6 xl:sticky xl:top-24 xl:block xl:max-h-[calc(100vh-7rem)] xl:self-start xl:overflow-y-auto">
-          <p className="display mb-3 text-[15px] text-fg">On this page</p>
-          <ul className="space-y-1.5 border-l border-line text-sm">
-            {toc.map((h) => (
-              <li key={h.id}><a href={`#${h.id}`} className="-ml-px block border-l border-transparent pl-3 text-muted transition-colors hover:border-accent hover:text-fg">{h.text}</a></li>
-            ))}
-          </ul>
-        </aside>
-      )}
     </div>
   );
 }
