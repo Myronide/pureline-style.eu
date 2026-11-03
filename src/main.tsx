@@ -6,11 +6,13 @@ import { Docs } from "./pages/Docs";
 import { Editor } from "./pages/Editor";
 import { Home } from "./pages/Home";
 import { Rules } from "./pages/Rules";
+import { LocaleProvider } from "./i18n/context";
 import { NotFound } from "./pages/NotFound";
 import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
+    <LocaleProvider>
     <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Routes>
         <Route element={<Layout />}>
@@ -22,5 +24,6 @@ createRoot(document.getElementById("root")!).render(
         </Route>
       </Routes>
     </BrowserRouter>
+    </LocaleProvider>
   </StrictMode>,
 );

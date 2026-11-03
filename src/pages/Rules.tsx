@@ -3,11 +3,14 @@ import { Link } from "react-router-dom";
 import { Icon } from "../components/Icon";
 import { LanguageLogo } from "../components/LanguageLogo";
 import { checkedRules, rules, ruleProfiles } from "../content";
+import { useI18n } from "../i18n/context";
 
 const chip = (active: boolean) =>
   `whitespace-nowrap rounded-md px-3 py-1.5 text-sm transition-colors ${active ? "bg-raised text-fg ring-1 ring-line" : "text-muted hover:text-fg"}`;
 
+/** Profile names are data keys; "Core" and the "All" filter are translated for display only. */
 export function Rules() {
+  const { t } = useI18n();
   const [profile, setProfile] = useState("All");
   const [query, setQuery] = useState("");
   const [automated, setAutomated] = useState(false);
@@ -23,19 +26,20 @@ export function Rules() {
   }, [profile, query, automated]);
 
   const automatedCount = rules.filter((r) => checkedRules.has(r.id)).length;
+  const label = (name: string) => (name === "Core" ? t("rules.core") : name);
 
   return (
     <div className="shell py-14">
-      <h1 className="display text-[2.5rem] leading-tight">Rule index</h1>
+      <h1 className="display text-[2.5rem] leading-tight">{t("rules.title")}</h1>
       <p className="mt-4 max-w-2xl text-muted">
-        {rules.length} rules, {automatedCount} of them checked automatically in the editor. Every rule keeps its stable ID.
+        {t("rules.summary", { total: rules.length, automated: automatedCount })}
       </p>
 
       <div className="mt-10 flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-        <div className="flex min-w-0 flex-wrap gap-1 rounded-lg border border-line p-1" role="group" aria-label="Filter by profile">
-          {["All", ...ruleProfiles.map((p) => p.label)].map((label) => (
-            <button key={label} onClick={() => setProfile(label)} className={chip(profile === label)} aria-pressed={profile === label}>
-              {label}
+        <div className="flex min-w-0 flex-wrap gap-1 rounded-lg border border-line p-1" role="group" aria-label={t("rules.filter")}>
+          {["All", ...ruleProfiles.map((p) => p.label)].map((name) => (
+            <button key={name} onClick={() => setProfile(name)} className={chip(profile === name)} aria-pressed={profile === name}>
+              {name === "All" ? t("rules.all") : label(name)}
             </button>
           ))}
         </div>
@@ -44,13 +48,13 @@ export function Rules() {
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search: else, PL-GO, semicolon"
-            aria-label="Search rules"
+            placeholder={t("rules.search")}
+            aria-label={t("rules.searchLabel")}
             className="w-full rounded-md border border-line bg-surface px-4 py-2 text-sm placeholder:text-muted/70 focus:border-accent focus:outline-none sm:w-80"
           />
           <label className="flex cursor-pointer items-center gap-2 whitespace-nowrap text-sm text-muted">
             <input type="checkbox" checked={automated} onChange={(e) => setAutomated(e.target.checked)} className="accent-[var(--color-accent)]" />
-            Automated only
+            {t("rules.automated")}
           </label>
         </div>
       </div>
@@ -59,10 +63,10 @@ export function Rules() {
         <table className="w-full min-w-[46rem] text-left text-[15px]">
           <thead className="border-b border-line text-xs text-muted">
             <tr>
-              <th className="px-5 py-3 font-medium">ID</th>
-              <th className="px-5 py-3 font-medium">Rule</th>
-              <th className="px-5 py-3 font-medium">Profile</th>
-              <th className="px-5 py-3 font-medium">Checker</th>
+              <th className="px-5 py-3 font-medium">{t("rules.id")}</th>
+              <th className="px-5 py-3 font-medium">{t("rules.rule")}</th>
+              <th className="px-5 py-3 font-medium">{t("rules.profile")}</th>
+              <th className="px-5 py-3 font-medium">{t("rules.checker")}</th>
             </tr>
           </thead>
           <tbody>
@@ -75,7 +79,7 @@ export function Rules() {
                 <td className="whitespace-nowrap px-5 py-3.5 text-muted">
                   <span className="flex items-center gap-2.5">
                     {r.profileSlug === "core" ? <Icon name="lucide:layers" className="size-4" /> : <LanguageLogo slug={r.profileSlug} className="size-4" />}
-                    {r.profile}
+                    {label(r.profile)}
                   </span>
                 </td>
                 <td className="px-5 py-3.5">
@@ -89,13 +93,13 @@ export function Rules() {
             ))}
             {list.length === 0 && (
               <tr>
-                <td colSpan={4} className="px-5 py-10 text-center text-muted">No rule matches this filter.</td>
+                <td colSpan={4} className="px-5 py-10 text-center text-muted">{t("rules.none")}</td>
               </tr>
             )}
           </tbody>
         </table>
       </div>
-      <p className="mt-4 text-xs text-muted">Showing {list.length} of {rules.length} rules.</p>
+      <p className="mt-4 text-xs text-muted">{t("rules.showing", { shown: list.length, total: rules.length })}</p>
     </div>
   );
 }
