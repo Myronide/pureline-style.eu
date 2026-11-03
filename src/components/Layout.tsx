@@ -5,7 +5,8 @@ import { Authors } from "./Authors";
 import { Icon } from "./Icon";
 import { Logo } from "./Logo";
 
-const link = "text-sm text-muted transition-colors hover:text-fg";
+const navLink = ({ isActive }: { isActive: boolean }) =>
+  `relative py-1 text-sm transition-colors hover:text-fg ${isActive ? "text-fg after:absolute after:inset-x-0 after:-bottom-px after:h-px after:bg-accent" : "text-muted"}`;
 
 export function Layout() {
   const { pathname, hash } = useLocation();
@@ -20,30 +21,34 @@ export function Layout() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-30 border-b border-line bg-bg/90 backdrop-blur">
-        <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-5">
-          <Link to="/" className="flex items-center gap-2 font-semibold tracking-tight">
+      <header className="sticky top-0 z-30 border-b border-line/70 bg-bg/85 backdrop-blur-md">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+          <Link to="/" className="flex items-center gap-2.5 text-[17px] font-semibold tracking-tight">
             <Logo className="h-5" />
-            Pureline
+            <span className="display text-lg">Pureline</span>
           </Link>
-          <nav className="flex items-center gap-4 sm:gap-6">
-            <NavLink to="/docs" className={({ isActive }) => `${link} ${isActive ? "!text-fg" : ""}`}>Docs</NavLink>
-            <NavLink to="/docs/languages/README" className={link}>Languages</NavLink>
-            <NavLink to="/editor" className={({ isActive }) => `${link} ${isActive ? "!text-fg" : ""}`}>Editor</NavLink>
-            <a href={repoUrl} target="_blank" rel="noreferrer" aria-label="GitHub" className={`${link} flex items-center gap-1.5`}>
-              <Icon name="simple-icons:github" /> <span className="hidden sm:inline">GitHub</span>
+          <nav className="flex items-center gap-6 sm:gap-8">
+            <NavLink to="/docs" end={false} className={navLink}>Guide</NavLink>
+            <NavLink to="/docs/languages/README" className={navLink}>Languages</NavLink>
+            <NavLink to="/editor" className={navLink}>Editor</NavLink>
+            <a href={repoUrl} target="_blank" rel="noreferrer" aria-label="GitHub" className="flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-fg">
+              <Icon name="simple-icons:github" className="size-4" /> <span className="hidden sm:inline">GitHub</span>
             </a>
           </nav>
         </div>
       </header>
       <main className="flex-1"><Outlet /></main>
-      <footer className="border-t border-line">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-5 py-6 text-xs text-muted">
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-            <span>Pureline Style 1.6 · Code without noise.</span>
+      <footer className="border-t border-line/70">
+        <div className="mx-auto flex max-w-6xl flex-col gap-5 px-6 py-10 text-sm text-muted sm:flex-row sm:items-end sm:justify-between">
+          <div className="space-y-4">
+            <p className="display text-lg text-fg">Code without noise.</p>
             <Authors />
           </div>
-          <span>Content synced from <a href={repoUrl} className="underline underline-offset-4 hover:text-fg">Myronide/pureline-style</a> · {new Date(syncedAt).toLocaleString("en-GB")}</span>
+          <p className="max-w-xs text-xs leading-relaxed sm:text-right">
+            Pureline Style 1.7. Content synced from{" "}
+            <a href={repoUrl} className="underline underline-offset-4 decoration-line hover:text-fg">Myronide/pureline-style</a>{" "}
+            on {new Date(syncedAt).toLocaleString("en-GB")}.
+          </p>
         </div>
       </footer>
     </div>

@@ -13,57 +13,68 @@
   --color-accent: #22d3ee;
   --color-warn: #f87171;
   --font-sans: ui-sans-serif, system-ui, "Inter", "Segoe UI", sans-serif;
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
   --font-mono: ui-monospace, "JetBrains Mono", "Fira Code", "SF Mono", Menlo, monospace;
 }
 
 @layer base {
   html { scroll-behavior: smooth; color-scheme: dark; }
-  body { @apply bg-bg font-sans text-fg antialiased; }
+  body { @apply bg-bg font-sans text-fg antialiased; line-height: 1.65; }
   * {
     scrollbar-width: thin;
     scrollbar-color: var(--color-line) transparent;
   }
   *:hover { scrollbar-color: #3a3a5c transparent; }
   ::selection { background: color-mix(in srgb, var(--color-accent) 30%, transparent); }
-  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; border-radius: 2px; }
+}
+
+@utility display {
+  font-family: var(--font-display);
+  letter-spacing: -0.015em;
+}
+@utility brand-gradient {
+  background-image: linear-gradient(100deg, var(--color-violet), var(--color-blue) 55%, var(--color-accent));
 }
 
 .doc {
-  --tw-prose-body: var(--color-fg);
-  --tw-prose-headings: #fff;
-  --tw-prose-bold: #fff;
+  --tw-prose-body: #d6d6e4;
+  --tw-prose-headings: var(--color-fg);
+  --tw-prose-bold: var(--color-fg);
   --tw-prose-links: var(--color-accent);
-  --tw-prose-bullets: var(--color-muted);
+  --tw-prose-bullets: var(--color-line);
   --tw-prose-counters: var(--color-muted);
   --tw-prose-quotes: var(--color-fg);
   --tw-prose-quote-borders: var(--color-violet);
   --tw-prose-hr: var(--color-line);
   --tw-prose-th-borders: var(--color-line);
   --tw-prose-td-borders: var(--color-line);
-  --tw-prose-code: var(--color-accent);
-}
-@utility brand-gradient {
-  background-image: linear-gradient(100deg, var(--color-violet), var(--color-blue) 55%, var(--color-accent));
-}
-@utility brand-text {
-  background-image: linear-gradient(100deg, var(--color-violet), var(--color-blue) 55%, var(--color-accent));
-  background-clip: text;
-  color: transparent;
+  --tw-prose-code: var(--color-fg);
 }
 
+.doc :where(h1, h2, h3) { font-family: var(--font-display); letter-spacing: -0.015em; }
+.doc :where(h1) { @apply text-4xl font-semibold; line-height: 1.1; }
+.doc :where(h2) { @apply mt-16 text-2xl font-semibold; line-height: 1.25; }
+.doc :where(h3) { @apply mt-10 text-lg font-semibold; }
+.doc :where(h2, h3, h4) { scroll-margin-top: 5rem; }
+.doc :where(p, li) { max-width: 68ch; }
+.doc :where(ul, ol) { max-width: 68ch; }
 .doc :where(code):not(pre code)::before,
 .doc :where(code):not(pre code)::after { content: none; }
 .doc :where(code):not(pre code) {
-  @apply rounded bg-raised px-1.5 py-0.5 text-[0.85em] font-medium;
+  @apply rounded-sm bg-raised px-1.5 py-px text-[0.85em];
+  color: var(--color-fg);
 }
-.doc :where(h2) { @apply border-t border-line pt-8; }
-.doc :where(h2, h3, h4) { scroll-margin-top: 5rem; }
-.doc :where(a) { @apply no-underline underline-offset-4 hover:underline; }
+.doc :where(a) { @apply no-underline underline-offset-4 decoration-accent/40 hover:underline; }
 .doc :where(table) { @apply text-sm; }
-.doc :where(th) { @apply text-muted; }
+.doc :where(th) { @apply text-muted font-medium; }
+.doc :where(pre) { @apply rounded-lg border border-line bg-surface; }
 
+.shiki-wrap {
+  @apply overflow-hidden rounded-lg border border-line bg-surface;
+}
 .shiki-wrap .shiki {
-  @apply overflow-x-auto p-4 font-mono text-[13px] leading-relaxed;
+  @apply overflow-x-auto p-5 font-mono text-[13px] leading-[1.7];
   background: transparent !important;
 }
 .shiki-wrap .shiki code { font: inherit; }

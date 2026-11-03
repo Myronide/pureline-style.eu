@@ -1,16 +1,15 @@
 import { Link } from "react-router-dom";
-import { Authors } from "../components/Authors";
 import { Code as Highlighted } from "../components/Code";
 import { Icon } from "../components/Icon";
 import { docPath, INDEX_SLUG, languageDocs, repoUrl, shortTitle } from "../content";
 
 const principles = [
-  { icon: "lucide:move-down", title: "Linear Flow", text: "Input, validation, transformation, execution, result. Read top to bottom, never into a pyramid." },
-  { icon: "lucide:target", title: "Explicit Intent", text: "Names, types and effects say what they do. Nothing clever, nothing hidden." },
-  { icon: "lucide:eraser", title: "Minimal Noise", text: "Remove unnecessary code, not characters. Idiomatic syntax stays." },
-  { icon: "lucide:box", title: "Small Units", text: "One responsibility per function. Size ranges are heuristics, not laws." },
-  { icon: "lucide:users", title: "Clear Ownership", text: "Every module, resource and mutation has one obvious owner." },
-  { icon: "lucide:link-2", title: "Cohesion over Size", text: "Keep cohesive logic together. Line count alone is never a violation." },
+  { title: "Linear flow", text: "Input, validation, transformation, execution, result. Read top to bottom, never into a pyramid." },
+  { title: "Explicit intent", text: "Names, types and effects say what they do. Nothing clever, nothing hidden." },
+  { title: "Minimal noise", text: "Remove unnecessary code, not characters. Idiomatic syntax stays." },
+  { title: "Small units", text: "One responsibility per function. Size ranges are heuristics, not laws." },
+  { title: "Clear ownership", text: "Every module, resource and mutation has one obvious owner." },
+  { title: "Cohesion over size", text: "Keep cohesive logic together. Line count alone is never a violation." },
 ];
 
 const noisy = `function charge(user, amount) {
@@ -38,77 +37,83 @@ const pure = `function charge(user: User | null, amount: number): Receipt {
 }`;
 
 function Compare({ label, tone, code }: { label: string; tone: "bad" | "good"; code: string }) {
-  const bad = tone === "bad";
+  const good = tone === "good";
   return (
-    <div className="overflow-hidden rounded-lg border border-line bg-surface">
-      <div className={`flex items-center gap-2 border-b border-line px-4 py-2 text-xs font-medium ${bad ? "text-warn" : "text-accent"}`}>
-        <Icon name={bad ? "lucide:x" : "lucide:check"} className="size-3.5" /> {label}
-      </div>
+    <figure className={`min-w-0 border-line ${good ? "" : "md:border-r md:pr-8"}`}>
+      <figcaption className={`mb-3 flex items-center gap-2 text-sm font-medium ${good ? "text-accent" : "text-muted"}`}>
+        <Icon name={good ? "lucide:check" : "lucide:minus"} className="size-4" />
+        {label}
+      </figcaption>
       <Highlighted code={code} lang="ts" />
-    </div>
+    </figure>
   );
 }
 
 export function Home() {
   return (
     <>
-      <section className="mx-auto max-w-7xl px-5 pb-20 pt-24">
-        <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 text-xs text-muted">
-          <span className="brand-gradient size-1.5 rounded-full" /> Specification 1.6
-        </p>
-        <h1 className="max-w-3xl text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl">
-          Code without <span className="brand-text">noise</span>.
+      <section className="mx-auto max-w-6xl px-6 pb-24 pt-28 sm:pt-36">
+        <p className="mb-6 text-sm text-muted">Specification 1.7 · Linear flow, explicit intent</p>
+        <h1 className="display max-w-4xl text-[clamp(3rem,8vw,6.25rem)] font-medium leading-[0.98]">
+          Code without noise.
         </h1>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">
-          Pureline is an opinionated coding style built on linear control flow, explicit intent, compact formatting, small units, clear ownership and cohesion over arbitrary size limits.
+        <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted">
+          Pureline is a coding style for readable code: linear control flow, explicit intent, small units and clear ownership. It standardizes principles, not syntax.
         </p>
-        <div className="mt-9 flex flex-wrap gap-3">
-          <Link to={docPath(INDEX_SLUG)} className="inline-flex items-center gap-2 brand-gradient rounded-md px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90">
-            Read the guide <Icon name="lucide:arrow-right" />
+        <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+          <Link to={docPath(INDEX_SLUG)} className="inline-flex items-center gap-2 rounded-md bg-fg px-5 py-2.5 text-sm font-medium text-bg transition-opacity hover:opacity-90">
+            Read the guide <Icon name="lucide:arrow-right" className="size-4" />
           </Link>
-          <Link to="/editor" className="inline-flex items-center gap-2 rounded-md border border-line bg-surface px-5 py-2.5 text-sm font-medium transition-colors hover:bg-raised">
-            <Icon name="lucide:wand-sparkles" /> Try the live editor
+          <Link to="/editor" className="text-sm text-fg underline underline-offset-[6px] decoration-line transition-colors hover:decoration-accent">
+            Try the live editor
           </Link>
-          <a href={repoUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-md border border-line bg-surface px-5 py-2.5 text-sm font-medium transition-colors hover:bg-raised">
-            <Icon name="simple-icons:github" /> View on GitHub
+          <a href={repoUrl} target="_blank" rel="noreferrer" className="text-sm text-muted underline underline-offset-[6px] decoration-line transition-colors hover:text-fg hover:decoration-accent">
+            Source on GitHub
           </a>
-        </div>
-        <div className="mt-8">
-          <Authors />
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-5 pb-20">
-        <div className="grid gap-4 md:grid-cols-2">
+      <section className="mx-auto max-w-6xl px-6 pb-28">
+        <div className="mb-10 max-w-xl">
+          <h2 className="display text-3xl font-medium">Same behaviour, less noise.</h2>
+          <p className="mt-3 text-muted">Both versions validate the same two conditions and pay the same way. Only one of them reads top to bottom.</p>
+        </div>
+        <div className="grid gap-10 md:grid-cols-2 md:gap-8">
           <Compare label="Noisy" tone="bad" code={noisy} />
           <Compare label="Pureline" tone="good" code={pure} />
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-5 pb-20">
-        <h2 className="mb-8 text-2xl font-semibold tracking-tight">Principles</h2>
-        <div className="grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+      <section className="mx-auto max-w-6xl px-6 pb-28">
+        <h2 className="display mb-12 text-3xl font-medium">Six principles</h2>
+        <dl className="grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {principles.map((p) => (
-            <div key={p.title} className="bg-surface p-6">
-              <Icon name={p.icon} className="mb-4 size-5 text-violet" />
-              <h3 className="mb-1.5 font-medium">{p.title}</h3>
-              <p className="text-sm leading-relaxed text-muted">{p.text}</p>
+            <div key={p.title} className="border-t border-line pt-6">
+              <dt className="display text-xl">{p.title}</dt>
+              <dd className="mt-2 text-[15px] leading-relaxed text-muted">{p.text}</dd>
             </div>
           ))}
-        </div>
+        </dl>
       </section>
 
-      <section className="mx-auto max-w-7xl px-5 pb-24">
-        <h2 className="mb-2 text-2xl font-semibold tracking-tight">Language profiles</h2>
-        <p className="mb-8 text-muted">Pureline standardizes principles, not syntax. Every profile stays idiomatic.</p>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {languageDocs.map((d) => (
-            <Link key={d.slug} to={docPath(d.slug)} className="group flex items-center justify-between rounded-lg border border-line bg-surface px-4 py-3.5 transition-colors hover:bg-raised">
-              <span className="font-medium">{shortTitle(d)}</span>
-              <Icon name="lucide:arrow-up-right" className="size-4 text-muted transition-colors group-hover:text-accent" />
-            </Link>
-          ))}
+      <section className="mx-auto max-w-6xl px-6 pb-32">
+        <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h2 className="display text-3xl font-medium">Language profiles</h2>
+            <p className="mt-3 text-muted">Every profile stays idiomatic for its language.</p>
+          </div>
+          <Link to={docPath("languages/README")} className="text-sm text-muted transition-colors hover:text-fg">All profiles</Link>
         </div>
+        <ul className="grid border-t border-line sm:grid-cols-2 lg:grid-cols-3">
+          {languageDocs.map((d) => (
+            <li key={d.slug} className="border-b border-line">
+              <Link to={docPath(d.slug)} className="group flex items-center justify-between py-4 pr-2 transition-colors hover:text-accent">
+                <span className="font-medium">{shortTitle(d)}</span>
+                <Icon name="lucide:arrow-up-right" className="size-4 text-muted transition-colors group-hover:text-accent" />
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
     </>
   );

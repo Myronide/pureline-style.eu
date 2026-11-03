@@ -1,6 +1,6 @@
 # Tooling and Stable Rule IDs
 
-[Code style guide](README.md) · [Original specification 1.6](../../PURELINE_SPECIFICATION_1.6.md)
+[Code style guide](README.md) · [Original specification 1.7](../../PURELINE_SPECIFICATION_1.7.md)
 
 ## Tooling Model
 
@@ -37,4 +37,4 @@ This allows the website, CLI, formatter, linter, and IDE integrations to stay co
 
 **Emerald and Emvus tooling requirement:** use separate grammars for `.ems` and `.ev`. The checker must distinguish real syntax and resolved AST constructs from textual lookalikes; macro-generated declarations, inferred tuple/list forms, optional method-declaration parentheses, and optional Emvus semicolons require language-aware handling. Existing and newly added profile IDs must produce consistent diagnostics across tools.
 
-**Versioning:** Rust rules use stable `PL-RS-*` IDs; Novus, React, Emerald, and Emvus rules use `PL-NV-*`, `PL-REACT-*`, `PL-EMS-*`, and `PL-EV-*` IDs. The established `PL-CORE-*`, `PL-CF-*`, `PL-JAVA-*`, `PL-JS-*`, `PL-TS-*`, `PL-GO-*`, and `PL-CR-*` IDs are not renumbered. Version 1.4 added `PL-CORE-022` and `PL-STRUCT-003`; version 1.5 added `PL-RS-001`–`PL-RS-020`; version 1.6 adds `PL-NV-001`–`PL-NV-013`, `PL-REACT-001`–`PL-REACT-014`, and `PL-RS-021`–`PL-RS-024` without renumbering existing rules.
+**Versioning:** Rust rules use stable `PL-RS-*` IDs; Novus, React, Python, QML, Astro, HTML, CSS, Emerald, and Emvus rules use `PL-NV-*`, `PL-REACT-*`, `PL-PY-*`, `PL-QML-*`, `PL-AS-*`, `PL-HTML-*`, `PL-CSS-*`, `PL-EMS-*`, and `PL-EV-*` IDs. The established `PL-CORE-*`, `PL-CF-*`, `PL-JAVA-*`, `PL-JS-*`, `PL-TS-*`, `PL-GO-*`, and `PL-CR-*` IDs are not renumbered. Version 1.4 added `PL-CORE-022` and `PL-STRUCT-003`; version 1.5 added `PL-RS-001`–`PL-RS-020`; version 1.6 added `PL-NV-001`–`PL-NV-013`, `PL-REACT-001`–`PL-REACT-014`, and `PL-RS-021`–`PL-RS-024`; version 1.7 adds `PL-PY-001`–`PL-PY-012`, `PL-QML-001`–`PL-QML-011`, `PL-AS-001`–`PL-AS-009`, `PL-HTML-001`–`PL-HTML-009`, and `PL-CSS-001`–`PL-CSS-012` without renumbering existing rules.

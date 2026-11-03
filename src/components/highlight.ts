@@ -1,6 +1,7 @@
 import { createHighlighterCore, type HighlighterCore } from "shiki/core";
 import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
 
+/** Shiki's bundled languages plus the Pureline-specific TextMate grammars in src/grammars. */
 const langs = {
   java: () => import("shiki/langs/java.mjs"),
   javascript: () => import("shiki/langs/javascript.mjs"),
@@ -8,14 +9,37 @@ const langs = {
   go: () => import("shiki/langs/go.mjs"),
   rust: () => import("shiki/langs/rust.mjs"),
   crystal: () => import("shiki/langs/crystal.mjs"),
+  python: () => import("shiki/langs/python.mjs"),
+  qml: () => import("shiki/langs/qml.mjs"),
+  astro: () => import("shiki/langs/astro.mjs"),
+  html: () => import("shiki/langs/html.mjs"),
+  css: () => import("shiki/langs/css.mjs"),
+  emvus: () => import("../grammars/emvus.tmLanguage.json"),
+  emerald: () => import("../grammars/emerald.tmLanguage.json"),
+  novus: () => import("../grammars/novus.tmLanguage.json"),
 } as const;
 
-const aliases: Record<string, keyof typeof langs> = { js: "javascript", ts: "typescript", rs: "rust", cr: "crystal" };
+type Lang = keyof typeof langs;
 
-const resolve = (lang: string) => {
-  const name = aliases[lang] ?? lang;
-  return name in langs ? (name as keyof typeof langs) : null;
+const aliases: Record<string, Lang> = {
+  js: "javascript",
+  ts: "typescript",
+  rs: "rust",
+  cr: "crystal",
+  py: "python",
+  ev: "emvus",
+  ems: "emerald",
+  nv: "novus",
+  htm: "html",
+  scss: "css",
 };
+
+const resolve = (lang: string): Lang | null => {
+  const name = aliases[lang] ?? lang;
+  return name in langs ? (name as Lang) : null;
+};
+
+type LanguageInput = Parameters<HighlighterCore["loadLanguage"]>[0];
 
 let highlighter: Promise<HighlighterCore> | undefined;
 
@@ -31,6 +55,6 @@ export async function highlight(code: string, lang: string): Promise<string | nu
   const name = resolve(lang);
   if (!name) return null;
   const hl = await load();
-  if (!hl.getLoadedLanguages().includes(name)) await hl.loadLanguage(langs[name]());
+  if (!hl.getLoadedLanguages().includes(name)) await hl.loadLanguage((await langs[name]()) as LanguageInput);
   return hl.codeToHtml(code, { lang: name, theme: "github-dark" });
 }

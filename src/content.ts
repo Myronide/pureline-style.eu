@@ -35,7 +35,7 @@ export const nav: NavGroup[] = [
   { label: "Start", docs: named(INDEX_SLUG, "overview") },
   { label: "Core rules", docs: pick("core/") },
   { label: "Languages", docs: [...named("languages/README"), ...pick("languages/")] },
-  { label: "Reference", docs: named("tooling", "PURELINE_SPECIFICATION_1.6") },
+  { label: "Reference", docs: named("tooling", "PURELINE_SPECIFICATION_1.7") },
 ];
 
 export const languageDocs = pick("languages/");

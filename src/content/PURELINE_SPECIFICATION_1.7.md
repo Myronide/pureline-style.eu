@@ -1,4 +1,4 @@
-# Pureline Specification 1.6
+# Pureline Specification 1.7
 
 ## Definition
 
@@ -35,7 +35,7 @@ The central Pureline principles are:
 
 > **Linear Flow. Explicit Intent. Minimal Noise. Small Units. Clear Ownership. Cohesion over Size.**
 
-**Version 1.6:** Adds the Novus profile (`PL-NV-001` through `PL-NV-013`) and the React profile (`PL-REACT-001` through `PL-REACT-014`), extends the Rust profile with `PL-RS-021` through `PL-RS-024` and a precise test exemption in `PL-RS-004`, and keeps all existing rule IDs and the 1.4 Cohesion over Size principle. Version 1.5 added the Rust profile (`PL-RS-001` through `PL-RS-020`).
+**Version 1.7:** Adds the Python profile (`PL-PY-001` through `PL-PY-012`), the QML profile (`PL-QML-001` through `PL-QML-011`), the Astro profile (`PL-AS-001` through `PL-AS-009`), the HTML profile (`PL-HTML-001` through `PL-HTML-009`), and the CSS profile (`PL-CSS-001` through `PL-CSS-012`). **Version 1.6:** Adds the Novus profile (`PL-NV-001` through `PL-NV-013`) and the React profile (`PL-REACT-001` through `PL-REACT-014`), extends the Rust profile with `PL-RS-021` through `PL-RS-024` and a precise test exemption in `PL-RS-004`, and keeps all existing rule IDs and the 1.4 Cohesion over Size principle. Version 1.5 added the Rust profile (`PL-RS-001` through `PL-RS-020`).
 
 ---
 
@@ -1885,6 +1885,375 @@ Keep route definitions in one place. Route components receive or load data at th
 
 ---
 
+# 15.3 Python Profile
+
+Apply the shared core rules together with this profile. Python is indentation-based, so the brace rules of the JavaScript profile do not apply. Pureline Python follows **PEP 8**, **PEP 484 type hints**, and the formatter the project uses (ruff or black). Cohesion over Size applies throughout.
+
+## PL-PY-001 — Idiomatic Naming
+
+- Modules, packages, functions, methods, and variables: `snake_case`.
+- Classes and exceptions: `PascalCase`. Exceptions end in `Error`.
+- Module constants: `UPPER_SNAKE_CASE`.
+- No Java-style prefixes (`IStorage`) or Hungarian notation. Use `Storage` for a protocol and `FileStorage` for an implementation.
+
+## PL-PY-002 — Guard Clauses and Linear Flow
+
+Validate first, return or raise early, and keep the successful path at the base indentation.
+
+```python
+def open_session(request: Request) -> Session:
+    if not request.is_valid():
+        raise InvalidRequestError(request)
+
+    user = request.user
+    if user is None:
+        raise MissingUserError()
+
+    return Session.open(user)
+```
+
+A one-line guard is allowed when the body is a single `return` or `raise`. Do not use one-line bodies for statements with side effects.
+
+```python
+if user is None: raise MissingUserError()   # not Pureline: the body is hidden on the header line
+```
+
+## PL-PY-003 — Type Hints at Boundaries
+
+- Annotate public functions, methods, and class attributes.
+- Annotate locals only when the type is not obvious from the right-hand side.
+- Use `X | None` instead of `Optional[X]` on Python 3.10 and later.
+- Run a type checker (mypy or pyright) in strict mode for new code.
+
+## PL-PY-004 — Specific Exceptions, Never Bare `except`
+
+Catch the narrowest exception that the code can handle. Never write `except:` or `except Exception: pass`. Preserve the cause when converting an error:
+
+```python
+try:
+    config = tomllib.loads(text)
+except tomllib.TOMLDecodeError as error:
+    raise ConfigError(path) from error
+```
+
+## PL-PY-005 — Resources Use Context Managers
+
+Open files, sockets, locks, and database sessions with `with`. Do not rely on `__del__` or on garbage collection for cleanup. Wrap a resource in a small context manager only when the same cleanup is needed in several places.
+
+## PL-PY-006 — Comprehensions Only When They Read Clearly
+
+A comprehension expresses one transformation with an optional filter. Use a loop when the body has side effects, branches, or more than one level of nesting.
+
+```python
+active_names = [user.name for user in users if user.active]
+```
+
+## PL-PY-007 — Data Classes Over Ad-hoc Dictionaries
+
+Data that crosses a function boundary has a named shape. Use `@dataclass(frozen=True, slots=True)` for internal data and a validated model (for example Pydantic) at external boundaries. Do not pass `dict[str, Any]` between modules.
+
+## PL-PY-008 — No Mutable Defaults and No Hidden Global State
+
+Never use a mutable default argument (`def f(items=[])`); use `None` and create the value inside the function. Module-level state is limited to constants and configured singletons created at startup. Pass dependencies explicitly.
+
+## PL-PY-009 — Async Tasks Have an Owner
+
+Use `asyncio.TaskGroup` (or an equivalent structured scope) so that every task has a parent that waits for it and propagates its errors. Do not create fire-and-forget tasks with `asyncio.create_task` for work the program depends on. Do not call blocking I/O inside a coroutine; move it to `asyncio.to_thread`.
+
+## PL-PY-010 — Package and Module Density
+
+A package holds at most **10 modules** by default, excluding tests and generated code. Split along responsibility. Keep `__init__.py` to re-exports and short package docstrings; put real logic in named modules.
+
+## PL-PY-011 — Formatting Is Delegated to the Formatter
+
+Follow `ruff format` or black for layout, quotes, and trailing commas. Pureline does not require manual formatting that the formatter would undo.
+
+## PL-PY-012 — Tooling
+
+- Run `ruff check` for lint and a type checker for types, in CI.
+- Test normal, invalid, and failure paths. Use `pytest` and keep fixtures in `conftest.py` only when several test modules share them.
+- Avoid blanket `# noqa` and `# type: ignore` without a rule code and a reason on the same line.
+
+---
+
+# 15.4 QML Profile
+
+Apply the shared core rules with this profile. QML is declarative: a file describes an object tree, its properties, and its bindings. JavaScript inside QML is for small expressions and handlers, and the JavaScript profile applies to every block in it. Pureline QML targets **Qt 6** with Qt Quick.
+
+```text
+Root object
+↓
+Properties (inputs and bindings)
+↓
+Child objects (layout)
+↓
+Handlers (behaviour)
+```
+
+## PL-QML-001 — One Root Object per File
+
+Each `.qml` file defines one component whose name is the file name (`SessionCard.qml` defines `SessionCard`). Put nested helper components in their own files when they are reused; keep a helper inline only when nothing else uses it.
+
+## PL-QML-002 — Naming
+
+- Component files and type names: `PascalCase`.
+- Properties, signals, functions, and ids: `lowerCamelCase`.
+- Ids name the role of the object (`titleLabel`, `retryButton`), never its type or position (`text1`, `rect2`).
+- Signal handlers follow the signal name: `onClicked`, `onAccepted`.
+
+## PL-QML-003 — Declare Interfaces Explicitly
+
+Declare the inputs of a component with `required property` and a type. Use `readonly property` for values the component computes. Enable `pragma ComponentBehavior: Bound` so that ids resolve through explicit scope.
+
+```qml
+pragma ComponentBehavior: Bound
+
+Item {
+    id: root
+
+    required property string title
+    required property bool active
+    readonly property color accent: active ? "#22d3ee" : "#8d8da6"
+}
+```
+
+## PL-QML-004 — Bindings Over Imperative Assignment
+
+Express state as a binding (`visible: user.active`). Do not copy values in `Component.onCompleted` or in handlers when a binding would keep them correct. Assign imperatively only for a one-time action, such as starting an animation or sending a request.
+
+## PL-QML-005 — Guards Are Bindings or Early Returns
+
+Use `visible`, `enabled`, and `Loader.active` to switch branches. In a JavaScript function, return early instead of nesting the main path inside a condition.
+
+```qml
+function submit() {
+    if (!form.valid) {
+        return;
+    }
+
+    backend.send(form.payload());
+}
+```
+
+## PL-QML-006 — Keep Expressions Small
+
+A binding holds one expression of at most one conditional and a short call. Move longer logic into a named function or a C++ / Python backend object. Nested ternaries are not Pureline.
+
+## PL-QML-007 — Property Order Groups the Object
+
+Write the properties of an object in this order, with a blank line between groups: identity (`id`), required and public properties, bindings, child objects, signal handlers, functions.
+
+## PL-QML-008 — Layout Is Declarative
+
+Use `Layout` types (`RowLayout`, `ColumnLayout`, `GridLayout`) and anchors for placement. Do not hard-code absolute `x` and `y` values for content that must adapt to size. Hard-coded sizes belong to design tokens in a `Theme` singleton.
+
+## PL-QML-009 — Theme and Tokens in One Place
+
+Colours, spacing, and font sizes come from one `Theme` singleton (`pragma Singleton`). Components read tokens; they never repeat literal values.
+
+## PL-QML-010 — Folder Density
+
+A folder of QML components holds at most **10 files** by default. Group components by feature (`views/session/`), and keep shared controls in one `controls/` folder.
+
+## PL-QML-011 — Tooling
+
+Run `qmllint` (with `--unqualified` warnings enabled) and the `qmlformat` tool in CI. Test behaviour with `QtTest`, and keep warnings intentional.
+
+---
+
+# 15.5 Astro Profile
+
+Apply the shared core rules with this profile, and the TypeScript profile for the frontmatter script. Astro renders HTML on the server or at build time and ships JavaScript only where it is needed. Pureline Astro keeps that model visible: static by default, interactive where declared. Pureline is compatible with Astro 5 and later.
+
+```text
+Frontmatter (data, imports, props)
+↓
+Template (markup and expressions)
+↓
+Scoped styles
+↓
+Islands (explicit client directives only)
+```
+
+## PL-AS-001 — Components Are `.astro` Files Named in `PascalCase`
+
+A component lives in `src/components/` and is named after what it renders (`SessionCard.astro`). A page or layout lives in `src/pages/` or `src/layouts/`. Route files stay thin: they load data and compose components.
+
+## PL-AS-002 — Frontmatter Is Linear and Typed
+
+The frontmatter (between `---` fences) does four things in order: receive typed props, load data, compute derived values, and then render. Declare props with an `interface Props`. Keep the frontmatter free of markup.
+
+```astro
+---
+interface Props {
+    title: string;
+    draft?: boolean;
+}
+
+const { title, draft = false } = Astro.props;
+if (draft) {
+    return Astro.redirect("/drafts");
+}
+---
+<h2>{title}</h2>
+```
+
+## PL-AS-003 — Static by Default, Islands by Declaration
+
+Render HTML without JavaScript unless the component must respond to the user or change over time. When it must, mark the one interactive component with an explicit client directive: `client:visible` for content below the fold, `client:idle` for non-urgent widgets, `client:load` only for what is needed at first paint. A component without a directive never ships JavaScript.
+
+## PL-AS-004 — Templates Stay Readable
+
+- Conditionals with `&&` or a named variable for a single branch; use a guard in the frontmatter for early exits.
+- Maps over lists with a stable `key` when the list is interactive.
+- Do not nest more than two expression levels inside the markup. Move the inner part to a component.
+
+## PL-AS-005 — Styles Are Scoped
+
+Use `<style>` blocks in the component by default; Astro scopes them automatically. Use `is:global` only for document-wide rules such as reset or theme tokens, and keep those in one global stylesheet.
+
+## PL-AS-006 — Data Has One Source
+
+Content lives in content collections (`src/content/`) with a schema (`defineCollection` and zod). Pages query the collection; they do not parse Markdown files themselves. Remote data is loaded in the frontmatter of the page that needs it, once.
+
+## PL-AS-007 — Framework Islands Follow Their Own Profile
+
+A React, Vue, or Svelte island follows that framework's profile (for React: PL-REACT). Astro does not change the rules of the component; it only decides where the component is hydrated.
+
+## PL-AS-008 — Folder Density
+
+`src/components/` holds at most **10 files** by default. Group components by feature (`components/blog/`) once a feature has several files.
+
+## PL-AS-009 — Tooling
+
+Run `astro check` (types and template diagnostics) and the build in CI. Use `astro build` output to verify that pages without islands ship no JavaScript.
+
+---
+
+# 15.6 HTML Profile
+
+Apply the shared core rules with this profile. HTML is the structure of a document. Pureline HTML uses **semantic elements**, keeps presentation in CSS, and keeps behaviour in JavaScript. Pureline HTML targets **HTML Living Standard** documents and the framework templates that produce them (Astro, JSX templates excluded: see the framework profiles).
+
+## PL-HTML-001 — Use Semantic Elements
+
+Choose the element for the meaning of the content: `<nav>`, `<main>`, `<article>`, `<section>`, `<aside>`, `<header>`, `<footer>`. A `<div>` or `<span>` is for grouping that has no meaning of its own. A button that performs an action is a `<button>`; a link that navigates is an `<a href>`.
+
+```html
+<nav aria-label="Primary">
+  <a href="/docs">Docs</a>
+</nav>
+```
+
+## PL-HTML-002 — One Heading Structure per Page
+
+A page has one `<h1>`. Headings follow their level in order (`h2` after `h1`, `h3` after `h2`) and are never chosen for their size; size belongs to CSS.
+
+## PL-HTML-003 — Attributes Are Minimal and Quoted
+
+Use lowercase element and attribute names, double quotes for attribute values, and no inline `style` attributes or inline event handlers. Omit attributes that equal their default. Keep `class` values short and named by role.
+
+## PL-HTML-004 — Forms Have Labels
+
+Every input has a visible `<label>` associated with `for` and `id`, or wraps the input. Placeholder text is not a label. Group related controls with `<fieldset>` and `<legend>`.
+
+## PL-HTML-005 — Images and Media Have Text Alternatives
+
+Every `<img>` has an `alt` attribute: a description for informative images, an empty `alt=""` for decorative ones. Give `width` and `height` to prevent layout shift. Videos provide captions through `<track>`.
+
+## PL-HTML-006 — Keep Behaviour Out of Markup
+
+Scripts are external files loaded with `type="module"` or `defer`. Do not place inline `<script>` blocks with application logic in the page. Inline JSON data for a single script is the only accepted exception, marked with `type="application/json"`.
+
+## PL-HTML-007 — Document Head Is Complete
+
+Each page sets `<html lang>`, a `<meta name="viewport">`, a unique `<title>`, and a `<meta name="description">` when the page is public. Favicons and social metadata are declared once in the layout, not repeated per page.
+
+## PL-HTML-008 — Compact Nesting
+
+Keep element nesting shallow. When a block nests more than four levels deep, extract a component or a template fragment. Put one block element per line; keep inline phrasing content on the same line as its text.
+
+## PL-HTML-009 — Validation Is Part of the Build
+
+Validate HTML in CI with the W3C validator or `html-validate`. A warning about a missing `alt` or label is a build failure, not a suggestion.
+
+---
+
+# 15.7 CSS Profile
+
+Apply the shared core rules with this profile, and the HTML profile for the markup it styles. CSS is declarative: a rule states what an element looks like, not how the browser should compute it. Pureline CSS uses the modern language: custom properties, cascade layers, nesting, logical properties, and container queries. Tailwind CSS utilities follow the same principles when a project uses them.
+
+```text
+Tokens (custom properties)
+↓
+Layers (reset, base, components, utilities)
+↓
+Components (low specificity)
+↓
+Overrides (rare, explicit)
+```
+
+## PL-CSS-001 — Tokens Before Values
+
+Colours, spacing, radii, font sizes, and durations are custom properties declared once on `:root` or in a theme scope. Components read `var(--space-3)`; they never repeat `#22d3ee` or `12px`.
+
+```css
+:root {
+  --color-accent: #22d3ee;
+  --space-3: 0.75rem;
+}
+
+.badge {
+  color: var(--color-accent);
+  padding: var(--space-3);
+}
+```
+
+## PL-CSS-002 — Cascade Layers Own the Order
+
+Declare the order of layers once: `@layer reset, base, components, utilities;`. Put each file's rules into the layer that matches their role. Do not rely on source order or on `!important` to win a conflict.
+
+## PL-CSS-003 — Keep Specificity Low
+
+Style with single classes. Do not style with element chains (`div section ul li a`) or ids. Specificity that grows with the markup makes later changes expensive. A selector deeper than two levels is a review finding.
+
+## PL-CSS-004 — No `!important` Outside Utilities
+
+`!important` is allowed only for utility classes that must override a component, and only in the utilities layer. Anywhere else it is a finding.
+
+## PL-CSS-005 — Nesting Mirrors the Component
+
+Use native CSS nesting for states and children of one component (`&:hover`, `& .title`). Do not nest more than two levels. Nesting never replaces a separate component.
+
+## PL-CSS-006 — Logical Properties and Layout Modules
+
+Use logical properties (`margin-inline`, `padding-block`, `inset-inline-start`) for layouts that must work in both writing directions. Use Flexbox for one-dimensional rows and columns, and Grid for two-dimensional layouts. Do not use floats for layout.
+
+## PL-CSS-007 — Responsive Rules Follow the Component
+
+Prefer container queries (`@container`) for a component's own layout, and media queries for page-level structure. Each breakpoint is a named token, not a repeated literal.
+
+## PL-CSS-008 — Property Order Is Consistent
+
+Within a rule, group properties in this order with a blank line between groups: layout (`display`, position, flex/grid), box (size, margin, padding, border), typography, visual (colour, background, shadow), and motion (transition, animation).
+
+## PL-CSS-009 — Naming
+
+Class names are `kebab-case` and describe the role of the element (`session-card`, `session-card-title`), not its appearance (`red-box`). BEM-style names are allowed when a project already uses them.
+
+## PL-CSS-010 — Motion Respects the User
+
+Every animation or transition has a `@media (prefers-reduced-motion: reduce)` alternative that removes or shortens it. Animate `transform` and `opacity` only.
+
+## PL-CSS-011 — Folder Density
+
+A stylesheet folder holds at most **10 files**. Split by layer or by component group, not by property type (`colors.css`, `spacing.css`).
+
+## PL-CSS-012 — Tooling
+
+Run a linter such as `stylelint` with the project's rules in CI. Enable the stylelint rules for specificity and `!important`, so that PL-CSS-003 and PL-CSS-004 are checked automatically.
+
+---
+
 # 16. Abstraction Rules
 
 ## PL-ARCH-001 — Abstraction Requires a Reason
@@ -2066,6 +2435,35 @@ Pureline Core
 │   ├── packages and narrow imports
 │   └── .nvh components with ref state
 │
+├── Pureline Python
+│   ├── PEP 8 naming, guard clauses
+│   ├── type hints, specific exceptions
+│   ├── dataclasses, context managers
+│   └── ruff / type checker
+│
+├── Pureline QML
+│   ├── one root object per file
+│   ├── required properties, bindings
+│   ├── Theme tokens, layouts
+│   └── qmllint
+│
+├── Pureline Astro
+│   ├── typed frontmatter
+│   ├── static by default, islands by declaration
+│   ├── scoped styles, content collections
+│   └── astro check
+│
+├── Pureline HTML
+│   ├── semantic elements
+│   ├── labels, alt text, document head
+│   └── behaviour out of markup
+│
+├── Pureline CSS
+│   ├── tokens, cascade layers
+│   ├── low specificity, no !important
+│   ├── logical properties, container queries
+│   └── reduced motion, stylelint
+│
 ├── Pureline Emerald (.ems)
 │   ├── namespace / use with ::
 │   ├── typed declarations and semicolons
@@ -2115,7 +2513,7 @@ This allows the website, CLI, formatter, linter, and IDE integrations to stay co
 
 **Emerald and Emvus tooling requirement:** use separate grammars for `.ems` and `.ev`. The checker must distinguish real syntax and resolved AST constructs from textual lookalikes; macro-generated declarations, inferred tuple/list forms, optional method-declaration parentheses, and optional Emvus semicolons require language-aware handling. Existing and newly added profile IDs must produce consistent diagnostics across tools.
 
-**Versioning:** Rust rules use stable `PL-RS-*` IDs; Novus, React, Emerald, and Emvus rules use `PL-NV-*`, `PL-REACT-*`, `PL-EMS-*`, and `PL-EV-*` IDs. The established `PL-CORE-*`, `PL-CF-*`, `PL-JAVA-*`, `PL-JS-*`, `PL-TS-*`, `PL-GO-*`, and `PL-CR-*` IDs are not renumbered. Version 1.4 added `PL-CORE-022` and `PL-STRUCT-003`; version 1.5 added `PL-RS-001`–`PL-RS-020`; version 1.6 adds `PL-NV-001`–`PL-NV-013`, `PL-REACT-001`–`PL-REACT-014`, and `PL-RS-021`–`PL-RS-024` without renumbering existing rules.
+**Versioning:** Rust rules use stable `PL-RS-*` IDs; Novus, React, Python, QML, Astro, HTML, CSS, Emerald, and Emvus rules use `PL-NV-*`, `PL-REACT-*`, `PL-PY-*`, `PL-QML-*`, `PL-AS-*`, `PL-HTML-*`, `PL-CSS-*`, `PL-EMS-*`, and `PL-EV-*` IDs. The established `PL-CORE-*`, `PL-CF-*`, `PL-JAVA-*`, `PL-JS-*`, `PL-TS-*`, `PL-GO-*`, and `PL-CR-*` IDs are not renumbered. Version 1.4 added `PL-CORE-022` and `PL-STRUCT-003`; version 1.5 added `PL-RS-001`–`PL-RS-020`; version 1.6 added `PL-NV-001`–`PL-NV-013`, `PL-REACT-001`–`PL-REACT-014`, and `PL-RS-021`–`PL-RS-024`; version 1.7 adds `PL-PY-001`–`PL-PY-012`, `PL-QML-001`–`PL-QML-011`, `PL-AS-001`–`PL-AS-009`, `PL-HTML-001`–`PL-HTML-009`, and `PL-CSS-001`–`PL-CSS-012` without renumbering existing rules.
 
 ---
 

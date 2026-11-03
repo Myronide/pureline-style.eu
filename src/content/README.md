@@ -1,6 +1,6 @@
 # Pureline Code Style
 
-The Pureline 1.6 coding standard, organized by topic and language. Start with the [overview](overview.md), read the shared rules, then apply the relevant language profile.
+The Pureline 1.7 coding standard, organized by topic and language. Start with the [overview](overview.md), read the shared rules, then apply the relevant language profile.
 
 **Linear Flow. Explicit Intent. Minimal Noise. Small Units. Clear Ownership. Cohesion over Size.**
 
@@ -42,11 +42,16 @@ The Pureline 1.6 coding standard, organized by topic and language. Start with th
 | [Rust](languages/rust.md) | `PL-RS-001`–`PL-RS-024` | Ownership, Result/Option, pattern matching, rustfmt, RAII, async and FFI, error types, central lints, cancellation safety, test placement |
 | [Novus](languages/novus.md) | `PL-NV-001`–`PL-NV-013` | `.nv` / `.nvh`, `final`/`var`, `construct()`, `pureline:allow-else`, packages and imports, `.nvh` components, `.nvmd` Markdown content |
 | [React](languages/react.md) | `PL-REACT-001`–`PL-REACT-014` | React 19 with strict TypeScript: guards, hooks, effects, props, context, keys, pure render, routing |
+| [Python](languages/python.md) | `PL-PY-001`–`PL-PY-012` | PEP 8 naming, guard clauses, type hints, specific exceptions, dataclasses, ruff and type checkers |
+| [QML](languages/qml.md) | `PL-QML-001`–`PL-QML-011` | Qt 6 components, `required property`, bindings, Theme tokens, layouts, qmllint |
+| [Astro](languages/astro.md) | `PL-AS-001`–`PL-AS-009` | Typed frontmatter, static by default, explicit islands, scoped styles, content collections |
+| [HTML](languages/html.md) | `PL-HTML-001`–`PL-HTML-009` | Semantic elements, one heading structure, labels, alt text, document head, validation |
+| [CSS](languages/css.md) | `PL-CSS-001`–`PL-CSS-012` | Tokens, cascade layers, low specificity, no `!important`, logical properties, reduced motion |
 
 See also the [language profile overview](languages/README.md) and [tooling requirements](tooling.md).
 
 ## Specification and maintenance
 
-These topic files preserve the rules, examples, qualifications, and stable IDs from the [Pureline Specification 1.6](../../PURELINE_SPECIFICATION_1.6.md), the versioned source of reference. Section numbers are omitted here so each topic can be read independently; rule IDs are unchanged.
+These topic files preserve the rules, examples, qualifications, and stable IDs from the [Pureline Specification 1.7](../../PURELINE_SPECIFICATION_1.7.md), the versioned source of reference. Section numbers are omitted here so each topic can be read independently; rule IDs are unchanged.
 
 When revising guidance, keep the original specification and the corresponding topic file consistent. Do not renumber existing rule IDs or turn review heuristics into hard violations.

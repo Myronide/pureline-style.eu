@@ -1,6 +1,6 @@
 # Language Profiles
 
-[Code style guide](../README.md) · [Original specification 1.6](../../../PURELINE_SPECIFICATION_1.6.md)
+[Code style guide](../README.md) · [Original specification 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
 Choose your language profile from the [guide index](../README.md#language-specific-rules). TypeScript inherits JavaScript as well as the shared core. Keep Emerald and Emvus profiles separate.
 

@@ -1,6 +1,6 @@
 # React Code Style
 
-[Code style guide](../README.md) · [Original specification 1.6](../../../PURELINE_SPECIFICATION_1.6.md)
+[Code style guide](../README.md) · [Original specification 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
 Apply the [shared core rules](../README.md#shared-rules), the [JavaScript profile](javascript.md), and the [TypeScript profile](typescript.md) together with this profile. The React profile targets **React 19 with TypeScript in strict mode**, bundled with Vite, and routed with react-router. Components are functions. Pureline reads a component as a small pipeline: props in, guards, derived values, markup out.
 

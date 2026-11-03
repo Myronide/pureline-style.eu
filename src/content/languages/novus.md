@@ -1,6 +1,6 @@
 # Novus Code Style
 
-[Code style guide](../README.md) · [Original specification 1.6](../../../PURELINE_SPECIFICATION_1.6.md)
+[Code style guide](../README.md) · [Original specification 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
 Apply the [shared core rules](../README.md#shared-rules) together with this profile. Novus is a self-hosting language that compiles to portable C, with dynamically typed values, optional static typing, `.nvh` server-rendered components, and `.nvmd` Markdown content through [nvh-markdown](https://github.com/ezTxmMC/nvh-markdown). The profile follows the Novus examples, the standard library, and the rules the Novus language server checks when Pureline style diagnostics are enabled (`novus.pureline.enabled`). [Cohesion over Size](../core/structure.md) applies throughout.
 
