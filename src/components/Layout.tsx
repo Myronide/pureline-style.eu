@@ -22,7 +22,8 @@ export function Layout() {
   return (
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-30 pt-4">
-        <div className="island shell flex h-14 items-center justify-between px-6 backdrop-blur-xl">
+        <div className="shell">
+        <div className="island flex h-14 items-center justify-between px-6 backdrop-blur-xl">
           <Link to="/" className="flex items-center gap-2.5 text-[17px] font-semibold tracking-tight">
             <Logo className="h-5" />
             <span className="display text-lg">Pureline</span>
@@ -36,10 +37,13 @@ export function Layout() {
             </a>
           </nav>
         </div>
+        </div>
+        </div>
       </header>
       <main className="flex-1"><Outlet /></main>
       <footer className="pb-6">
-        <div className="island shell flex flex-col gap-6 px-8 py-10 text-sm text-muted sm:flex-row sm:items-end sm:justify-between">
+        <div className="shell">
+        <div className="island flex flex-col gap-6 px-8 py-10 text-sm text-muted sm:flex-row sm:items-end sm:justify-between">
           <div className="space-y-4">
             <p className="display text-lg text-fg">Code without noise.</p>
             <Authors />
@@ -49,6 +53,8 @@ export function Layout() {
             <a href={repoUrl} className="underline underline-offset-4 decoration-line hover:text-fg">Myronide/pureline-style</a>{" "}
             on {new Date(syncedAt).toLocaleString("en-GB")}.
           </p>
+        </div>
+        </div>
         </div>
       </footer>
     </div>
