@@ -31,6 +31,7 @@ export function Layout() {
           </Link>
           <nav className="flex items-center gap-6 sm:gap-8">
             <NavLink to="/docs" end={false} className={navLink}>Guide</NavLink>
+            <NavLink to="/rules" className={navLink}>Rules</NavLink>
             <NavLink to="/docs/languages/README" className={navLink}>Languages</NavLink>
             <NavLink to="/editor" className={navLink}>Editor</NavLink>
             <a href={repoUrl} target="_blank" rel="noreferrer" aria-label="GitHub" className="flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-fg">

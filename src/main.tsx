@@ -5,6 +5,7 @@ import { Layout } from "./components/Layout";
 import { Docs } from "./pages/Docs";
 import { Editor } from "./pages/Editor";
 import { Home } from "./pages/Home";
+import { Rules } from "./pages/Rules";
 import { NotFound } from "./pages/NotFound";
 import "./index.css";
 
@@ -15,6 +16,7 @@ createRoot(document.getElementById("root")!).render(
         <Route element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="docs/*" element={<Docs />} />
+          <Route path="rules" element={<Rules />} />
           <Route path="editor" element={<Editor />} />
           <Route path="*" element={<NotFound />} />
         </Route>
