@@ -161,7 +161,7 @@ export function Home() {
                   </span>
                   <Icon name="lucide:arrow-up-right" className="size-4 text-muted transition-colors group-hover:text-accent" />
                 </span>
-                <span className="font-mono text-xs text-muted">{ruleCount(d)} rules</span>
+                <span className="text-xs text-muted">{ruleCount(d)} rules</span>
               </Link>
             </li>
           ))}

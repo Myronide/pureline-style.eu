@@ -1,6 +1,37 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/* Text and headings: Noto Sans. */
+@font-face {
+  font-family: "Noto Sans Pureline";
+  src: url("./fonts/noto-sans-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Noto Sans Pureline";
+  src: url("./fonts/noto-sans-400-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Noto Sans Pureline";
+  src: url("./fonts/noto-sans-500.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Noto Sans Pureline";
+  src: url("./fonts/noto-sans-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Code, identifiers and rule IDs: JetBrains Mono Nerd Font. */
 @font-face {
   font-family: "JetBrains Mono Nerd";
   src: url("./fonts/jetbrains-mono-nerd-400.woff2") format("woff2");
@@ -41,13 +72,15 @@
   --color-blue: #3b6bff;
   --color-accent: #22d3ee;
   --color-warn: #f87171;
-  --font-sans: "JetBrains Mono Nerd", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-sans: "Noto Sans Pureline", "Noto Sans", system-ui, sans-serif;
   --font-mono: "JetBrains Mono Nerd", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 @layer base {
   html { scroll-behavior: smooth; color-scheme: dark; }
-  body { @apply bg-bg font-sans text-fg antialiased text-[15px] leading-[1.7]; font-feature-settings: "calt" 1, "liga" 1; }
+  body {
+    @apply bg-bg font-sans text-fg antialiased text-[16px] leading-[1.7];
+  }
   * {
     scrollbar-width: thin;
     scrollbar-color: var(--color-line) transparent;
@@ -57,18 +90,19 @@
   :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; border-radius: 4px; }
 }
 
-/* A floating panel: the one surface the site uses for grouping. */
-@utility island {
-  @apply rounded-2xl border border-line/80 bg-surface/90 shadow-[0_18px_50px_-22px_rgb(0_0_0/0.8)];
-}
-
 /* The one container every page uses, so all edges line up. */
 @utility shell {
   @apply mx-auto w-full max-w-[90rem] px-6;
 }
 
+/* A floating panel: used sparingly, for the header, the footer and code. */
+@utility island {
+  @apply rounded-2xl border border-line/80 bg-surface/90 shadow-[0_18px_50px_-22px_rgb(0_0_0/0.8)];
+}
+
+/* Headings and emphasis in the text face. */
 @utility display {
-  @apply font-bold tracking-[-0.03em];
+  @apply font-bold tracking-[-0.02em];
 }
 
 @utility brand-gradient {
@@ -88,22 +122,22 @@
   --tw-prose-th-borders: var(--color-line);
   --tw-prose-td-borders: var(--color-line);
   --tw-prose-code: var(--color-fg);
-  font-size: 15px;
+  font-size: 16px;
 }
 
 .doc :where(h1, h2, h3) { @apply display; }
-.doc :where(h1) { @apply text-4xl; line-height: 1.12; }
-.doc :where(h2) { @apply mt-16 text-2xl; line-height: 1.25; }
-.doc :where(h3) { @apply mt-10 text-lg; }
+.doc :where(h1) { @apply text-[2.5rem]; line-height: 1.12; }
+.doc :where(h2) { @apply mt-16 text-[1.75rem]; line-height: 1.25; }
+.doc :where(h3) { @apply mt-10 text-[1.2rem] leading-snug; }
 .doc :where(h2, h3, h4) { scroll-margin-top: 6rem; }
 .doc :where(code):not(pre code)::before,
 .doc :where(code):not(pre code)::after { content: none; }
 .doc :where(code):not(pre code) {
-  @apply rounded-md border border-line bg-raised px-1.5 py-px text-[0.86em];
+  @apply rounded-md border border-line bg-raised px-1.5 py-px font-mono text-[0.84em];
   color: var(--color-fg);
 }
 .doc :where(a) { @apply no-underline underline-offset-4 decoration-accent/40 hover:underline; }
-.doc :where(table) { @apply text-sm; }
+.doc :where(table) { @apply text-[15px]; }
 .doc :where(th) { @apply text-muted font-medium; }
 .doc :where(pre) { @apply rounded-xl border border-line bg-surface; }
 
