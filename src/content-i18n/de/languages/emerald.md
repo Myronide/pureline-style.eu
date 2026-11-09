@@ -94,8 +94,8 @@ public data class Coordinate(Int x, Int y);
 
 Emeralds Datenklasse-Generierung umfasst gegebenenfalls einen Konstruktor, `equals`, `toString`, `copy` und `withX`-Methoden. Nehmen Sie nicht an, dass Emvus-only-Datenklasse-Funktionen wie z.B. benanntes-Argument `copy`, generiertes `hashCode` oder Emvus-Destrukturierung bereits Teil von Emerald sind.
 
-Use literals directly when the constructor and arguments make the value
-immediately clear, as with the origin.
+Verwenden Sie direkt wörtliche Wörter, wenn der Konstruktor und Argumente den Wert
+sofort klar, wie beim Ursprung.
 
 ```text
 Intermediate values                                 │ ✓ Pureline

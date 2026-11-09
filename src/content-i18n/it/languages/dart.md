@@ -18,11 +18,11 @@ const retryLimit = 3;
 ```
 
 - Avoid `var` when the value is never reassigned.
-- Prefer `const` constructors for widgets, value objects, and configuration.
+- Preferisci i costruttori `const` per widget, oggetti di valore e configurazione...
 
-### PL-DART-002 — Sound Null Safety Without `!`
+### PL-DART-002. Sicurezza del suono senza `!`
 
-Make nullability explicit in types. Handle `null` with `?.` and `??` when the expression is simple.
+Make nullability explicit in types. Gestisci `null` con `?.` e `??` quando l'espressione è semplice.
 
 ```dart
 String? nickname;
@@ -30,10 +30,10 @@ final label = nickname ?? 'anonymous';
 final length = nickname?.length ?? 0;
 ```
 
-- Avoid the `!` operator. Use it only with a comment that states why the value cannot be null.
+- Avoid the `!` operator. Usalo solo con un commento che indica perché il valore non può essere nullo..
 - Prefer promotion through checks over `!`.
 
-### PL-DART-003 — Named Parameters with `required` for Public API
+### PL-DART-003. Parametri con nome `required` per API pubbliche
 
 Public constructors and functions take named parameters. Mark mandatory ones `required`.
 
@@ -113,7 +113,7 @@ String describe(User? user) {
 - See [control flow](../core/control-flow.md) for the shared rule.
 - Avoid `else` after a returning branch (PL-CORE-002).
 
-### PL-DART-007 — Sealed Classes and Switch Expressions for State
+### PL-DART-007. Classi sigillate ed espressioni di commutazione per lo Stato '. le imprese in questione
 
 Model closed sets of states as `sealed` classes. Handle them with an exhaustive `switch` expression.
 
@@ -168,7 +168,7 @@ void _connect() {}
 
 - Keep public surface small so that the library's contract stays clear.
 
-### PL-DART-010 — Small Classes with One Responsibility
+### PL-DART-010. Piccoli ceti con una sola responsabilitàosodico
 
 Keep classes focused on one coherent responsibility. Split a class when it mixes unrelated concerns, not when it passes an arbitrary line count (PL-CORE-009, PL-CORE-022).
 
@@ -197,9 +197,9 @@ lib/session/storage/
 
 - See [structure](../core/structure.md) for the shared size rules (PL-CORE-021).
 
-### PL-DART-012 — Tooling: `dart format` and `dart analyze` with `lints`
+### PL-DART-012 — Tooling: `dart format` e `dart analyze` con `lints`
 
-Format and analyze every package before review. Enable the `lints` package in `analysis_options.yaml`.
+Format and analyze every package before review. Abilita il pacchetto `lints` in `analysis_options.yaml`..
 
 ```yaml
 include: package:lints/recommended.yaml

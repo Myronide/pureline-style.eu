@@ -26,7 +26,7 @@ var speed: float = 240.0            │ var speed := 240.0
 var direction: Vector2 = Vector2.UP │ var direction := Vector2.UP
 ```
 
-### PL-GD-002 — Export Designer-Facing Values
+### PL-GD-002. Esporta valori di designer-facing
 
 Expose values a designer should tune with `@export`, typed and ranged where possible. Keep values that belong to the code private to the script.
 
@@ -44,7 +44,7 @@ Resolve child nodes once with `@onready`, typed, and name the node by its role. 
 @onready var hit_timer: Timer = $HitTimer
 ```
 
-### PL-GD-004 — Signals Decouple Upward Communication
+### PL-GD-004. Segnali disaccoppiare la comunicazione verso l'alto
 
 A node reports events by emitting a signal and does not call into its parents or siblings. The owner that composes the scene connects the signal. Calls flow down to children; events flow up as signals.
 
@@ -78,7 +78,7 @@ class_name HealthBar
 const ATTACK_COOLDOWN: float = 0.6
 ```
 
-### PL-GD-007 — Scenes Are Composed From Small Scenes
+### PL-GD-007. Le scene sono composte da piccole scene lescene sono composte da piccole scene
 
 Build a scene from small reusable scenes, each with its own script and responsibility. Reference direct children by name. Avoid deep node paths, because they couple the script to the internal layout of another scene.
 
@@ -89,7 +89,7 @@ Build a scene from small reusable scenes, each with its own script and responsib
 # @onready var sprite: Sprite2D = $Body/Visuals/Sprite2D
 ```
 
-### PL-GD-008 — Guard Clauses in Scripts
+### PL-GD-008. Clausole di guardia negli script. la '
 
 Check invalid state first and return early. The main path of a function stays flat and unindented. Use `is_instance_valid()` before touching a node reference that may have been freed.
 

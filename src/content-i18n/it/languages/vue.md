@@ -2,7 +2,7 @@
 
 [Code style guide](../README.md) · [Original specification 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Apply the [shared core rules](../README.md#shared-rules), the [JavaScript profile](javascript.md), and the [TypeScript profile](typescript.md) together with this profile. The Vue profile targets **Vue 3 with the Composition API, `<script setup>`, and TypeScript in strict mode**. A component reads as a small pipeline: typed inputs, reusable logic, derived values, markup.
+Apply the [shared core rules](../README.md#shared-rules), the [JavaScript profile](javascript.md), and the [TypeScript profile](typescript.md) together with this profile. The Vue profile targets **Vue 3 with the Composition API, `<script setup>`, and TypeScript in strict mode**. Un componente si legge come una piccola pipeline: typed inputs, reusable logic, derived values, markup.
 
 ## Vue Profile
 
@@ -29,7 +29,7 @@ const props = defineProps<{ title: string }>();
 </template>
 ```
 
-### PL-VUE-002 — Props and Emits Are Typed
+### PL-VUE-002. Props e Emits sono digitati
 
 Declare props with a type-only `defineProps<T>()` and emits with `defineEmits<{ ... }>()`. Use union types for variants, never a set of optional booleans ([PL-TS-001](typescript.md)).
 
@@ -40,7 +40,7 @@ const emit = defineEmits<{ select: [id: string] }>();
 </script>
 ```
 
-### PL-VUE-003 — Computed Over Watch
+### PL-VUE-003. Computed Over Watch.oodico.
 
 Derive a value with `computed` whenever it follows from props or state. Use `watch` only for side effects such as requests or timers, never to set a ref that a `computed` could produce.
 
@@ -77,7 +77,7 @@ Use `v-if` for guards, empty states, and branches that must not exist in the DOM
 </template>
 ```
 
-### PL-VUE-006 — Lists Use a Stable `:key`
+### PL-VUE-006. Elenchi Usa uno `:key` stabile
 
 Every `v-for` has a `:key` bound to a stable identifier from the data, never the index of a list that can be reordered or filtered. Do not combine `v-if` and `v-for` on one element; filter in a `computed` instead.
 

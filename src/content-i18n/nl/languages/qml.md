@@ -65,8 +65,8 @@ function submit() {
 
 Een binding houdt één uitdrukking van ten hoogste één voorwaardelijke en een korte oproep. Verplaats langere logica naar een genoemde functie of een C++ / Python backend object. Genesteerde sternen zijn geen Pureline.
 
-Keep a short binding on the property that uses it. Name the condition
-when multiple controls share it.
+Houd een korte binding aan de eigenschap die het gebruikt. Noem de voorwaarde
+als meerdere controles het delen.
 
 ```text
 Named property                          │ ✓ Pureline

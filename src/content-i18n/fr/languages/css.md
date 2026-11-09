@@ -40,8 +40,8 @@ Déclarez l'ordre des calques une fois: `@layer reset, base, components, utiliti
 
 Style avec des cours simples. Ne pas styler avec les chaînes d'éléments (`div section ul li a`) ou les ids. La spécificité qui se développe avec le balisage rend les changements plus coûteux. Un sélecteur plus profond que deux niveaux est une constatation d'examen.
 
-Prefer a dedicated class when the element's style should apply independently
-of its position in the component.
+Préférez une classe dédiée lorsque le style de l'élément doit s'appliquer indépendamment
+de sa position dans l'élément.
 
 ```text
 − Descendant selector                  │ ✓ Pureline

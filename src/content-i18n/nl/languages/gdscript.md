@@ -2,13 +2,13 @@
 
 [Code stijl gids](../README.md) · [Original specificatie 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Pas de [gedeelde kernregels](../README.md#shared-rules) toe met dit profiel. GDScript 4 is a typed scripting language attached to nodes in scenes. Read the [core principles](../core/principles.md) first; the rules below apply them to nodes, signals, and scenes.
+Pas de [gedeelde kernregels](../README.md#shared-rules) toe met dit profiel. GDScript 4 is een getypte scripttaal die is verbonden met knooppunten in scènes. Lees eerst de [kernprincipes](../core/principles.md); de onderstaande regels gelden voor knooppunten, signalen en scènes.
 
-## GDScript Profile
+## GDScript-profiel
 
-### PL-GD-001 — Static Typing Everywhere
+### PL-GD-001. Statisch typen overal
 
-Type every variable, parameter, and return value. The editor checks typed code before it runs, and the types document intent. Use `-> void` for functions that return nothing.
+Typ elke variabele, parameter en retourwaarde. De editor controleert getypte code voordat het draait, en de types document intent. Gebruik `-> void` voor functies die niets teruggeven.
 
 ```gdscript
 var hp: int = 10
@@ -18,7 +18,7 @@ func take_damage(amount: int) -> void:
 	hp = maxi(hp - amount, 0)
 ```
 
-Prefer `:=` for locals when the initializer makes the static type clear.
+Liever `:=` voor lokale gebruikers als de initializer het statische type duidelijk maakt.
 
 ```text
 Explicit annotation                 │ ✓ Pureline
@@ -26,27 +26,27 @@ var speed: float = 240.0            │ var speed := 240.0
 var direction: Vector2 = Vector2.UP │ var direction := Vector2.UP
 ```
 
-### PL-GD-002 — Export Designer-Facing Values
+### PL-GD-002. Export Designer-Facing waarden
 
-Expose values a designer should tune with `@export`, typed and ranged where possible. Keep values that belong to the code private to the script.
+Expose waarden die een ontwerper moet afstemmen met `@export`, getypt en waar mogelijk gevariëerd. Houd waarden die tot de code behoren privé aan het script.
 
 ```gdscript
 @export var max_hp: int = 10
 @export_range(0.0, 2.0, 0.1) var move_speed: float = 1.0
 ```
 
-### PL-GD-003 — Node References With @onready
+### PL-GD-003. Knooppunt Referenties met @onready
 
-Resolve child nodes once with `@onready`, typed, and name the node by its role. Never fetch nodes with `get_node()` inside a loop or a per-frame callback.
+Oplossen van kindknooppunten eenmaal met `@onready`, getypt, en noem de knooppunt door zijn rol. Nooit nodes met `get_node()` binnen een lus of per frame terughalen.
 
 ```gdscript
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var hit_timer: Timer = $HitTimer
 ```
 
-### PL-GD-004 — Signals Decouple Upward Communication
+### PL-GD-004. Signalen loskoppelen naar boven communicatie
 
-A node reports events by emitting a signal and does not call into its parents or siblings. The owner that composes the scene connects the signal. Calls flow down to children; events flow up as signals.
+Een knooppunt rapporteert gebeurtenissen door een signaal uit te zenden en roept zijn ouders of broers en zussen niet op. De eigenaar die de scène componeert verbindt het signaal. De oproepen stromen naar kinderen toe; gebeurtenissen stromen als signalen.
 
 ```gdscript
 signal health_changed(current: int)
@@ -56,9 +56,9 @@ func take_damage(amount: int) -> void:
 	health_changed.emit(hp)
 ```
 
-### PL-GD-005 — Lifecycle Callbacks Serve Their Purpose
+### PL-GD-005. Levenscyclus terugroeplers Serve hun doel
 
-Use `_ready()` for setup that needs the node in the tree, `_process(delta)` for frame-rate visuals and timers, and `_physics_process(delta)` for movement and collision. Do not put game rules in `_process` or setup in `_physics_process`.
+Gebruik `_ready()` voor de opstelling die de knooppunt in de boom, `_process(delta)` voor frame-rate visuals en timers, en `_physics_process(delta)` voor beweging en botsing nodig heeft. Zet geen spelregels in `_process` of setup in `_physics_process`.
 
 ```gdscript
 func _physics_process(delta: float) -> void:
@@ -66,11 +66,11 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 ```
 
-### PL-GD-006 — Naming and Constants
+### PL-GD-006. Namen en Constanten
 
-- Functions, variables, and signals: `snake_case`. `class_name` and node types: `PascalCase`.
-- Fixed values use `const` and `UPPER_SNAKE_CASE`, so the value and its meaning live in one place.
-- Names state the role (`attack_cooldown`), never a type or position (`thing2`).
+- Functies, variabelen en signalen: `snake_case`. `class_name` en knooppunttypes: `PascalCase`.
+- Vaste waarden gebruiken `const` en `UPPER_SNAKE_CASE`, dus de waarde en de betekenis ervan leven op één plaats.
+- Namen geven de rol aan (`attack_cooldown`), nooit een type of positie (`thing2`).
 
 ```gdscript
 class_name HealthBar
@@ -78,9 +78,9 @@ class_name HealthBar
 const ATTACK_COOLDOWN: float = 0.6
 ```
 
-### PL-GD-007 — Scenes Are Composed From Small Scenes
+### PL-GD-007. Scènes zijn samengesteld uit kleine scènes
 
-Build a scene from small reusable scenes, each with its own script and responsibility. Reference direct children by name. Avoid deep node paths, because they couple the script to the internal layout of another scene.
+Een scène uit kleine herbruikbare scènes, elk met zijn eigen script en verantwoordelijkheid. Refereren directe kinderen op naam. Vermijd diepe knooppaden, omdat ze het script koppelen aan de interne indeling van een andere scène.
 
 ```gdscript
 # Good: the component is a direct child
@@ -89,9 +89,9 @@ Build a scene from small reusable scenes, each with its own script and responsib
 # @onready var sprite: Sprite2D = $Body/Visuals/Sprite2D
 ```
 
-### PL-GD-008 — Guard Clauses in Scripts
+### PL-GD-008. Guard Clausles in Scripts
 
-Check invalid state first and return early. The main path of a function stays flat and unindented. Use `is_instance_valid()` before touching a node reference that may have been freed.
+Controleer ongeldige status eerst en keer eerder terug. Het hoofdpad van een functie blijft vlak en onbepaald. Gebruik `is_instance_valid()` voordat u een knooppuntreferentie aanraakt die mogelijk vrij is.
 
 ```gdscript
 func interact(player: Player) -> void:
@@ -105,7 +105,7 @@ func interact(player: Player) -> void:
 
 ### PL-GD-009. Map Density
 
-A folder of hand-maintained scripts holds at most **10 files** by default. Group scripts by feature, and keep shared components in one folder.
+Een map met hand-onderhoud scripts bevat op zijn hoogst **10 bestanden** standaard. Groep scripts op functie, en houd gedeelde componenten in één map.
 
 ```text
 scenes/
@@ -116,7 +116,7 @@ scenes/
 
 ### PL-GD-010. Gereedschape
 
-Keep the Godot script editor warnings enabled and fix them rather than hiding them. Run `gdformat` and `gdlint` from the GDScript toolkit (`gdtoolkit`) in CI.
+Houd de waarschuwingen van de Godot scripteditor ingeschakeld en repareer ze in plaats van ze te verbergen. Run `gdformat` en `gdlint` van de GDScript toolkit (`gdtoolkit`) in CI.
 
 ```bash
 gdformat --check scripts/

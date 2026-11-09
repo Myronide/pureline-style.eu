@@ -26,8 +26,8 @@ function load(value: UserId): User {
 }
 ```
 
-Use `unknown` for untrusted input. Prefer a named type guard when the
-validation describes a domain concept such as a valid port.
+Utilisez `unknown` pour les entrées non fiables. Préférez un type de garde nommé lorsque le
+validation décrit un concept de domaine comme un port valide.
 
 ```text
 A · Inline validation                        │ ✓ Pureline · Named type guard

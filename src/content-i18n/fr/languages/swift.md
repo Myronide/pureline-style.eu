@@ -1,22 +1,22 @@
-# Swift Code Style
+# Style de code rapide
 
 [Guide de style de code](../README.md) · [Données originales 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
 Appliquer les [règles de base partagées](../README.md#shared-rules) avec ce profil. Les règles linguistiques et les exceptions explicites de profil ont priorité sur les préférences syntaxiques entre langues. [Cohésion sur taille](../core/structure.md) s'applique tout au long.
 
-## Swift Profile
+## Profil rapide
 
 Pureline Swift follows **idiomatic Swift 5.9 and later**: value semantics, optionals, exhaustive enums, and explicit access control are language strengths and should be used as such.
 
-### PL-SW-001 — Naming Follows Swift Conventions
+### PL-SW-001 — La désignation suit les conventions rapides
 
-- Types and protocols: `UpperCamelCase`. Members and locals: `lowerCamelCase`, named for their meaning ([Naming](../core/naming.md)).
+- Types et protocoles: `UpperCamelCase`. Membres et locaux: `lowerCamelCase`, nommé pour leur signification ([Naming](../core/naming.md)).
 
 ```swift
 protocol PaymentGateway { func charge(_ order: Order) throws -> Receipt }
 ```
 
-### PL-SW-002 — Explicit Access Control
+### PL-SW-002 — Contrôle d'accès explicite
 
 - Write access levels explicitly. Default to `private`; widen to `fileprivate` or `internal` only when a real consumer needs it.
 
@@ -27,17 +27,17 @@ public struct ConfigLoader {
 }
 ```
 
-### PL-SW-003 — `let` over `var`
+### PL-SW-003 — `let` au-dessus de `var`
 
-Use `let` unless mutation is required. Keep `var` locals narrowly scoped.
+Utilisez `let` sauf si la mutation est nécessaire. Gardez les locaux `var` étroitement visés.
 
 ```swift
 let total = items.reduce(0, +)
 ```
 
-### PL-SW-004 — Guard Clauses for Early Exit
+### PL-SW-004 — Clauses de garde pour sortie anticipée
 
-Validate early with `guard` and keep the successful path at base indentation ([Control Flow](../core/control-flow.md)). Avoid `else` after a branch that already exits.
+Valider tôt avec `guard` et garder le chemin réussi à l'indentation de base ([Control Flow](../core/control-flow.md)). Évitez `else` après une branche qui sort déjà.
 
 ```swift
 func open(_ request: Request) throws -> Session {
@@ -47,8 +47,8 @@ func open(_ request: Request) throws -> Session {
 }
 ```
 
-Prefer `guard let` when a missing value ends the function and the unwrapped
-value belongs to the success path.
+Préférez `guard let` quand une valeur manquante termine la fonction et le non wrapped
+la valeur appartient au chemin du succès.
 
 ```text
 − if let                              │ ✓ Pureline
@@ -59,35 +59,35 @@ if let user = users[id] {             │ guard let user = users[id] else {
 return "Gast"                         │ return user.name
 ```
 
-### PL-SW-005 — Optionals Are Unwrapped Safely
+### PL-SW-005 — Les options sont déballées en toute sécurité
 
-- Unwrap with `if let` or `guard let`; use `??` for simple defaults. Never force-unwrap (`!`) or `try!` outside tests; there, use `XCTUnwrap`.
+- Dépouillez avec `if let` ou `guard let`; utilisez `??` pour les simples par défaut. Ne jamais forcer le déverrouillage (`!`) ou les essais extérieurs `try!`; là, utiliser `XCTUnwrap`.
 
 ```swift
 guard let cached = cache[key] else { return nil }
 let name = user.nickname ?? user.login
 ```
 
-### PL-SW-006 — Value Types by Default
+### PL-SW-006 — Types de valeur par défaut
 
-Model data as `struct` and `enum`. Use `class` only for shared identity or mutable reference state, and mark it `final` unless inheritance is designed in.
+Les données de modèle sont `struct` et `enum`. Utilisez `class` uniquement pour l'identité partagée ou l'état de référence mutable, et marquez-le `final` à moins que l'héritage n'ait été conçu.
 
 ```swift
 struct Money: Equatable { let cents: Int; let currency: Currency }
 ```
 
-### PL-SW-007 — Protocols Only for Real Abstractions
+### PL-SW-007 — Protocoles uniquement pour les abstractions réelles
 
-Introduce a protocol for a real interchangeable implementation, API boundary, or test seam. A single concrete type with no seam should stay concrete ([Architecture](../core/architecture.md)).
+Introduire un protocole pour une implémentation réelle de la marque, une limite API ou une seam de test. Un seul type de béton sans sem doit rester en béton ([Architecture](../core/architecture.md)).
 
 ```swift
 protocol Clock { func now() -> Date }
 struct Scheduler { let clock: any Clock }
 ```
 
-### PL-SW-008 — Exhaustive `switch` over Enums
+### PL-SW-008 — `switch` exhaustif sur les enums
 
-Switch over enums without `default` so the compiler flags new cases. Use `if case` or `guard case` for a single pattern.
+Passez sur les enums sans `default` donc la NFS signe de nouvelles affaires. Utilisez `if case` ou `guard case` pour un seul motif.
 
 ```swift
 enum SessionState { case ready, closed, failed }
@@ -101,9 +101,9 @@ func label(for state: SessionState) -> String {
 }
 ```
 
-### PL-SW-009 — Small, Focused Functions
+### PL-SW-009 — Petites fonctions ciblées
 
-Keep functions to one level of abstraction: a short sequence of named steps. Extract a helper when a block needs a name to be understood ([Functions](../core/functions.md)).
+Gardez les fonctions à un niveau d'abstraction : une courte séquence de marches nommées. Extraire un helper lorsqu'un bloc a besoin d'un nom à comprendre ([Fonctions](../core/functions.md)).
 
 ```swift
 func submit(_ order: Order) throws {
@@ -114,7 +114,7 @@ func submit(_ order: Order) throws {
 
 ### PL-SW-010 — Densité du dossier
 
-A Swift source folder should contain at most **10 hand-maintained `.swift` files** by default; generated and test files do not count. Il s'agit d'un seuil de révision: split along responsibility boundaries, never into meaningless nested folders ([Structure](../core/structure.md)).
+A Swift source folder should contain at most **10 hand-maintained `.swift` files** by default; generated and test files do not count. This is a review threshold: split along responsibility boundaries, never into meaningless nested folders ([Structure](../core/structure.md)).
 
 ```text
 Sources/Checkout/
@@ -122,9 +122,9 @@ Sources/Checkout/
     PaymentFlow.swift
 ```
 
-### PL-SW-011 — Tooling Enforces Format and Lint
+### PL-SW-011 — L'outillage fait usage du format et du lint
 
-- Format with `swift-format` and lint with `SwiftLint` using the project-agreed configuration; keep exceptions there, with reasons, not as scattered `// swiftlint:disable` comments.
+- Format avec `swift-format` et lint avec `SwiftLint` en utilisant la configuration projet-agreed; gardez des exceptions là, avec des raisons, pas comme des commentaires `// swiftlint:disable` dispersés.
 
 ```bash
 swift-format lint --recursive Sources Tests

@@ -1,22 +1,22 @@
-# V Code Style
+# Style de code V
 
 [Guide de style de code](../README.md) · [Données originales 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
 Appliquer les [règles de base partagées](../README.md#shared-rules) avec ce profil. Les règles linguistiques et les exceptions explicites de profil ont priorité sur les préférences syntaxiques entre langues. [Cohésion sur taille](../core/structure.md) s'applique tout au long.
 
-## V Profile
+## V Profil
 
 ### PL-V-001 — Immutable par défaut
 
-Variables are immutable unless declared with `mut`. Declare `mut` only where a value must change. See [PL-CORE-010](../core/principles.md).
+Les variables sont immutables sauf si elles sont déclarées avec `mut`. Déclarez `mut` seulement lorsqu'une valeur doit changer. Voir [PL-CORE-010](../core/principles.md).
 
 ```v
 limit := 10
 ```
 
-### PL-V-002 — Return Result Types for Failures
+### PL-V-002 — Types de résultats de retour pour les défaillances
 
-A fallible function returns `!T` and reports failure with `error(...)`.
+Une fonction jaugée renvoie `!T` et signale une défaillance avec `error(...)`.
 
 ```v
 struct User {
@@ -32,9 +32,9 @@ fn load_user(id int) !User {
 }
 ```
 
-### PL-V-003 — Handle Errors Early With `or {}`
+### PL-V-003 — Poignez les erreurs tôt avec `or {}`
 
-Handle a failed call at the call site. Propagate with `!` only when the caller should own the error.
+Gérer un appel raté sur le site d'appel. Propagate avec `!` seulement quand l'appelant doit posséder l'erreur.
 
 ```v
 fn show_user() {
@@ -43,8 +43,8 @@ fn show_user() {
 }
 ```
 
-In a function that returns a result, prefer `!` to propagate an unchanged
-error. Use an `or` block when the error path needs additional handling.
+Dans une fonction qui retourne un résultat, préférez `!` pour propager un inchangé
+erreur. Utilisez un bloc `or` lorsque le chemin d'erreur nécessite une manipulation supplémentaire.
 
 ```text
 Explicit propagation                  │ ✓ Pureline
@@ -55,9 +55,9 @@ config := load_config(path) or {      │ config := load_config(path)!
 start(config)                         │
 ```
 
-### PL-V-004 — Use Option Types for Absent Values
+### PL-V-004 — Types d'options d'utilisation pour les valeurs absentes
 
-Use `?T` when absence is a normal outcome. Use `!T` when failure needs a reason.
+Utilisez `?T` lorsque l'absence est un résultat normal. Utilisez `!T` lorsque l'échec a besoin d'une raison.
 
 ```v
 fn find_user(users []User, id int) ?User {
@@ -70,9 +70,9 @@ fn find_user(users []User, id int) ?User {
 }
 ```
 
-### PL-V-005 — Guard Clauses and Small Functions
+### PL-V-005 — Clauses de garde et petites fonctions
 
-Reject invalid input first so the success path stays linear. Each function does one job. See [PL-CORE-003](../core/principles.md) and [PL-CORE-006](../core/principles.md).
+Rejeter les entrées invalides d'abord afin que le chemin de succès reste linéaire. Chaque fonction fait un travail. Voir [PL-CORE-003](../core/principles.md) et [PL-CORE-006](../core/principles.md).
 
 ```v
 fn withdraw(balance int, amount int) !int {
@@ -83,9 +83,9 @@ fn withdraw(balance int, amount int) !int {
 }
 ```
 
-### PL-V-006 — Naming Follows V Conventions
+### PL-V-006 — La désignation suit les V Conventions
 
-Functions and variables use `snake_case`. Structs and enums use `PascalCase`.
+Les fonctions et les variables utilisent `snake_case`. Les écailles et les enums utilisent `PascalCase`.
 
 ```v
 enum Role {
@@ -94,17 +94,17 @@ enum Role {
 }
 ```
 
-### PL-V-007 — Initialise Structs Explicitly
+### PL-V-007 — Initialiser explicitement les écueils
 
-Name every field in a struct literal. Positional initialisation hides which value goes where.
+Nomme chaque champ dans une structure littérale. L'initialisation positionnelle cache où va la valeur.
 
 ```v
 user := User{id: 1, name: 'ada'}
 ```
 
-### PL-V-008 — One Responsibility per Module Folder
+### PL-V-008 — Une seule responsabilité par dossier de module
 
-In V, a folder is a module. Its files share one `module` declaration and one responsibility. Cohesion matters more than line count ([Cohesion over Size](../core/structure.md)).
+En V, un dossier est un module. Ses fichiers partagent une déclaration `module` et une responsabilité. La cohésion est plus importante que le nombre de lignes ([Cohésion sur taille](../core/structure.md)).
 
 ```text
 user/
@@ -112,18 +112,18 @@ user/
     store.v    loading and saving users
 ```
 
-### PL-V-009 — Keep Folders Dense Enough to Scan
+### PL-V-009 — Gardez les dossiers suffisamment denses pour scanner
 
-A folder holds at most 10 hand-maintained source files by default. Generated files do not count. Past that limit, split by responsibility into a sub-module folder.
+Un dossier contient au plus 10 fichiers source gérés manuellement par défaut. Les fichiers générés ne comptent pas. Passé cette limite, divisé par responsabilité dans un dossier sous-module.
 
 ```text
 billing/
     invoice/    invoice.v, store.v, render.v
 ```
 
-### PL-V-010 — Format and Vet Before Review
+### PL-V-010 — Format et Vet avant révision
 
-Run both tools on every change, so reviews discuss intent instead of layout or suspicious constructs.
+Exécutez les deux outils sur chaque changement, donc examinez l'intention au lieu de la disposition ou des constructions suspectes.
 
 ```sh
 v fmt -w .

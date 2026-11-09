@@ -6,11 +6,11 @@ Wenden Sie die [shared core rules](../README.md#shared-rules) zusammen mit diese
 
 ## C++ Profile
 
-Pureline C++ follows **modern C++17 and C++20** idioms. Ownership lives in types, resources are released by destructors, and failure is returned as a value.
+Pureline C++ folgt **modern C++17 und C++20** idioms. Eigentum lebt in Typen, Ressourcen werden von Destruktoren freigegeben, und Misserfolg wird als Wert zurückgegeben.
 
-### PL-CPP-001 — RAII and Unique Ownership
+### PL-CPP-001 — RAII und einzigartige Eigentümerschaft
 
-Every resource is owned by an object whose destructor releases it. Use `std::unique_ptr` (via `std::make_unique`) by default; `std::shared_ptr` only for genuinely shared ownership. Raw `new` and `delete` do not appear in application code.
+Jede Ressource ist im Besitz eines Objekts, dessen Destruktor es freigibt. Verwenden Sie `std::unique_ptr` (über `std::make_unique`) standardmäßig; `std::shared_ptr` nur für wirklich geteiltes Eigentum. Raw `new` und `delete` erscheinen nicht im Anwendungscode.
 
 ```cpp
 #include <fstream>
@@ -22,9 +22,9 @@ void save(const std::string& path, const std::string& text) {
 }
 ```
 
-### PL-CPP-002 — Const by Default
+### PL-CPP-002 — Standardmäßig konst
 
-Mark values `const` unless they must change, and use `constexpr` for compile-time constants. Pass read-only arguments by `const &`; take by value only when the function stores or consumes them.
+Markieren Sie Werte `const`, es sei denn, sie müssen sich ändern, und verwenden Sie `constexpr` für Compil-Zeitkonstanten. Nur-Lese-Argumente von `const &` übergeben; nur dann werten, wenn die Funktion sie speichert oder verbraucht.
 
 ```cpp
 constexpr int kMaxRetries = 3;
@@ -34,9 +34,9 @@ bool retry_allowed(const int attempt) {
 }
 ```
 
-### PL-CPP-003 — Guard Clauses and `std::expected`
+### PL-CPP-003 — Schutzklauseln und `std::expected`
 
-Validate at the top of the function and keep the success path at base indentation, following [control flow](../core/control-flow.md). Use `std::optional<T>` for absence and `std::expected<T, E>` for failures the caller must handle (C++23; C++17/20 projects use an equivalent such as `tl::expected`). Never return error codes through out parameters.
+Validierung an der Spitze der Funktion und halten Sie den Erfolgspfad bei der Basiseinrückung, nach [Kontrollfluss](../core/control-flow.md). Verwenden Sie `std::optional<T>` für Abwesenheit und `std::expected<T, E>` für Ausfälle, die der Anrufer handhaben muss (C++23; C++17/20 Projekte verwenden ein Äquivalent wie `tl::expected`). Fehlercodes nie durch Parameter zurückgeben.
 
 ```cpp
 #include <expected>
@@ -52,9 +52,9 @@ std::expected<std::string, ConfigError> load_path(const std::string& path) {
 }
 ```
 
-### PL-CPP-004 — Range-Based `for`
+### PL-CPP-004 — auf Reichweiten basierendes `for`
 
-Prefer range-based `for` over index loops. Use a standard algorithm only when its name states the intent more clearly than a loop.
+Bevorzugen Sie Range-basierte `for` über Indexschleifen... Verwenden Sie einen Standardalgorithmus nur, wenn sein Name die Absicht klarer als eine Schleife aussagt.
 
 ```cpp
 #include <string>
@@ -71,8 +71,8 @@ int count_long(const std::vector<std::string>& names) {
 }
 ```
 
-Prefer `const auto&` for read-only iteration when the element type is
-clear from the surrounding code.
+Bevorzugen Sie `const auto&` für Lese-Nur-Iteration, wenn der Elementtyp
+vom umgebenden Code frei.
 
 ```text
 − Explicit element type           │ ✓ Pureline
@@ -81,9 +81,9 @@ for (const User& user : users) {  │ for (const auto& user : users) {
 }                                 │ }
 ```
 
-### PL-CPP-005 — Small Classes with One Responsibility
+### PL-CPP-005 — Kleine Klassen mit einer Verantwortung
 
-A class owns one coherent concept and its invariants. Keep data private and expose a narrow interface. Split classes that mix storage, pricing, persistence, or presentation. [Cohesion over Size](../core/structure.md) decides, not a line count.
+Eine Klasse besitzt ein kohärentes Konzept und seine Invarianten. Daten privat halten und eine schmale Schnittstelle freilegen. Split Klassen, die Speicher, Preisgestaltung, Persistenz oder Präsentation mischen. [Kohäsion über Größe](../core/structure.md) entscheidet, keine Zeilenzahl.
 
 ```cpp
 #include <vector>
@@ -97,7 +97,7 @@ private:
 };
 ```
 
-### PL-CPP-006 — Header and Source Split
+### PL-CPP-006 — Kopfzeile und Quelle Split
 
 Declare interfaces in a `.hpp` header and define them in a matching `.cpp`. Every header uses `#pragma once` or classic include guards, and never contains `using namespace`, which leaks names into every includer.
 

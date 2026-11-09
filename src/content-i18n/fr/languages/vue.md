@@ -1,10 +1,10 @@
-# Vue Code Style
+# Style de code de la vue
 
 [Guide de style de code](../README.md) · [Données originales 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Appliquer les [règles de base partagées](../README.md#shared-rules), [Profil JavaScript](javascript.md) et [Profil TypeScript](typescript.md) avec ce profil. The Vue profile targets **Vue 3 with the Composition API, `<script setup>`, and TypeScript in strict mode**. A component reads as a small pipeline: typed inputs, reusable logic, derived values, markup.
+Appliquer les [règles de base partagées](../README.md#shared-rules), [Profil JavaScript](javascript.md) et [Profil TypeScript](typescript.md) avec ce profil. Le profil de la vue cible **83 3 avec l'API Composition, `<script setup>` et TypeScript en mode strict**. Un élément se lit comme un petit pipeline : saisie dactylographiée, logique réutilisable, valeurs dérivées, balisage.
 
-## Vue Profile
+## Vue de profil
 
 ```text
 Props and emits
@@ -16,9 +16,9 @@ Computed values
 Template (markup)
 ```
 
-### PL-VUE-001 — Components Use `<script setup lang="ts">`
+### PL-VUE-001 — Les composants utilisent `<script setup lang="ts">`
 
-Every component is a Single-File Component with `<script setup lang="ts">` and a `<style scoped>` block. Order the blocks script, template, style, so inputs are read before markup.
+Chaque composant est un composant monofichier avec `<script setup lang="ts">` et un bloc `<style scoped>`. Commandez le script de blocs, le modèle, le style, afin que les entrées soient lues avant le balisage.
 
 ```vue
 <script setup lang="ts">
@@ -29,9 +29,9 @@ const props = defineProps<{ title: string }>();
 </template>
 ```
 
-### PL-VUE-002 — Props and Emits Are Typed
+### PL-VUE-002 — Les éléments et les éléments sont tapés
 
-Declare props with a type-only `defineProps<T>()` and emits with `defineEmits<{ ... }>()`. Use union types for variants, never a set of optional booleans ([PL-TS-001](typescript.md)).
+Déclarez les accessoires avec un `defineProps<T>()` de type unique et émet avec `defineEmits<{ ... }>()`. Utilisez des types d'union pour les variantes, jamais un ensemble de booléens optionnels ([PL-TS-001](typescript.md)).
 
 ```vue
 <script setup lang="ts">
@@ -40,9 +40,9 @@ const emit = defineEmits<{ select: [id: string] }>();
 </script>
 ```
 
-### PL-VUE-003 — Computed Over Watch
+### PL-VUE-003 — Montres sur mesure
 
-Derive a value with `computed` whenever it follows from props or state. Use `watch` only for side effects such as requests or timers, never to set a ref that a `computed` could produce.
+Dérivez une valeur avec `computed` chaque fois qu'elle provient d'un élément ou d'un état. Utilisez `watch` uniquement pour les effets secondaires comme les requêtes ou les minuteries, ne jamais définir une réf qu'un `computed` pourrait produire.
 
 ```vue
 <script setup lang="ts">
@@ -53,9 +53,9 @@ const openCount = computed(() => props.items.filter((item) => !item.done).length
 </script>
 ```
 
-### PL-VUE-004 — Composables Own One Concern
+### PL-VUE-004 — Composables Une seule préoccupation
 
-Put reusable stateful logic in a `useX` function that returns refs and functions. One composable handles one concern: one subscription, one form, one data source. Shared composables live in a `composables/` folder.
+Mettez la logique étatueuse réutilisable dans une fonction `useX` qui retourne refs et fonctions. Une poignée de taille Une préoccupation : un abonnement, un formulaire, une source de données. Les compositeurs partagés vivent dans un dossier `composables/`.
 
 ```ts
 import { ref } from "vue";
@@ -66,9 +66,9 @@ export function useCounter(start = 0) {
 }
 ```
 
-### PL-VUE-005 — `v-if` Creates, `v-show` Toggles
+### PL-VUE-005 — `v-if` crée, `v-show` bascule
 
-Use `v-if` for guards, empty states, and branches that must not exist in the DOM. Use `v-show` for a value that flips often, such as a panel the user toggles.
+Utilisez `v-if` pour les gardes, les états vides et les branches qui ne doivent pas exister dans le DOM. Utilisez `v-show` pour une valeur qui retourne souvent, comme un panneau que l'utilisateur bascule.
 
 ```vue
 <template>
@@ -77,9 +77,9 @@ Use `v-if` for guards, empty states, and branches that must not exist in the DOM
 </template>
 ```
 
-### PL-VUE-006 — Lists Use a Stable `:key`
+### PL-VUE-006 — Les listes utilisent un `:key` stable
 
-Every `v-for` has a `:key` bound to a stable identifier from the data, never the index of a list that can be reordered or filtered. Do not combine `v-if` and `v-for` on one element; filter in a `computed` instead.
+Chaque `v-for` a un `:key` lié à un identifiant stable à partir des données, jamais l'index d'une liste qui peut être ré-ordonnée ou filtrée. Ne pas combiner `v-if` et `v-for` sur un élément; filtrer dans un `computed` à la place.
 
 ```vue
 <template>
@@ -89,9 +89,9 @@ Every `v-for` has a `:key` bound to a stable identifier from the data, never the
 </template>
 ```
 
-### PL-VUE-007 — Templates Hold Simple Expressions Only
+### PL-VUE-007 — Modèles ne tiennent que des expressions simples
 
-A template expression is one property access, one simple ternary, or one short call. Move anything longer into a `computed` or a named function. Nested ternaries are not Pureline ([control flow](../core/control-flow.md)).
+Une expression de modèle est un accès à une propriété, un simple ternaire ou un appel court. Déplacez plus longtemps quelque chose dans une `computed` ou une fonction nommée. Les ternaires nichés ne sont pas Pureline ([écoulement de contrôle](../core/control-flow.md)).
 
 ```vue
 <script setup lang="ts">
@@ -103,7 +103,7 @@ const props = defineProps<{ done: boolean }>();
 </template>
 ```
 
-With a `users` ref available to the component:
+Avec une `users` ref disponible pour le composant:
 
 ```text
 − Inline filtering          │ ✓ Pureline
@@ -121,9 +121,9 @@ With a `users` ref available to the component:
                             │ </template>
 ```
 
-### PL-VUE-008 — Pinia Holds Shared State
+### PL-VUE-008 — Pinia détient l'État partagé
 
-Keep state in a component or composable until two unrelated parts of the app need it, then move it to a Pinia store. Read stores with `storeToRefs` so destructuring keeps reactivity.
+Gardez l'état dans un composant ou un composant jusqu'à ce que deux parties non reliées de l'application en aient besoin, puis déplacez-le dans un magasin Pinia. Lire les magasins avec `storeToRefs` afin de déstructurer garde la réactivité.
 
 ```ts
 const { items } = storeToRefs(useSessionStore());
@@ -131,8 +131,8 @@ const { items } = storeToRefs(useSessionStore());
 
 ### PL-VUE-009 — Densité du dossier
 
-A folder holds at most **10 hand-maintained source files** by default. Group components, composables, and stores by feature (`features/sessions/`) when a feature has more than one file, and keep shared primitives in one `components/` folder ([structure](../core/structure.md)).
+Un dossier contient au maximum des fichiers source **10 gérés manuellement** par défaut. Les composants de groupe, les composants et les stockes par fonction (`features/sessions/`) lorsqu'une fonction a plus d'un fichier, et garde des primitives partagés dans un dossier `components/` ([structure](../core/structure.md)).
 
 ### PL-VUE-010 — Outillage
 
-Run **eslint-plugin-vue** (with its `flat/recommended` configuration) and **Prettier** for linting and formatting, and run **vue-tsc** for type checking in CI. A disabled lint rule needs a comment that says why.
+Exécutez **eslint-plugin-vue** (avec sa configuration `flat/recommended`) et **Prettier** pour le lintage et le formatage, et exécutez **vue-tsc** pour la vérification de type en CI. Une règle de lint handicapée nécessite un commentaire qui dit pourquoi.

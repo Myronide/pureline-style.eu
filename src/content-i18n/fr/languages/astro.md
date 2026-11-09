@@ -49,8 +49,8 @@ Rendu HTML sans JavaScript à moins que le composant ne doive répondre à l'uti
 - Cartes sur les listes avec un `key` stable lorsque la liste est interactive.
 - Ne pas nier plus de deux niveaux d'expression à l'intérieur du balisage. Déplacer la partie intérieure vers un composant.
 
-Keep a short formatting expression in the template when it is used once
-and reads clearly at the point of use.
+Gardez une expression de formatage courte dans le modèle quand il est utilisé une fois
+et lit clairement au point d'utilisation.
 
 ```text
 Named frontmatter value                         │ ✓ Pureline

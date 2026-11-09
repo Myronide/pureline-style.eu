@@ -133,7 +133,7 @@ streams
 
 Modern syntax should reduce noise, not create novelty for its own sake.
 
-Prefer an `instanceof` pattern when a guard checks a type and the success
+Preferire un modello `instanceof` quando una guardia controlla un tipo e il successo
 path needs the value as that type.
 
 ```text

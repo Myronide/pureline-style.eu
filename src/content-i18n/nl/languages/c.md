@@ -1,16 +1,16 @@
-# C Code Style
+# C Codestijl
 
 [Code stijl gids](../README.md) · [Original specificatie 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
 Pas de [shared core rules](../README.md#shared-rules) toe samen met dit profiel. Taal-native regels en expliciete profiel uitzonderingen hebben voorrang op de taaloverschrijdende syntax voorkeuren. [Cohesie over Size](../core/structure.md) geldt gedurende het gehele.
 
-## C Profile
+## C-profiel
 
-Pureline C follows **idiomatic C11/C17**: explicit ownership, explicit error codes, and small translation units. C has no destructors or exceptions, so discipline must be visible in the code itself.
+Pureline C volgt **idiomatic C11/C17**: expliciete eigendom, expliciete foutcodes en kleine vertaaleenheden. C heeft geen vernietigers of uitzonderingen, dus discipline moet zichtbaar zijn in de code zelf.
 
 ### PL-C-001. Guard Clausles en Linear Flow
 
-Validate arguments first and keep the success path at the base indentation level (see [PL-CORE-003](../core/control-flow.md)); avoid `else` after a returning branch.
+Valideer argumenten eerst en houd het succespad op het basisinspringen niveau (zie [PL-CORE-003](../core/control-flow.md)); vermijd `else` na een terugkerende tak.
 
 ```c
 int session_open(const struct request *request, struct session *out)
@@ -22,9 +22,9 @@ int session_open(const struct request *request, struct session *out)
 }
 ```
 
-### PL-C-002 — Return and Check Error Codes
+### PL-C-002. Foutcodes retourneren en controleren
 
-Fallible functions return an `enum` status and pass results through out-parameters. Every status is checked; a deliberate discard uses a `(void)` cast with a comment.
+Fallable functies geven een `enum` status terug en geven resultaten door via out-parameters. Elke status wordt gecontroleerd; een doelbewuste teruggooi gebruikt een `(void)` cast met een commentaar.
 
 ```c
 int load(struct session *session)
@@ -37,18 +37,18 @@ int load(struct session *session)
 }
 ```
 
-### PL-C-003 — Explicit Heap Ownership
+### PL-C-003. Uitdrukkelijke Heap Ownership
 
-Each heap allocation has exactly one owner. `*_create` transfers ownership to the caller, `*_destroy` releases it, and callees never free borrowed pointers.
+Elke berg toewijzing heeft precies één eigenaar. `*_create` draagt eigendom over aan de beller, `*_destroy` geeft het uit, en callees geven nooit geleende aanwijzers vrij.
 
 ```c
 /* The caller owns the result and releases it with session_destroy(). */
 struct session *session_create(const char *user);
 ```
 
-### PL-C-004 — `goto` Only for a Single Cleanup Exit
+### PL-C-004. `goto` Alleen voor een enkele opruimingsuitgang
 
-Jump forward to one `cleanup:` label per function, initialise resources to `NULL` first, and never use `goto` for loops or skipped logic.
+Spring naar voren naar één `cleanup:`-label per functie, initialiseer de middelen voor `NULL` als eerste, en gebruik nooit `goto` voor loops of overgeslagen logica.
 
 ```c
 int report_write(const char *path, const char *text)
@@ -67,8 +67,8 @@ cleanup:
 }
 ```
 
-For a single resource with two simple return paths, prefer closing it
-directly at each return. A shared cleanup label is useful as cleanup grows.
+Voor één enkele bron met twee eenvoudige terugkeerpaden, sluit deze liever af
+rechtstreeks bij elke terugkeer. Een gedeeld opruimlabel is nuttig als opruiming groeit.
 
 ```text
 Shared cleanup label              │ ✓ Pureline
@@ -84,17 +84,17 @@ cleanup:                          │ fclose(file);
     return status;                │
 ```
 
-### PL-C-005 — Const Correctness and Explicit State
+### PL-C-005. Const Correctheid en Expliciete Staat
 
-Read-only parameters are `const`, locals assigned once are `const`, and runtime state is passed explicitly in a context struct instead of file-scope variables.
+Alleen-lezen parameters zijn `const`, locals die eenmaal zijn toegewezen `const`, en runtime status wordt expliciet doorgegeven in een context structuur in plaats van bestand-scoop variabelen.
 
 ```c
 int cache_insert(struct cache *cache, const char *key);
 ```
 
-### PL-C-006 — Small, Focused Functions
+### PL-C-006. Kleine, gerichte functies
 
-Each function does one thing at one level of abstraction; extract a helper when a block needs a name. A cohesive state machine may stay long rather than being split arbitrarily.
+Elke functie doet één ding op één niveau van abstractie; extraheren een helper wanneer een blok een naam nodig heeft. Een samenhangende staatsmachine kan lang blijven in plaats van willekeurig te worden gesplitst.
 
 ```c
 int save_report(const struct report *report, const char *path)
@@ -109,9 +109,9 @@ int save_report(const struct report *report, const char *path)
 }
 ```
 
-### PL-C-007 — Static Linkage and Minimal Headers
+### PL-C-007. Statische koppeling en minimale berichtkoppen
 
-Mark non-public functions and variables `static`, prefix public symbols with their module name, and give every header an include guard plus only the consumer-facing surface.
+Markeer niet-publieke functies en variabelen `static`, prefix publieke symbolen met hun modulenaam, en geef elke header en inclusief bewaker plus alleen het consumentenoppervlak.
 
 ```c
 #ifndef PURELINE_SESSION_H
@@ -120,17 +120,17 @@ struct session *session_create(const char *user);
 #endif
 ```
 
-### PL-C-008 — Source Folder Density
+### PL-C-008. Bronmap-dinensity
 
-A C feature folder holds at most **10 hand-maintained `.c` and `.h` files** by default. Generated code, vendored libraries, and tests do not count. Split along responsibility, never into nested folders for their own sake.
+Een C-functie map bevat hooguit **10 hand-onderhoud `.c` en `.h`-bestanden** standaard. Genereerde code, bibliotheken met leveranciers, en tests tellen niet mee. Splits de verantwoordelijkheid, nooit in neste mappen voor hun eigen bestwil.
 
 ```c
 #include "session/session.h"
 ```
 
-### PL-C-009 — Tooling and Warnings
+### PL-C-009. Gereedschap en waarschuwingen
 
-Build with `-std=c11 -Wall -Wextra -Werror -pedantic`, format with `clang-format`, and check with `clang-tidy`. Any suppression needs a comment explaining why.
+Bebouwd met `-std=c11 -Wall -Wextra -Werror -pedantic`, formaat met `clang-format`, en controleer met `clang-tidy`. Elke onderdrukking moet een commentaar waarom.
 
 ```c
 /* Build check: cc -std=c11 -Wall -Wextra -Werror -pedantic -c session.c */

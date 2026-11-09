@@ -65,8 +65,8 @@ function submit() {
 
 Une liaison contient une expression d'au plus un conditionnel et un appel court. Déplacer la logique plus longue dans une fonction nommée ou un objet de backend C++ / Python. Les ternaires ne sont pas Pureline.
 
-Keep a short binding on the property that uses it. Name the condition
-when multiple controls share it.
+Gardez une courte liaison sur la propriété qui l'utilise. Nommez la condition
+quand plusieurs contrôles le partagent.
 
 ```text
 Named property                          │ ✓ Pureline

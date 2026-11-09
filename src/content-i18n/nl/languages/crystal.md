@@ -32,7 +32,7 @@ end
 
 De regel is niet "vermijd postfix voorwaarden." De regel is: gebruik de vorm die de intentie onmiddellijk duidelijk houdt.
 
-Prefer the postfix form for a single short check with an immediate return.
+Prefereer het postfix formulier voor een enkele korte controle met een onmiddellijke terugkeer.
 
 ```text
 Block guard                 │ ✓ Pureline

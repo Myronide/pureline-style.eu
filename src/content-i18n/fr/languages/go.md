@@ -25,8 +25,8 @@ return session, nil
 
 Cela correspond naturellement à la philosophie de Pureline en première garde.
 
-When the caller would otherwise lack the operation's context, wrap the
-error with `%w` to preserve the underlying cause.
+Lorsque l'appelant n'aurait pas le contexte de l'opération, enveloppez la
+erreur avec `%w` pour préserver la cause sous-jacente.
 
 ```text
 − Without operation context       │ ✓ Pureline

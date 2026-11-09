@@ -2,17 +2,17 @@
 
 [Code style guide](../README.md) · [Original specification 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Apply the [shared core rules](../README.md#shared-rules) together with this profile. The Flutter profile targets **Dart 3 with Flutter 3.x** and sound null safety. The Dart language rules apply underneath: `final` by default, and sealed types where they model a closed set of states. A widget is a function of its configuration and state: configuration in, guards, derived values, widget tree out.
+Apply the [shared core rules](../README.md#shared-rules) together with this profile. The Flutter profile targets **Dart 3 with Flutter 3.x** and sound null safety. The Dart language rules apply underneath: `final` by default, and sealed types where they model a closed set of states. Un widget è una funzione della sua configurazione e stato: '- configuration in, guards, derived values, widget tree out.
 
 ## Flutter Profile
 
-### PL-FLUT-001 — Build Methods Are Small and Free of Side Effects
+### PL-FLUT-001. I metodi di compilazione sono piccoli e privi di effetti collaterali
 
-`build` computes a widget tree from its inputs and nothing else. It does not start requests, write storage, navigate, or mutate fields. When the tree grows past one screen of nesting, extract a block ([PL-FLUT-002](#pl-flut-002--extract-growing-widgets-into-const-classes)). Side effects belong in event handlers and the state layer ([state and side effects](../core/state-and-side-effects.md)).
+`build` calcola un albero di widget dai suoi input e nient'altro. It does not start requests, write storage, navigate, or mutate fields. When the tree grows past one screen of nesting, extract a block ([PL-FLUT-002](#pl-flut-002--extract-growing-widgets-into-const-classes)). Side effects belong in event handlers and the state layer ([state and side effects](../core/state-and-side-effects.md)).
 
-### PL-FLUT-002 — Extract Growing Widgets into Const Classes
+### PL-FLUT-002. Estrarre i widget in crescita nelle classi di Const
 
-Extract a block into its own `StatelessWidget` when it has its own name, data, or state. Do not extract helper methods that return widgets: they cannot be `const` and hide the widget boundary from Flutter.
+Extract a block into its own `StatelessWidget` when it has its own name, data, or state. Non estrarre metodi helper che restituiscono widget: they cannot be `const` and hide the widget boundary from Flutter.
 
 ```dart
 class SessionHeader extends StatelessWidget {
@@ -30,9 +30,9 @@ class SessionHeader extends StatelessWidget {
 }
 ```
 
-### PL-FLUT-003 — Const Constructors Wherever Possible
+### PL-FLUT-003. Costruttori di const ovunque possibile
 
-Mark constructors `const` when all fields are final, and write `const` at every call site whose value is compile-time constant.
+Marca i costruttori `const` quando tutti i campi sono definitivi e scrivi `const` in ogni sito di chiamata il cui valore è costante in tempo di compilazione..
 
 ```dart
 return const Padding(
@@ -41,9 +41,9 @@ return const Padding(
 );
 ```
 
-### PL-FLUT-004 — One State Management Approach per App
+### PL-FLUT-004. Un approccio di gestione statale per app
 
-Choose one approach for the whole app and name it in the project README: Riverpod, or `ChangeNotifier` with `provider` for smaller apps. Use it consistently. `setState` is fine for purely local UI state, such as a toggle or an expanded flag. Business state lives in providers or notifiers, not in widgets.
+Scegliere un approccio per l'intera app e nominarla nel progetto README: Riverpod, o `ChangeNotifier` con `provider` per applicazioni più piccole... Use it consistently. `setState` is fine for purely local UI state, such as a toggle or an expanded flag. Business state lives in providers or notifiers, not in widgets.
 
 ```dart
 final sessionsProvider = FutureProvider<List<Session>>((ref) {
@@ -55,7 +55,7 @@ final sessionsProvider = FutureProvider<List<Session>>((ref) {
 
 `build` runs on every rebuild, so a request placed there repeats unpredictably. Load data in the state layer; widgets render the result.
 
-### PL-FLUT-006 — Guard Clauses Before the Main Tree
+### PL-FLUT-006. Clausole di guardia prima dell'albero principale
 
 Handle loading, error, and empty states first and return early. The successful layout stays at the base indentation.
 
@@ -75,7 +75,7 @@ Widget build(BuildContext context) {
 
 Avoid nested conditionals in widget trees.
 
-Use a collection `if` when only one child is conditional and the rest of
+Utilizzare una collezione `if` quando un solo bambino è condizionato e il resto ditritritritritritritritritritritritrilotritritritritrilonetrilo
 the list is shared.
 
 ```text
@@ -88,9 +88,9 @@ return Column(                               │ return Column(
                                              │ );
 ```
 
-### PL-FLUT-007 — Keys Only Where List Identity Matters
+### PL-FLUT-007. Chiavi solo dove l'identità è importante
 
-Give a key only when a widget's identity must survive reordering or removal, such as stateful list items or a `Dismissible`. Use a stable identifier from the data, never the list index.
+Dare una chiave solo quando l'identità di un widget deve sopravvivere riordinando o rimuovendo, come elementi di elenco statico o `Dismissible`. Use a stable identifier from the data, never the list index.
 
 ```dart
 ListView.builder(
@@ -102,7 +102,7 @@ ListView.builder(
 );
 ```
 
-### PL-FLUT-008 — BuildContext After await Needs a Mounted Check
+### PL-FLUT-008. Costruisci contesto Dopo aver atteso ha bisogno di un controllo montato
 
 A `BuildContext` may belong to a widget removed while an `await` was pending. Check that it is still mounted before using it after an `await`.
 
@@ -118,7 +118,7 @@ Future<void> handleSave() async {
 
 Inside a `State` subclass, check `mounted` instead.
 
-### PL-FLUT-009 — Feature Folders and Folder Density
+### PL-FLUT-009. Cartelle e densità delle cartelle
 
 Group widgets, providers, and tests by feature (`lib/features/sessions/`), not by file kind across the app. A folder holds at most **10 hand-maintained source files** by default. This is a review threshold: split along responsibilities, not into meaningless nested folders ([structure](../core/structure.md)).
 

@@ -1,14 +1,14 @@
-# C# Code Style
+# C# Code-Stil
 
 [Code-Stil-Führer](../README.md) · [Original-Spezifikation 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Wenden Sie die [shared core rules](../README.md#shared-rules) mit diesem Profil an. C# is a managed, brace-based language with strong compiler support. Pureline C# targets **.NET 8** or later.
+Wenden Sie die [shared core rules](../README.md#shared-rules) mit diesem Profil an. C# ist eine verwaltete, auf Klammern basierende Sprache mit starker Compiler-Unterstützung. Pureline C# zielt auf **.NET 8** oder höher.
 
-## C# Profile
+## C# Profil
 
-### PL-CS-001 — Naming Follows the .NET Convention
+### PL-CS-001 — Benennung folgt dem.NET-Übereinkommen
 
-Use `PascalCase` for types, members, and constants, `camelCase` for locals and parameters, and `_camelCase` for private fields. Names state the role of a value, not its type.
+Verwenden Sie `PascalCase` für Typen, Mitglieder und Konstanten, `camelCase` für lokale und Parameter und `_camelCase` für private Felder. Namen geben die Rolle eines Wertes, nicht dessen Typ an.
 
 ```csharp
 public static class SessionRules
@@ -18,9 +18,9 @@ public static class SessionRules
 }
 ```
 
-### PL-CS-002 — Nullable Reference Types Are On
+### PL-CS-002 — Nullfähige Referenztypen sind eingeschaltet
 
-Set `<Nullable>enable</Nullable>` in every project. `string` never holds null, and `string?` declares that it may. Do not silence the compiler with `!`; fix the flow instead.
+Setzen Sie `<Nullable>enable</Nullable>` in jedem Projekt. `string` hält nie null, und `string?` erklärt, dass es kann. Nicht den Compiler mit `!` stummen; stattdessen den Flow beheben.
 
 ```csharp
 public sealed class UserProfile
@@ -30,8 +30,8 @@ public sealed class UserProfile
 }
 ```
 
-Prefer `?.` with `??` when the only purpose of the null check is to select
-a fallback. In this example, `Name` is non-nullable.
+Bevorzugen Sie `?.` mit `??`, wenn der einzige Zweck der Null-Prüfung die Auswahl ist
+Ein Rückfall. In diesem Beispiel ist `Name` nicht-nullierbar.
 
 ```text
 − Separate null guard            │ ✓ Pureline
@@ -42,9 +42,9 @@ if (user is null) {              │ return user?.Name ?? "Gast";
 return user.Name;                │
 ```
 
-### PL-CS-003 — Records for Immutable Data
+### PL-CS-003 — Aufzeichnungen für unveränderliche Daten
 
-Model data that moves between layers as a `record`. Derive changed copies with `with` instead of mutating. Use a class only when the object has identity or behaviour of its own.
+Modelldaten, die sich als `record` zwischen den Schichten bewegen. Derive änderte Kopien mit `with` statt mutierend. Verwenden Sie eine Klasse nur, wenn das Objekt eigene Identität oder Verhalten hat.
 
 ```csharp
 public sealed record Session(string Id, string Title, bool IsActive);
@@ -53,9 +53,9 @@ public static Session Rename(Session session, string title) =>
     session with { Title = title };
 ```
 
-### PL-CS-004 — Guard Clauses Return Early
+### PL-CS-004 — Wachklauseln kommen früh zurück
 
-Check invalid input first and return immediately, so the main path stays at the outer indentation level with no `else`. See [control flow](../core/control-flow.md).
+Kontrolliere zuerst ungültige Eingaben und kehre sofort zurück, so dass der Hauptpfad auf der äußeren Einrückungsebene ohne `else` bleibt. Siehe [Kontrollfluss](../core/control-flow.md).
 
 ```csharp
 public static decimal Discount(decimal total)
@@ -69,9 +69,9 @@ public static decimal Discount(decimal total)
 }
 ```
 
-### PL-CS-005 — Dispose with `using` Declarations
+### PL-CS-005 — Mit `using`-Erklärungen absetzen
 
-Use a `using` declaration so disposal happens at the end of the enclosing scope. Each `IDisposable` has one owner, and that owner disposes it.
+Verwenden Sie eine `using`-Erklärung, so dass die Entsorgung am Ende des Enclosing-Scope geschieht. Jeder `IDisposable` hat einen Besitzer, und dieser Eigentümer veräußert ihn.
 
 ```csharp
 public static string ReadFirstLine(string path)
@@ -81,9 +81,9 @@ public static string ReadFirstLine(string path)
 }
 ```
 
-### PL-CS-006 — Async All the Way with Task
+### PL-CS-006 — Async mit der Aufgabe
 
-Return `Task` or `Task<T>`, suffix the name with `Async`, accept a `CancellationToken`, and never block with `.Result` or `.Wait()`. Use `ValueTask` only where a measurement justifies it.
+`Task` oder `Task<T>` zurückgeben, den Namen mit `Async` suffixen, ein `CancellationToken` akzeptieren und niemals mit `.Result` oder `.Wait()` blockieren. Verwenden Sie `ValueTask` nur dort, wo eine Messung es rechtfertigt.
 
 ```csharp
 public static async Task<string> LoadBodyAsync(HttpClient client, string url, CancellationToken ct)
@@ -93,9 +93,9 @@ public static async Task<string> LoadBodyAsync(HttpClient client, string url, Ca
 }
 ```
 
-### PL-CS-007 — LINQ Only When It Reads Clearly
+### PL-CS-007 — LINQ nur, wenn es sich eindeutig liest
 
-Use LINQ for one linear transformation: a filter, a projection, or a materialization. Switch to a `foreach` loop when the query has side effects, branches, or more than three chained operators.
+Verwenden Sie LINQ für eine lineare Transformation: einen Filter, eine Projektion oder eine Materialisierung. Wechseln Sie zu einer `foreach`-Schleife, wenn die Abfrage Nebenwirkungen, Zweige oder mehr als drei verkettete Operatoren aufweist.
 
 ```csharp
 public static List<string> ActiveTitles(IEnumerable<Session> sessions) =>

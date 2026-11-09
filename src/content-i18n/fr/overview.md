@@ -39,7 +39,7 @@ Les principes centraux de Pureline sont les suivants:
 
 **Version 1.7:** Ajoute le profil Python (`PL-PY-001` à `PL-PY-012`), le profil QML (`PL-QML-001` à `PL-QML-011`), le profil Astro (`PL-AS-001` à `PL-AS-009`), le profil HTML (`PL-HTML-001` à `PL-HTML-009`) et le profil CSS (`PL-CSS-001` à `PL-CSS-012`). La version 1.6 a ajouté le profil Novus (`PL-NV-001` à `PL-NV-013`) et le profil React (`PL-REACT-001` à `PL-REACT-014`), et étend le profil Rust avec `PL-RS-021` à `PL-RS-024` et une exemption de test précise en `PL-RS-004`. Toutes les règles existantes et le principe de cohésion sur taille 1.4 sont conservés. La version 1.5 a ajouté le profil Rust (`PL-RS-001` à `PL-RS-020`).
 
-**Version 1.7 (additional profiles):** Version 1.7 also adds the C# (`PL-CS-001`–`PL-CS-009`), Angular (`PL-NG-001`–`PL-NG-009`), Vue (`PL-VUE-001`–`PL-VUE-010`), GDScript (`PL-GD-001`–`PL-GD-010`), C (`PL-C-001`–`PL-C-009`), C++ (`PL-CPP-001`–`PL-CPP-008`), Lua (`PL-LUA-001`–`PL-LUA-012`), Dart (`PL-DART-001`–`PL-DART-012`), Flutter (`PL-FLUT-001`–`PL-FLUT-010`), V (`PL-V-001`–`PL-V-010`), Swift (`PL-SW-001`–`PL-SW-011`) and Kotlin (`PL-KT-001`–`PL-KT-011`) profiles without renumbering existing rules.
+**Version 1.7 (profils supplémentaires):** Version 1.7 ajoute également les profils C# (`PL-CS-001`–`PL-CS-009`), Angular (`PL-NG-001`–`PL-NG-009`), Vue (`PL-VUE-001`–`PL-VUE-010`), GDScript (`PL-GD-001`–`PL-GD-010`), C (`PL-C-001`–`PL-C-009`), C++ (`PL-CPP-001`–`PL-CPP-008`), Lua (`PL-LUA-001`–`PL-LUA-012`), Dart (`PL-DART-001`–`PL-DART-012`), Flutter (`PL-FLUT-001`–`PL-FLUT-010`), V (`PL-V-001`–`PL-V-010`), Swift (`PL-SW-001`–`PL-SW-011`) et Kotlin (`PL-KT-001`–`PL-KT-011`) sans renuméroter les règles existantes.
 
 ---
 

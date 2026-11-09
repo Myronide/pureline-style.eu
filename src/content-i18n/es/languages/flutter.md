@@ -1,18 +1,18 @@
-# Flutter Code Style
+# Estilo de código de flutter
 
 [Guía de estilo del código](../README.md) · [Especificaciones originales 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Aplicar las [reglas compartidas](../README.md#shared-rules) junto con este perfil. The Flutter profile targets **Dart 3 with Flutter 3.x** and sound null safety. The Dart language rules apply underneath: `final` by default, and sealed types where they model a closed set of states. A widget is a function of its configuration and state: configuration in, guards, derived values, widget tree out.
+Aplicar las [reglas compartidas](../README.md#shared-rules) junto con este perfil. El perfil Flutter está dirigido a **Dart 3 con Flutter 3.x** y seguridad de sonido nulo. Las reglas del idioma Dart se aplican debajo: `final` por defecto, y los tipos sellados donde modelan un conjunto cerrado de estados. Un widget es una función de su configuración y estado: configuración, guardas, valores derivados, árbol de widget hacia fuera.
 
-## Flutter Profile
+## Perfil de flutter
 
-### PL-FLUT-001 — Build Methods Are Small and Free of Side Effects
+### PL-FLUT-001 — Los métodos de construcción son pequeños y no tienen efectos secundarios
 
-`build` computes a widget tree from its inputs and nothing else. It does not start requests, write storage, navigate, or mutate fields. When the tree grows past one screen of nesting, extract a block ([PL-FLUT-002](#pl-flut-002--extract-growing-widgets-into-const-classes)). Side effects belong in event handlers and the state layer ([state and side effects](../core/state-and-side-effects.md)).
+`build` calcula un árbol de widgets desde sus entradas y nada más. No inicia peticiones, escribe almacenamiento, navega ni campos de navegación. Cuando el árbol crezca más allá de una pantalla de anidación, extraiga un bloque ([PL-FLUT-002](#pl-flut-002--extract-growing-widgets-into-const-classes)]. Los efectos secundarios pertenecen a los manipuladores de eventos y a la capa de estado ([estado y efectos secundarios](../core/state-and-side-effects.md)).
 
-### PL-FLUT-002 — Extract Growing Widgets into Const Classes
+### PL-FLUT-002 — Extraer Widgets de crecimiento en clases de const
 
-Extract a block into its own `StatelessWidget` when it has its own name, data, or state. Do not extract helper methods that return widgets: they cannot be `const` and hide the widget boundary from Flutter.
+Extraiga un bloque en su propio `StatelessWidget` cuando tenga su propio nombre, datos o estado. No extraiga métodos de ayuda que devuelven los widgets: no pueden ser `const` y ocultar el límite del widget de Flutter.
 
 ```dart
 class SessionHeader extends StatelessWidget {
@@ -30,7 +30,7 @@ class SessionHeader extends StatelessWidget {
 }
 ```
 
-### PL-FLUT-003 — Const Constructors Wherever Possible
+### PL-FLUT-003 — Constructores de const cuando sea posible
 
 Mark constructors `const` when all fields are final, and write `const` at every call site whose value is compile-time constant.
 
@@ -41,9 +41,9 @@ return const Padding(
 );
 ```
 
-### PL-FLUT-004 — One State Management Approach per App
+### PL-FLUT-004 — Enfoque de gestión estatal por aplicación
 
-Choose one approach for the whole app and name it in the project README: Riverpod, or `ChangeNotifier` with `provider` for smaller apps. Use it consistently. `setState` is fine for purely local UI state, such as a toggle or an expanded flag. Business state lives in providers or notifiers, not in widgets.
+Elija un enfoque para toda la aplicación y nombre en el proyecto README: Riverpod, o `ChangeNotifier` con `provider` para aplicaciones más pequeñas. Úsalo consistentemente. `setState` está bien para el estado puramente local de la UI, como un cambio de marcha o una bandera expandida. El estado de negocios vive en proveedores o notificantes, no en widgets.
 
 ```dart
 final sessionsProvider = FutureProvider<List<Session>>((ref) {
@@ -51,13 +51,13 @@ final sessionsProvider = FutureProvider<List<Session>>((ref) {
 });
 ```
 
-### PL-FLUT-005 — No Network or Storage Calls Inside Build
+### PL-FLUT-005 — Sin llamadas de red o almacenamiento dentro de la construcción
 
-`build` runs on every rebuild, so a request placed there repeats unpredictably. Load data in the state layer; widgets render the result.
+`build` se ejecuta en cada reconstrucción, por lo que una solicitud colocada allí se repite de forma impredecible. Cargar datos en la capa de estado; los widgets representan el resultado.
 
-### PL-FLUT-006 — Guard Clauses Before the Main Tree
+### PL-FLUT-006 — Guarda las cláusulas antes del árbol principal
 
-Maneje primero los estados de carga, error y vacío y regrese temprano. The successful layout stays at the base indentation.
+Maneje primero los estados de carga, error y vacío y regrese temprano. El diseño exitoso permanece en la sangría de la base.
 
 ```dart
 @override
@@ -73,10 +73,10 @@ Widget build(BuildContext context) {
 }
 ```
 
-Avoid nested conditionals in widget trees.
+Evite los condicionales anidados en los árboles widgets.
 
-Use a collection `if` when only one child is conditional and the rest of
-the list is shared.
+Utilice una colección `if` cuando sólo un niño es condicional y el resto de
+la lista es compartida.
 
 ```text
 − Two child lists                            │ ✓ Pureline
@@ -88,9 +88,9 @@ return Column(                               │ return Column(
                                              │ );
 ```
 
-### PL-FLUT-007 — Keys Only Where List Identity Matters
+### PL-FLUT-007 — Solo claves donde se menciona la identidad
 
-Give a key only when a widget's identity must survive reordering or removal, such as stateful list items or a `Dismissible`. Use a stable identifier from the data, never the list index.
+Dar una clave sólo cuando la identidad de un widget debe sobrevivir a reordenar o eliminar, como elementos de lista de estado o un `Dismissible`. Usar un identificador estable de los datos, nunca el índice de lista.
 
 ```dart
 ListView.builder(
@@ -102,9 +102,9 @@ ListView.builder(
 );
 ```
 
-### PL-FLUT-008 — BuildContext After await Needs a Mounted Check
+### PL-FLUT-008 — BuildContext Después de esperar Necesita un cheque montado
 
-A `BuildContext` may belong to a widget removed while an `await` was pending. Check that it is still mounted before using it after an `await`.
+Un `BuildContext` puede pertenecer a un widget eliminado mientras un `await` estaba pendiente. Compruebe que todavía está montado antes de usarlo después de un `await`.
 
 ```dart
 Future<void> handleSave() async {
@@ -116,15 +116,15 @@ Future<void> handleSave() async {
 }
 ```
 
-Inside a `State` subclass, check `mounted` instead.
+Dentro de una subclase `State`, compruebe `mounted` en su lugar.
 
-### PL-FLUT-009 — Feature Folders and Folder Density
+### PL-FLUT-009 — Carpetas de características y densidad de carpeta
 
-Group widgets, providers, and tests by feature (`lib/features/sessions/`), not by file kind across the app. A folder holds at most **10 hand-maintained source files** by default. Se trata de un umbral de revisión: split along responsibilities, not into meaningless nested folders ([structure](../core/structure.md)).
+Agrupar widgets, proveedores y pruebas por función (`lib/features/sessions/`), no por tipo de archivo en la aplicación. Una carpeta contiene como máximo archivos fuente **10 mantenidos a mano** por defecto. Se trata de un umbral de revisión: dividir a lo largo de las responsabilidades, no en carpetas anidadas sin sentido [[estructura](../core/structure.md)].
 
-### PL-FLUT-010 — Tooling Gates Every Change
+### PL-FLUT-010 — Puertas de herramientas cada cambio
 
-Every change passes the formatter and analyzers before review:
+Cada cambio pasa el formulario y los analizadores antes de revisar:
 
 ```text
 dart format --set-exit-if-changed .
@@ -132,4 +132,4 @@ dart analyze
 flutter analyze
 ```
 
-`dart format` settles layout, so formatting debates never reach review. Warnings are not optional: a disabled lint rule needs a reason in `analysis_options.yaml`.
+`dart format` establece la disposición, por lo que los debates de formato nunca llegan a la revisión. Las advertencias no son opcionales: una regla de pelusas inhabilitada necesita una razón en `analysis_options.yaml`.

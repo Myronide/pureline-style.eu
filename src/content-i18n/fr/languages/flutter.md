@@ -1,18 +1,18 @@
-# Flutter Code Style
+# Style de code de flutter
 
 [Guide de style de code](../README.md) · [Données originales 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Appliquer les [règles de base partagées](../README.md#shared-rules) avec ce profil. The Flutter profile targets **Dart 3 with Flutter 3.x** and sound null safety. The Dart language rules apply underneath: `final` by default, and sealed types where they model a closed set of states. A widget is a function of its configuration and state: configuration in, guards, derived values, widget tree out.
+Appliquer les [règles de base partagées](../README.md#shared-rules) avec ce profil. Le profil Flutter cible **Dart 3 avec Flutter 3.x** et la sécurité sonore nulle. Les règles de langue Dart s'appliquent ci-dessous : `final` par défaut, et les types scellés où ils modélisent un ensemble fermé d'états. Un widget est une fonction de sa configuration et de son état : configuration dans, garde, valeurs dérivées, arbre de widget.
 
-## Flutter Profile
+## Profil de la flûte
 
-### PL-FLUT-001 — Build Methods Are Small and Free of Side Effects
+### PL-FLUT-001 — Les méthodes de construction sont petites et exemptes d'effets secondaires
 
-`build` computes a widget tree from its inputs and nothing else. It does not start requests, write storage, navigate, or mutate fields. When the tree grows past one screen of nesting, extract a block ([PL-FLUT-002](#pl-flut-002--extract-growing-widgets-into-const-classes)). Side effects belong in event handlers and the state layer ([state and side effects](../core/state-and-side-effects.md)).
+`build` calcule un arbre de widget à partir de ses entrées et rien d'autre. Il ne démarre pas les requêtes, n'écrivent pas de stockage, ne naviguent pas ou ne mutent pas les champs. Lorsque l'arbre pousse au-delà d'un écran de nidification, extraire un bloc ([PL-FLUT-002](#pl-flut-002--extract-growing-widgets-into-const-classes)). Les effets secondaires appartiennent aux gestionnaires d'événements et à la couche d'état ([état et effets secondaires](../core/state-and-side-effects.md)).
 
-### PL-FLUT-002 — Extract Growing Widgets into Const Classes
+### PL-FLUT-002 — Extraire les widgets croissants dans les classes de Const
 
-Extract a block into its own `StatelessWidget` when it has its own name, data, or state. Do not extract helper methods that return widgets: they cannot be `const` and hide the widget boundary from Flutter.
+Extraire un bloc dans sa propre `StatelessWidget` quand il a son nom, ses données ou son état. Ne pas extraire les méthodes d'aide qui retournent des widgets: ils ne peuvent pas être `const` et cacher la limite du widget de Flutter.
 
 ```dart
 class SessionHeader extends StatelessWidget {
@@ -30,9 +30,9 @@ class SessionHeader extends StatelessWidget {
 }
 ```
 
-### PL-FLUT-003 — Const Constructors Wherever Possible
+### PL-FLUT-003 — Constructeurs de conteneurs partout où c'est possible
 
-Mark constructors `const` when all fields are final, and write `const` at every call site whose value is compile-time constant.
+Marquez les constructeurs `const` lorsque tous les champs sont finaux, et écrivez `const` à chaque site d'appel dont la valeur est constante de compilation-temps.
 
 ```dart
 return const Padding(
@@ -41,9 +41,9 @@ return const Padding(
 );
 ```
 
-### PL-FLUT-004 — One State Management Approach per App
+### PL-FLUT-004 — Une approche de gestion de l'État par application
 
-Choose one approach for the whole app and name it in the project README: Riverpod, or `ChangeNotifier` with `provider` for smaller apps. Use it consistently. `setState` is fine for purely local UI state, such as a toggle or an expanded flag. Business state lives in providers or notifiers, not in widgets.
+Choisissez une approche pour l'application entière et donnez-la dans le projet README: Riverpod ou `ChangeNotifier` avec `provider` pour les applications plus petites. Utilisez-le de façon cohérente. `setState` est une amende pour l'état de l'interface utilisateur purement locale, comme un toggle ou un drapeau élargi. L'État d'affaires vit dans des fournisseurs ou des notifications, pas dans des widgets.
 
 ```dart
 final sessionsProvider = FutureProvider<List<Session>>((ref) {
@@ -51,13 +51,13 @@ final sessionsProvider = FutureProvider<List<Session>>((ref) {
 });
 ```
 
-### PL-FLUT-005 — No Network or Storage Calls Inside Build
+### PL-FLUT-005 — Aucun réseau ou d'appels de stockage à l'intérieur de la construction
 
-`build` runs on every rebuild, so a request placed there repeats unpredictably. Load data in the state layer; widgets render the result.
+`build` fonctionne sur chaque reconstruction, donc une requête placée là répète imprudemment. Charger les données dans la couche état; les widgets rendent le résultat.
 
-### PL-FLUT-006 — Guard Clauses Before the Main Tree
+### PL-FLUT-006 — Clauses de garde avant l'arbre principal
 
-Poignez le chargement, l'erreur et les états vides d'abord et de revenir tôt. The successful layout stays at the base indentation.
+Poignez le chargement, l'erreur et les états vides d'abord et de revenir tôt. Le schéma réussi reste à l'indentation de base.
 
 ```dart
 @override
@@ -73,10 +73,10 @@ Widget build(BuildContext context) {
 }
 ```
 
-Avoid nested conditionals in widget trees.
+Évitez les conditions imbriquées dans les arbres widgets.
 
-Use a collection `if` when only one child is conditional and the rest of
-the list is shared.
+Utilisez une collection `if` lorsque seul un enfant est conditionnel et le reste de
+la liste est partagée.
 
 ```text
 − Two child lists                            │ ✓ Pureline
@@ -88,9 +88,9 @@ return Column(                               │ return Column(
                                              │ );
 ```
 
-### PL-FLUT-007 — Keys Only Where List Identity Matters
+### PL-FLUT-007 — Clés seulement lorsque la liste de l'identité compte
 
-Give a key only when a widget's identity must survive reordering or removal, such as stateful list items or a `Dismissible`. Use a stable identifier from the data, never the list index.
+Donnez une clé seulement lorsque l'identité d'un widget doit survivre à la réorganisation ou à l'enlèvement, comme des éléments de liste de qualité ou un `Dismissible`. Utilisez un identifiant stable à partir des données, jamais l'index de la liste.
 
 ```dart
 ListView.builder(
@@ -102,9 +102,9 @@ ListView.builder(
 );
 ```
 
-### PL-FLUT-008 — BuildContext After await Needs a Mounted Check
+### PL-FLUT-008 — Construisez le Context Après attendre Besoin d'une vérification montée
 
-A `BuildContext` may belong to a widget removed while an `await` was pending. Check that it is still mounted before using it after an `await`.
+Un `BuildContext` peut appartenir à un widget enlevé alors qu'un `await` était en attente. Vérifiez qu'il est encore monté avant de l'utiliser après un `await`.
 
 ```dart
 Future<void> handleSave() async {
@@ -116,15 +116,15 @@ Future<void> handleSave() async {
 }
 ```
 
-Inside a `State` subclass, check `mounted` instead.
+Dans une sous-classe `State`, vérifiez plutôt `mounted`.
 
-### PL-FLUT-009 — Feature Folders and Folder Density
+### PL-FLUT-009 — Dossiers et densité de dossiers
 
-Group widgets, providers, and tests by feature (`lib/features/sessions/`), not by file kind across the app. A folder holds at most **10 hand-maintained source files** by default. Il s'agit d'un seuil de révision: split along responsibilities, not into meaningless nested folders ([structure](../core/structure.md)).
+Grouper les widgets, les fournisseurs et les tests par fonction (`lib/features/sessions/`), pas par type de fichier dans l'application. Un dossier contient au plus des fichiers source **10 maintenus manuellement** par défaut. Il s'agit d'un seuil de révision: scindé les responsabilités, non pas en dossiers imbriqués sans signification ([structure](../core/structure.md)).
 
-### PL-FLUT-010 — Tooling Gates Every Change
+### PL-FLUT-010 — L'outillage porte chaque changement
 
-Every change passes the formatter and analyzers before review:
+Chaque changement passe la matière première et les analyseurs avant examen:
 
 ```text
 dart format --set-exit-if-changed .
@@ -132,4 +132,4 @@ dart analyze
 flutter analyze
 ```
 
-`dart format` settles layout, so formatting debates never reach review. Warnings are not optional: a disabled lint rule needs a reason in `analysis_options.yaml`.
+`dart format` règle la disposition, de sorte que les débats de formatage ne parviennent jamais à un examen. Les avertissements ne sont pas facultatifs: une règle de lint désactivée nécessite une raison en `analysis_options.yaml`.

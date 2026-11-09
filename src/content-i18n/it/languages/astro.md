@@ -49,7 +49,7 @@ Render HTML without JavaScript unless the component must respond to the user or 
 - Maps over lists with a stable `key` when the list is interactive.
 - Do not nest more than two expression levels inside the markup. Move the inner part to a component.
 
-Keep a short formatting expression in the template when it is used once
+Mantieni una breve espressione di formattazione nel modello quando viene usato una volta
 and reads clearly at the point of use.
 
 ```text

@@ -1,31 +1,31 @@
-# Kotlin Code Style
+# Kodolin-Codestil
 
 [Code-Stil-Führer](../README.md) · [Original-Spezifikation 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
 Wenden Sie die [shared core rules](../README.md#shared-rules) zusammen mit diesem Profil an. Sprachen-native Regeln und explizite Profilausnahmen haben Vorrang vor sprachenübergreifenden Syntaxeinstellungen. [Kohäsion über Größe](../core/structure.md) gilt in allen Bereichen.
 
-## Kotlin Profile
+## Profil von Kotlin
 
-### PL-KT-001 — val over var
+### PL-KT-001 — val über var
 
-Default to `val`. Use `var` only when a value truly changes and the mutation stays local. See [State and Side Effects](../core/state-and-side-effects.md).
+Standardwert für `val`. Verwenden Sie `var` nur, wenn sich ein Wert wirklich ändert und die Mutation lokal bleibt. Siehe [Zustand und Nebenwirkungen](../core/state-and-side-effects.md).
 
 ```kotlin
 val retries = 3
 val limit = retries * 2
 ```
 
-### PL-KT-002 — Data Classes for Plain Data
+### PL-KT-002 — Datenklassen für einfache Daten
 
-Use `data class` for values that carry data and compare by content. Do not hand-write `equals`, `hashCode`, or copy boilerplate.
+Verwenden Sie `data class` für Werte, die Daten transportieren und nach Inhalt vergleichen. Schreiben Sie `equals`, `hashCode` nicht von Hand oder kopieren Sie das Heizblech.
 
 ```kotlin
 data class SessionId(val value: String)
 ```
 
-### PL-KT-003 — Sealed Types with Exhaustive when
+### PL-KT-003 — Versiegelte Typen mit Erschöpfender Wirkung, wenn
 
-Model states as `sealed interface` and branch with an exhaustive `when` expression. Avoid `else`, which silently absorbs new cases.
+Modellzustand als `sealed interface` und Zweig mit einem erschöpfenden `when`-Ausdruck. Vermeiden Sie `else`, das still neue Fälle absorbiert.
 
 ```kotlin
 sealed interface ConnectionState {
@@ -41,11 +41,11 @@ fun describe(state: ConnectionState): String = when (state) {
 }
 ```
 
-### PL-KT-004 — Null Safety Without !!
+### PL-KT-004 — Null Sicherheit ohne!!
 
-Use `?.` for optional access and `?:` for fallback values. Prefer a
-separate null guard when a missing value causes an early return. Never use
-`!!` outside tests.
+Verwenden Sie `?.` für optionalen Zugriff und `?:` für Fallback-Werte. Bevorzugen Sie
+Trennen Sie null Schutz, wenn ein fehlender Wert eine frühe Rückkehr verursacht. Niemals verwenden
+`!!` außerhalb der Tests.
 
 ```text
 − Elvis with early return              │ ✓ Pureline
@@ -57,35 +57,35 @@ return user.name                       │     return "Gast"
                                        │ return user.name
 ```
 
-### PL-KT-005 — Scope Functions Only When They Read Clearly
+### PL-KT-005 — Umfang Funktionen nur, wenn sie lesen eindeutig
 
-Use `let`, `run`, or `apply` when they remove a temporary name or configure one object. Do not chain or nest them; a plain statement is clearer.
+Verwenden Sie `let`, `run` oder `apply`, wenn Sie einen temporären Namen entfernen oder ein Objekt konfigurieren. Verkettt sie nicht und neigt sie nicht; eine klare Aussage ist klarer.
 
 ```kotlin
 fun salutation(name: String?): String =
     name?.trim()?.let { "Dear $it" } ?: "Guest"
 ```
 
-### PL-KT-006 — Extension Functions with Narrow Scope
+### PL-KT-006 — Erweiterungsfunktionen mit schmalem Umfang
 
-Add an extension only when it reads as a property of the receiver. Avoid extensions on `Any` or broad types, and never hide side effects behind one.
+Fügen Sie eine Erweiterung nur hinzu, wenn sie als Eigenschaft des Empfängers gelesen wird. Vermeiden Sie Erweiterungen auf `Any` oder breite Arten, und nie verstecken Nebenwirkungen hinter einem.
 
 ```kotlin
 fun String.toSlug(): String = trim().lowercase().replace(' ', '-')
 ```
 
-### PL-KT-007 — Named Arguments for Booleans and Many Parameters
+### PL-KT-007 — Benannte Verbindungen für Booleans und viele Parameter
 
-Name arguments for every boolean flag and for any call with more than two parameters. A bare `true` tells the reader nothing.
+Nennen Sie Argumente für jedes boolesche Flag und für jeden Aufruf mit mehr als zwei Parametern. Ein bloßes `true` sagt dem Leser nichts...
 
 ```kotlin
 fun openSession(host: String, port: Int, secure: Boolean) = println("$host:$port $secure")
 openSession(host = "example.org", port = 443, secure = true)
 ```
 
-### PL-KT-008 — Guard Clauses and Small Functions
+### PL-KT-008 — Schutzklauseln und kleine Funktionen
 
-Reject invalid input first and return immediately, so the success path stays unindented. Each function performs one step and fits on one screen. See [Control Flow](../core/control-flow.md) and [Functions](../core/functions.md).
+Ungültige Eingaben zuerst ablehnen und sofort zurückgeben, so bleibt der Erfolgspfad unidneded. Jede Funktion führt einen Schritt durch und passt auf einen Bildschirm. Siehe [Kontrollfluss](../core/control-flow.md) und [Funktionen](../core/functions.md).
 
 ```kotlin
 fun resolveName(name: String?, isActive: Boolean): String {
@@ -97,7 +97,7 @@ fun resolveName(name: String?, isActive: Boolean): String {
 
 ### PL-KT-009 — Benennung
 
-Types use UpperCamelCase. Functions, properties, and parameters use lowerCamelCase. Top-level `const val` uses UPPER_SNAKE_CASE.
+Typen verwenden UpperCamelCase. Funktionen, Eigenschaften und Parameter verwenden lowerCamelCase. `const val` verwendet UPPER_SNAKE_CASE auf höchster Ebene.
 
 ```kotlin
 class SessionService
@@ -108,7 +108,7 @@ fun openSession() {}
 
 ### PL-KT-010 — Ordnerdichte
 
-Keep at most 10 hand-maintained source files per folder by default. Generated files do not count. Past that limit, split by responsibility, not by file type, and document any justified exception.
+Halten Sie standardmäßig höchstens 10 handgepflegerte Quelldateien pro Ordner bereit. Generierte Dateien zählen nicht.. Über diese Grenze hinaus, geteilt durch Verantwortung, nicht durch Dateityp, und dokumentieren jede gerechtfertigte Ausnahme.
 
 ```text
 src/main/kotlin/space/example/project/
@@ -118,7 +118,7 @@ src/main/kotlin/space/example/project/
 
 ### PL-KT-011 — Werkzeugbau
 
-Run ktlint for formatting and detekt for static analysis in CI. Fix findings, or suppress one with a narrow, commented reason.
+Führen Sie ktlint für Formatierung und detektieren Sie für statische Analyse in CI. Befestigen Sie die Befunde oder unterdrücken Sie sie mit einem schmalen, kommentierten Grund.
 
 ```bash
 ./gradlew ktlintCheck detekt

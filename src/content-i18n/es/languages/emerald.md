@@ -94,8 +94,8 @@ public data class Coordinate(Int x, Int y);
 
 Emerald's data-class generation includes a constructor, `equals`, `toString`, `copy`, and `withX` methods where applicable. No asuma que las características de clase de datos de Emvus-solamente como `copy` nombre-agmento, `hashCode` generado, o Emvus destructing ya son parte de Emerald.
 
-Use literals directly when the constructor and arguments make the value
-immediately clear, as with the origin.
+Use literales directamente cuando el de la Roca y los argumentos hacen el valor
+inmediatamente claro, como con el origen.
 
 ```text
 Intermediate values                                 │ ✓ Pureline

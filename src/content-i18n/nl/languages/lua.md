@@ -1,8 +1,8 @@
-# Lua Code Style
+# Lua Codestijl
 
 [Code stijl gids](../README.md) · [Original specificatie 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Pas de [gedeelde kernregels](../README.md#shared-rules) toe met dit profiel. Lua is small and table-centric: a file is a chunk that builds one module table, and structure comes from plain tables and functions. Pureline Lua targets **Lua 5.4**.
+Pas de [gedeelde kernregels](../README.md#shared-rules) toe met dit profiel. Lua is klein en tafel-centrisch: Een bestand is een chunk die één moduletabel bouwt, en structuur komt van platte tabellen en functies. Pureline Lua richt zich op **Lua 5.4**.
 
 ## Lua Profile
 
@@ -16,9 +16,9 @@ Module table
 return module
 ```
 
-### PL-LUA-001 — Local by Default
+### PL-LUA-001. Local volgens standaard
 
-Declare every variable and function with `local`. A global is shared state that any other file can overwrite silently. Do not write to `_G` or `_ENV` outside a program's entry point. See [naming](../core/naming.md) and [state and side effects](../core/state-and-side-effects.md).
+Geef elke variabele en functie met `local` aan. Een globale staat is gedeeld dat elk ander bestand kan overschrijven in stilte. Schrijf niet naar `_G` of `_ENV` buiten het inschrijfpunt van een programma. Zie [namen](../core/naming.md) en [toestand en bijwerkingen](../core/state-and-side-effects.md).
 
 ```lua
 local function parse_port(text)
@@ -26,9 +26,9 @@ local function parse_port(text)
 end
 ```
 
-### PL-LUA-002 — One Module Table per File
+### PL-LUA-002. Eén Moduletabel per Bestand
 
-Each file builds a local table, fills it with its public functions, and returns it. Require dependencies at the top so they stay visible.
+Elk bestand bouwt een lokale tabel, vult het met zijn publieke functies, en geeft het terug. Vergissing afhankelijkheden aan de bovenkant, zodat ze zichtbaar blijven.
 
 ```lua
 local json = require("json")
@@ -42,9 +42,9 @@ end
 return session
 ```
 
-### PL-LUA-003 — Guard Clauses and Early Return
+### PL-LUA-003. Bewakersclausules en vroegtijdige terugkeer
 
-Check missing and invalid input first, return early, and keep the main path unindented. Follow [control flow](../core/control-flow.md) and [functions](../core/functions.md).
+Controleer de ontbrekende en ongeldige invoer eerst, keer eerder terug en houd het hoofdpad onbedoeld. Volg [controlestroom](../core/control-flow.md) en [functies](../core/functions.md).
 
 ```lua
 function session.rename(current, name)
@@ -60,9 +60,9 @@ function session.rename(current, name)
 end
 ```
 
-### PL-LUA-004 — Explicit Nil Checks
+### PL-LUA-004. Expliciete Nil-controles
 
-Compare against `nil` directly. `false` is a real value in Lua, so `if not value` also catches a meaningful `false`. Test `== nil` when the difference matters.
+Vergelijk het direct met `nil`. `false` is een echte waarde in Lua, dus `if not value` vangt ook een betekenisvolle `false`. Test `== nil` als het verschil belangrijk is.
 
 ```lua
 local function timeout_or_default(config)
@@ -73,8 +73,8 @@ local function timeout_or_default(config)
 end
 ```
 
-Use an explicit `nil` check for an optional boolean so that an explicit
-`false` survives the fallback.
+Gebruik een expliciete `nil` check voor een optionele booleaan, zodat een expliciete
+`false` overleeft de terugval.
 
 ```text
 − Overrides false                          │ ✓ Pureline
@@ -84,9 +84,9 @@ local visible = options.visible or true   │ local visible = options.visible
                                           │ end
 ```
 
-### PL-LUA-005 — Errors Are Values
+### PL-LUA-005. Fouten zijn waarden
 
-Return `nil, err` for expected failures such as a missing file or bad input, and check the pair at the call site. Use `assert` only for programmer errors and broken invariants, where stopping is the correct response.
+Geef `nil, err` terug voor verwachte fouten zoals een ontbrekende bestand of slechte invoer, en controleer het paar op de call site. Gebruik `assert` alleen voor programmeurfouten en gebroken in de SUV's, waar stoppen de juiste reactie is.
 
 ```lua
 local function read_config(path)
@@ -101,9 +101,9 @@ local function read_config(path)
 end
 ```
 
-### PL-LUA-006 — Metatables Only When They Clarify
+### PL-LUA-006. Metatables alleen wanneer ze duidelijker worden
 
-Plain tables and functions are the default. Use a metatable (`__index` for a type, `__tostring` for debugging output) only when it makes call sites clearer. Do not build inheritance chains or operator overloads for convenience. See [avoid unnecessary abstractions](../core/principles.md).
+Gewone tabellen en functies zijn de standaard. Gebruik een metatelable (`__index` voor een type, `__tostring` voor debuguitvoer) alleen als het call sites duidelijker maakt. Bouw geen erf- of overbelastingsketens voor het gemak. Zie [vermijd onnodige abstracties](../core/principles.md).
 
 ```lua
 local Stack = {}
@@ -114,22 +114,22 @@ function Stack.new()
 end
 ```
 
-### PL-LUA-007 — Small Functions
+### PL-LUA-007. Kleine functies
 
-Each function does one thing and fits on a screen. Extract a named local function instead of a long body with a comment marking each section. See [functions](../core/functions.md).
+Elke functie doet één ding en past op een scherm. Uitpakken van een lokale functie in plaats van een lange lichaam met een commentaar markering elke sectie. Zie [functies](../core/functions.md).
 
-### PL-LUA-008 — String Keys for Records
+### PL-LUA-008. String Keys for Records
 
-Records use string keys and dot access. Reserve integer keys for sequences, and never mix the two in one table.
+Records gebruiken string keys en punt toegang. Reserveer integer keys voor sequenties, en meng nooit de twee in één tabel.
 
 ```lua
 local user = { name = "Ada", active = true } -- record: string keys
 local tags = { "admin", "ops" }              -- sequence: integer keys
 ```
 
-### PL-LUA-009 — Blocks End on Their Own Lines
+### PL-LUA-009. Blokken eindigen op hun eigen lijnen
 
-Every `function`, `if`, `for`, `while`, and `do` block closes with `end` on its own line, aligned with its opening keyword. Keep blocks multi-line, even for a single statement. See [formatting](../core/formatting.md).
+Elke `function`, `if`, `for`, `while` en `do` blok sluit met `end` op zijn eigen lijn, uitgelijnd met zijn openingssleutelwoord. Houd blokken multi-line, zelfs voor een enkele verklaring. Zie [formatteren](../core/formatting.md).
 
 ```lua
 for _, job in ipairs(jobs) do
@@ -139,9 +139,9 @@ for _, job in ipairs(jobs) do
 end
 ```
 
-### PL-LUA-010 — No Clever One-Liners
+### PL-LUA-010. nr. Clever One-Liners
 
-Prefer a sequence of plain statements over dense expressions. Do not use `cond and a or b` when `a` can be `nil` or `false`, because the fallback fires silently. Use an `if` instead.
+Liever een reeks duidelijke uitspraken dan dichte uitdrukkingen. Gebruik `cond and a or b` niet als `a` `nil` of `false` kan zijn, omdat de terugval stilletjes brandt. Gebruik een `if` in plaats daarvan.
 
 ```lua
 local mode = "guest"
@@ -152,8 +152,8 @@ end
 
 ### PL-LUA-011. Map Density
 
-A folder of hand-maintained Lua modules holds at most **10 files** by default. Group modules by feature (`session/`, `net/`), and keep shared helpers in one `util/` folder. See [structure](../core/structure.md).
+Een map met hand-onderhoud Lua modules bevat hooguit **10 bestanden** standaard. Groepsmodules per functie (`session/`, `net/`) en houd gedeelde helpers in één `util/`-map. Zie [structuur](../core/structure.md).
 
 ### PL-LUA-012. Gereedschape
 
-Run `luacheck` in CI with zero warnings, so undefined globals and unused locals fail the build. Format every file with `StyLua`. Treat both tools as the authority on style details they cover.
+Run `luacheck` in CI met nul waarschuwingen, dus ongedefinieerde globals en ongebruikte locals falen de bouw. Formatteer elk bestand met `StyLua`. Behandel beide instrumenten als de autoriteit over stijldetails die ze behandelen.

@@ -1,16 +1,16 @@
-# C++ Code Style
+# Estilo de código C++
 
 [Guía de estilo del código](../README.md) · [Especificaciones originales 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
 Aplicar las [reglas compartidas](../README.md#shared-rules) junto con este perfil. Las reglas nativas del idioma y las excepciones explícitas del perfil tienen precedencia sobre las preferencias de sintaxis del idioma. [Cohesión sobre Tamaño](../core/structure.md) se aplica en todo momento.
 
-## C++ Profile
+## Perfil C++
 
-Pureline C++ follows **modern C++17 and C++20** idioms. Ownership lives in types, resources are released by destructors, and failure is returned as a value.
+Pureline C++ sigue a **modern C++17 y C++20** idioms. La propiedad vive en tipos, los recursos son liberados por los machistas y el fracaso es devuelto como valor.
 
-### PL-CPP-001 — RAII and Unique Ownership
+### PL-CPP-001 — RAI y propiedad única
 
-Every resource is owned by an object whose destructor releases it. Use `std::unique_ptr` (via `std::make_unique`) by default; `std::shared_ptr` only for genuinely shared ownership. Raw `new` and `delete` do not appear in application code.
+Cada recurso es propiedad de un objeto cuyo objetivo es liberarlo. Utilice `std::unique_ptr` (vía `std::make_unique`) por defecto; `std::shared_ptr` sólo para la propiedad compartida genuinamente. Raw `new` y `delete` no aparecen en el código de aplicación.
 
 ```cpp
 #include <fstream>
@@ -22,9 +22,9 @@ void save(const std::string& path, const std::string& text) {
 }
 ```
 
-### PL-CPP-002 — Const by Default
+### PL-CPP-002 — Const por defecto
 
-Mark values `const` unless they must change, and use `constexpr` for compile-time constants. Pass read-only arguments by `const &`; take by value only when the function stores or consumes them.
+Marcar valores `const` a menos que deban cambiar, y utilizar `constexpr` para las constantes de tiempo de compilación. Pase los argumentos de sólo lectura por `const &`; tome por valor sólo cuando la función los almacena o los consume.
 
 ```cpp
 constexpr int kMaxRetries = 3;
@@ -34,9 +34,9 @@ bool retry_allowed(const int attempt) {
 }
 ```
 
-### PL-CPP-003 — Guard Clauses and `std::expected`
+### PL-CPP-003 — Cláusulas de protección y `std::expected`
 
-Validate at the top of the function and keep the success path at base indentation, following [control flow](../core/control-flow.md). Use `std::optional<T>` for absence and `std::expected<T, E>` for failures the caller must handle (C++23; C++17/20 projects use an equivalent such as `tl::expected`). Never return error codes through out parameters.
+Validar en la parte superior de la función y mantener la ruta de éxito en la sangría de la base, siguiendo [flujo de control](../core/control-flow.md). Utilice `std::optional<T>` para ausencias y `std::expected<T, E>` para fallos que el llamante debe manejar (los proyectos C++23; C++17/20 utilizan un equivalente como `tl::expected`). Nunca devuelva códigos de error a través de parámetros.
 
 ```cpp
 #include <expected>
@@ -52,9 +52,9 @@ std::expected<std::string, ConfigError> load_path(const std::string& path) {
 }
 ```
 
-### PL-CPP-004 — Range-Based `for`
+### PL-CPP-004 — `for` basado en el rango
 
-Prefer range-based `for` over index loops. Use a standard algorithm only when its name states the intent more clearly than a loop.
+Prefiere los bucles basados en rango `for` sobre los índices. Use un algoritmo estándar sólo cuando su nombre indique la intent más claramente que un bucle.
 
 ```cpp
 #include <string>
@@ -71,8 +71,8 @@ int count_long(const std::vector<std::string>& names) {
 }
 ```
 
-Prefer `const auto&` for read-only iteration when the element type is
-clear from the surrounding code.
+Prefiere `const auto&` para la iteración de sólo lectura cuando el tipo de elemento es
+claro del código circundante.
 
 ```text
 − Explicit element type           │ ✓ Pureline
@@ -81,9 +81,9 @@ for (const User& user : users) {  │ for (const auto& user : users) {
 }                                 │ }
 ```
 
-### PL-CPP-005 — Small Classes with One Responsibility
+### PL-CPP-005: clases pequeñas con una sola responsabilidad
 
-A class owns one coherent concept and its invariants. Keep data private and expose a narrow interface. Split classes that mix storage, pricing, persistence, or presentation. [Cohesion over Size](../core/structure.md) decides, not a line count.
+Una clase posee un concepto coherente y sus invariantes. Mantenga los datos privados y exponga una interfaz estrecha. Dividir clases que midan almacenamiento, precios, persistencia o presentación. [Cohesión sobre Tamaño](../core/structure.md) decide, no un recuento de líneas.
 
 ```cpp
 #include <vector>
@@ -97,9 +97,9 @@ private:
 };
 ```
 
-### PL-CPP-006 — Header and Source Split
+### PL-CPP-006 — Encabezado y división de fuentes
 
-Declare interfaces in a `.hpp` header and define them in a matching `.cpp`. Every header uses `#pragma once` or classic include guards, and never contains `using namespace`, which leaks names into every includer.
+Declarar rúbrica en una cabecera `.hpp` y definirlos en una `.cpp` que coincida. Cada cabecera utiliza `#pragma once` o clásico incluyen guardias, y nunca contiene `using namespace`, que filtra nombres en cada inclusor.
 
 ```cpp
 // format.hpp
@@ -112,7 +112,7 @@ std::string format_price(int cents);
 
 ### PL-CPP-007 — Densidad de la carpeta
 
-A source folder holds at most **10 hand-maintained production files** (`.hpp` and `.cpp` both count) by default. Tests, generated code, and vendored code do not count. Past that threshold, split along real responsibility boundaries, never into meaningless nested folders.
+Una carpeta de origen contiene como máximo archivos de producción **10 mantenidos a mano** (`.hpp` y `.cpp` ambos cuentan) de forma predeterminada. Las pruebas, código generado y código de proveedor no cuentan. Pasado ese umbral, dividido a lo largo de límites de responsabilidad reales, nunca en carpetas sin sentido anidadas.
 
 ```cpp
 #include "orders/order.hpp"
@@ -120,9 +120,9 @@ A source folder holds at most **10 hand-maintained production files** (`.hpp` an
 #include "orders/order_persistence.hpp"
 ```
 
-### PL-CPP-008 — Tooling Enforces the Baseline
+### PL-CPP-008 — Herramientas hace cumplir la línea de base
 
-Format with `clang-format`, lint with `clang-tidy`, and compile with `-Wall -Wextra -Werror`. Warnings are defects, not suggestions.
+Formatee con `clang-format`, pelusa con `clang-tidy` y compile con `-Wall -Wextra -Werror`. Las advertencias son defectos, no sugerencias.
 
 ```cpp
 // Build:  clang++ -std=c++20 -Wall -Wextra -Werror -c cart.cpp

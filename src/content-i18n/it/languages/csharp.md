@@ -1,14 +1,14 @@
-# C# Code Style
+# Stile codice C#
 
 [Code style guide](../README.md) · [Original specification 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Apply the [shared core rules](../README.md#shared-rules) with this profile. C# is a managed, brace-based language with strong compiler support. Pureline C# targets **.NET 8** or later.
+Apply the [shared core rules](../README.md#shared-rules) with this profile. C# is a managed, brace-based language with strong compiler support. Pureline C# punta **.NET 8** o successivo.
 
-## C# Profile
+## Profilo C#
 
-### PL-CS-001 — Naming Follows the .NET Convention
+### PL-CS-001. Naming segue la convenzione.NET
 
-Use `PascalCase` for types, members, and constants, `camelCase` for locals and parameters, and `_camelCase` for private fields. Names state the role of a value, not its type.
+Usa `PascalCase` per tipi, membri e costanti, `camelCase` per locali e parametri, e `_camelCase` per campi privati. Names state the role of a value, not its type.
 
 ```csharp
 public static class SessionRules
@@ -18,7 +18,7 @@ public static class SessionRules
 }
 ```
 
-### PL-CS-002 — Nullable Reference Types Are On
+### PL-CS-002. I tipi di riferimento UCLEARI sono attivi
 
 Set `<Nullable>enable</Nullable>` in every project. `string` never holds null, and `string?` declares that it may. Do not silence the compiler with `!`; fix the flow instead.
 
@@ -30,7 +30,7 @@ public sealed class UserProfile
 }
 ```
 
-Prefer `?.` with `??` when the only purpose of the null check is to select
+Preferisci `?.` con `??` quando l'unico scopo del controllo null è selezionare
 a fallback. In this example, `Name` is non-nullable.
 
 ```text
@@ -42,7 +42,7 @@ if (user is null) {              │ return user?.Name ?? "Gast";
 return user.Name;                │
 ```
 
-### PL-CS-003 — Records for Immutable Data
+### PL-CS-003. Records for Immutable Data
 
 Model data that moves between layers as a `record`. Derive changed copies with `with` instead of mutating. Use a class only when the object has identity or behaviour of its own.
 
@@ -93,7 +93,7 @@ public static async Task<string> LoadBodyAsync(HttpClient client, string url, Ca
 }
 ```
 
-### PL-CS-007 — LINQ Only When It Reads Clearly
+### PL-CS-007. LINQ solo quando si legge chiaramente dime lancetta di 'l'aria di
 
 Use LINQ for one linear transformation: a filter, a projection, or a materialization. Switch to a `foreach` loop when the query has side effects, branches, or more than three chained operators.
 

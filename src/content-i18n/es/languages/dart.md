@@ -1,28 +1,28 @@
-# Dart Code Style
+# Estilo de código Dart
 
 [Guía de estilo del código](../README.md) · [Especificaciones originales 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
 Aplicar las [reglas compartidas](../README.md#shared-rules) junto con este perfil. Las reglas nativas del idioma y las excepciones explícitas del perfil tienen precedencia sobre las preferencias de sintaxis del idioma. [Cohesión sobre Tamaño](../core/structure.md) se aplica en todo momento.
 
-## Dart Profile
+## Perfil de dardo
 
-Dart 3 with sound null safety is the baseline. All examples assume Dart 3 syntax.
+Dardo 3 con seguridad de sonido nulo es la línea de base. Todos los ejemplos asumen la sintaxis Dart 3.
 
-### PL-DART-001 — `final` and `const` by Default
+### PL-DART-001 — `final` y `const` por defecto
 
-Declare locals and fields as `final` unless they are reassigned. Use `const` for compile-time values.
+Declarar locales y campos como `final` a menos que se reasignen. Utilice `const` para compilar valores de tiempo.
 
 ```dart
 final user = loadUser();
 const retryLimit = 3;
 ```
 
-- Avoid `var` when the value is never reassigned.
-- Prefer `const` constructors for widgets, value objects, and configuration.
+- Evite `var` cuando el valor nunca se reasigna.
+- Prefiere las grecas `const` para widgets, objetos de valor y configuración.
 
-### PL-DART-002 — Sound Null Safety Without `!`
+### PL-DART-002 — Seguridad de sonido nula sin `!`
 
-Make nullability explicit in types. Handle `null` with `?.` and `??` when the expression is simple.
+Hacer la nulidad explícita en los tipos. Maneje `null` con `?.` y `??` cuando la expresión es simple.
 
 ```dart
 String? nickname;
@@ -30,12 +30,12 @@ final label = nickname ?? 'anonymous';
 final length = nickname?.length ?? 0;
 ```
 
-- Avoid the `!` operator. Use it only with a comment that states why the value cannot be null.
-- Prefer promotion through checks over `!`.
+- Evite el operador `!`. Úselo sólo con un comentario que indique por qué el valor no puede ser nulo.
+- Prefieren la promoción a través de cheques sobre `!`.
 
-### PL-DART-003 — Named Parameters with `required` for Public API
+### PL-DART-003 — Parámetros designados con `required` para API pública
 
-Public constructors and functions take named parameters. Mark mandatory ones `required`.
+Las funciones y los vulcanismos públicos toman parámetros nombrados. Marcar las `required` obligatorias.
 
 ```dart
 final class Session {
@@ -46,10 +46,10 @@ final class Session {
 }
 ```
 
-- Named arguments make call sites explicit (PL-CORE-007).
-- Use positional parameters only for obvious, single-value helpers.
+- Los argumentos nombrados hacen explícitos los sitios de llamadas (PL-CORE-007).
+- Utilice parámetros posicionales sólo para ayudantes obvios de un solo valor.
 
-Named parameters distinguish same-type arguments at the call site.
+Los parámetros designados distinguen los argumentos del mismo tipo en el sitio de llamada.
 
 ```text
 − Positional parameters                │ ✓ Pureline
@@ -63,9 +63,9 @@ resize(1920, 1080);                    │   // …
                                        │ resize(width: 1920, height: 1080);
 ```
 
-### PL-DART-004 — Async Code Uses `Future` and `Stream` for Their Purpose
+### PL-DART-004 — Código ASYnc utiliza `Future` y `Stream` para su propósito
 
-Use `Future` for one result and `Stream` for a sequence of events. Use `async` and `await` instead of chained `.then`.
+Utilice `Future` para un resultado y `Stream` para una secuencia de eventos. Use `async` y `await` en lugar de `.then` encadenado.
 
 ```dart
 Future<User> loadUser(UserId id) async {
@@ -80,12 +80,12 @@ Stream<Packet> incoming(Socket socket) async* {
 }
 ```
 
-- Do not wrap a single value in a `Stream`, and do not force a multi-event source into a `Future`.
-- Keep side effects visible at the call site (PL-CORE-015).
+- No envuelva un solo valor en un `Stream`, y no obligue a una fuente de eventos múltiples a un `Future`.
+- Mantener los efectos secundarios visibles en el lugar de la llamada (PL-CORE-015).
 
 ### PL-DART-005 — Evitar `dynamic`
 
-Use concrete types, generics, or `Object?` for unknown data. Narrow unknown data with pattern matching before use.
+Use tipos de hormigón, genéricos o `Object?` para datos desconocidos. Reduzca los datos desconocidos con el patrón que coincide antes de su uso.
 
 ```dart
 Config parseConfig(Object? input) {
@@ -96,11 +96,11 @@ Config parseConfig(Object? input) {
 }
 ```
 
-- Treat `dynamic` as an exception that must be justified at the boundary.
+- Tratar `dynamic` como una excepción que debe ser justificada en el límite.
 
-### PL-DART-006 — Guard Clauses with Early Return
+### PL-DART-006 — Cláusulas de protección con retorno temprano
 
-Check invalid and absent states first and return. Keep the main path unindented (PL-CORE-003).
+Compruebe primero los estados inválidos y ausentes y regrese. Mantenga la ruta principal sin identificar (PL-CORE-003).
 
 ```dart
 String describe(User? user) {
@@ -110,12 +110,12 @@ String describe(User? user) {
 }
 ```
 
-- See [control flow](../core/control-flow.md) for the shared rule.
-- Avoid `else` after a returning branch (PL-CORE-002).
+- Véase [flujo de control](../core/control-flow.md) para la regla compartida.
+- Evite `else` después de una rama de retorno (PL-CORE-002).
 
-### PL-DART-007 — Sealed Classes and Switch Expressions for State
+### PL-DART-007 — Clases selladas y expresiones de cambio para el Estado
 
-Model closed sets of states as `sealed` classes. Handle them with an exhaustive `switch` expression.
+Modelo conjuntos cerrados de estados como clases `sealed`. Manejalos con una exhaustiva expresión `switch`.
 
 ```dart
 sealed class SessionState {
@@ -137,12 +137,12 @@ String label(SessionState state) => switch (state) {
     };
 ```
 
-- Prefer this over boolean flags or string states.
-- The compiler enforces that every state is handled.
+- Prefiere esto sobre banderas booleanas o estados de cuerda.
+- El compilador hace que se haga cumplir que cada estado está manejado.
 
 ### PL-DART-008 — Denominación
 
-Use `lowerCamelCase` for members, variables, parameters, and constants. Use `UpperCamelCase` for types, classes, enums, and extensions.
+Utilice `lowerCamelCase` para miembros, variables, parámetros y constantes. Utilice `UpperCamelCase` para tipos, clases, enums y extensiones.
 
 ```dart
 class SessionStore {}
@@ -151,12 +151,12 @@ final maxRetries = 3;
 const defaultTimeout = Duration(seconds: 30);
 ```
 
-- Names must carry meaning (PL-CORE-007). Avoid abbreviations such as `usr` or `cfg`.
-- Use `snake_case` only for file names.
+- Los nombres deben tener significado (PL-CORE-007). Evite abreviaturas como `usr` o `cfg`.
+- Utilice `snake_case` sólo para nombres de archivo.
 
-### PL-DART-009 — `_` Marks Library-Private Names
+### PL-DART-009 — `_` Marcas Biblioteca-Nombres privados
 
-Prefix names with `_` only when they must stay hidden from other libraries. Do not use `_` as a substitute for documentation.
+Prefija nombres con `_` sólo cuando deben permanecer ocultos de otras bibliotecas. No utilice `_` como sustituto de la documentación.
 
 ```dart
 class _RetryPolicy {
@@ -166,11 +166,11 @@ class _RetryPolicy {
 void _connect() {}
 ```
 
-- Keep public surface small so that the library's contract stays clear.
+- Mantenga la superficie pública pequeña para que el contrato de la biblioteca se mantenga despejado.
 
-### PL-DART-010 — Small Classes with One Responsibility
+### PL-DART-010: clases pequeñas con una sola responsabilidad
 
-Keep classes focused on one coherent responsibility. Split a class when it mixes unrelated concerns, not when it passes an arbitrary line count (PL-CORE-009, PL-CORE-022).
+Mantenga las clases centradas en una responsabilidad coherente. Dividir una clase cuando mezcla preocupaciones no relacionadas, no cuando pasa un recuento de líneas arbitrarias (PL-CORE-009, PL-CORE-022).
 
 ```dart
 final class TokenParser {
@@ -180,13 +180,13 @@ final class TokenParser {
 }
 ```
 
-- Prefer composition of small classes over inheritance hierarchies.
+- Prefieren la composición de clases pequeñas sobre jerarquías de herencia.
 
 ### PL-DART-011 — Densidad de la carpeta
 
-A Dart source folder under `lib/` may contain at most **10 hand-maintained source files** by default.
+Una carpeta fuente Dart bajo `lib/` puede contener como máximo archivos fuente **10 mantenidos a mano** por defecto.
 
-Generated files, `part` files, barrel files such as `lib/feature.dart`, and tests do not count. A split should follow a real boundary:
+Los archivos generados, los archivos `part`, los archivos de barril como `lib/feature.dart` y las pruebas no cuentan. Una división debe seguir un límite real:
 
 ```text
 lib/session/
@@ -195,11 +195,11 @@ lib/session/transport/
 lib/session/storage/
 ```
 
-- See [structure](../core/structure.md) for the shared size rules (PL-CORE-021).
+- Véase [estructura](../core/structure.md) para las reglas de tamaño compartido (PL-CORE-021).
 
-### PL-DART-012 — Tooling: `dart format` and `dart analyze` with `lints`
+### PL-DART-012 — Herramientas: `dart format` y `dart analyze` con `lints`
 
-Format and analyze every package before review. Enable the `lints` package in `analysis_options.yaml`.
+Formatee y analice cada paquete antes de revisarlo. Active el paquete `lints` en `analysis_options.yaml`.
 
 ```yaml
 include: package:lints/recommended.yaml
@@ -210,5 +210,5 @@ dart format --set-exit-if-changed .
 dart analyze
 ```
 
-- Treat analyzer warnings as failures in CI.
-- Do not disable lints locally without a comment that explains the exception.
+- Tratar las advertencias del analizador como fallas en IC.
+- No deshabilite las pelusas localmente sin un comentario que explique la excepción.

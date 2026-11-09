@@ -1,16 +1,16 @@
-# C Code Style
+# Estilo de código C
 
 [Guía de estilo del código](../README.md) · [Especificaciones originales 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
 Aplicar las [reglas compartidas](../README.md#shared-rules) junto con este perfil. Las reglas nativas del idioma y las excepciones explícitas del perfil tienen precedencia sobre las preferencias de sintaxis del idioma. [Cohesión sobre Tamaño](../core/structure.md) se aplica en todo momento.
 
-## C Profile
+## C Perfil
 
-Pureline C follows **idiomatic C11/C17**: explicit ownership, explicit error codes, and small translation units. C has no destructors or exceptions, so discipline must be visible in the code itself.
+Pureline C sigue a **idiomatic C11/C17**: propiedad explícita, códigos de error explícitos y pequeñas unidades de traducción. C no tiene ni dúctiles ni excepciones, por lo que la disciplina debe ser visible en el propio código.
 
 ### PL-C-001 — Cláusulas de protección y flujo lineal
 
-Validate arguments first and keep the success path at the base indentation level (see [PL-CORE-003](../core/control-flow.md)); avoid `else` after a returning branch.
+Validar los argumentos primero y mantener la ruta de éxito en el nivel de sangría base (ver [PL-CORE-003](../core/control-flow.md)); evitar `else` después de una rama de retorno.
 
 ```c
 int session_open(const struct request *request, struct session *out)
@@ -22,9 +22,9 @@ int session_open(const struct request *request, struct session *out)
 }
 ```
 
-### PL-C-002 — Return and Check Error Codes
+### PL-C-002 — Volver y comprobar los códigos de error
 
-Fallible functions return an `enum` status and pass results through out-parameters. Every status is checked; a deliberate discard uses a `(void)` cast with a comment.
+Las funciones falibles devuelven un estado `enum` y pasan los resultados a través de parámetros de salida. Cada estado es comprobado; un descarte deliberado utiliza un molde `(void)` con un comentario.
 
 ```c
 int load(struct session *session)
@@ -37,18 +37,18 @@ int load(struct session *session)
 }
 ```
 
-### PL-C-003 — Explicit Heap Ownership
+### PL-C-003 — Propiedad explícita de la masa
 
-Each heap allocation has exactly one owner. `*_create` transfers ownership to the caller, `*_destroy` releases it, and callees never free borrowed pointers.
+Cada asignación de montón tiene exactamente un propietario. `*_create` transfiere la propiedad al que llama, `*_destroy` la libera y las calles nunca gratis.
 
 ```c
 /* The caller owns the result and releases it with session_destroy(). */
 struct session *session_create(const char *user);
 ```
 
-### PL-C-004 — `goto` Only for a Single Cleanup Exit
+### PL-C-004 — `goto` solo para una salida de limpieza única
 
-Jump forward to one `cleanup:` label per function, initialise resources to `NULL` first, and never use `goto` for loops or skipped logic.
+Saltar hacia adelante a una etiqueta `cleanup:` por función, inicializar los recursos a `NULL` primero, y nunca utilizar `goto` para bucles o lógica omitida.
 
 ```c
 int report_write(const char *path, const char *text)
@@ -67,8 +67,8 @@ cleanup:
 }
 ```
 
-For a single resource with two simple return paths, prefer closing it
-directly at each return. A shared cleanup label is useful as cleanup grows.
+Para un único recurso con dos rutas de retorno simples, prefiera cerrarlo
+directamente a cada retorno. Una etiqueta de limpieza compartida es útil a medida que crece la limpieza.
 
 ```text
 Shared cleanup label              │ ✓ Pureline
@@ -84,17 +84,17 @@ cleanup:                          │ fclose(file);
     return status;                │
 ```
 
-### PL-C-005 — Const Correctness and Explicit State
+### PL-C-005 — Conservar la corrección y el Estado explícito
 
-Read-only parameters are `const`, locals assigned once are `const`, and runtime state is passed explicitly in a context struct instead of file-scope variables.
+Los parámetros de sólo lectura son `const`, los locales asignados una vez son `const`, y el estado de ejecución se pasa explícitamente en una estructura de contexto en lugar de variables de archivo-scopio.
 
 ```c
 int cache_insert(struct cache *cache, const char *key);
 ```
 
-### PL-C-006 — Small, Focused Functions
+### PL-C-006 — Funciones pequeñas y centradas
 
-Each function does one thing at one level of abstraction; extract a helper when a block needs a name. A cohesive state machine may stay long rather than being split arbitrarily.
+Cada función hace una cosa en un nivel de abstracción; extraiga un ayudante cuando un bloque necesita un nombre. Una máquina de estado cohesionado puede permanecer mucho tiempo en lugar de ser dividida arbitrariamente.
 
 ```c
 int save_report(const struct report *report, const char *path)
@@ -109,9 +109,9 @@ int save_report(const struct report *report, const char *path)
 }
 ```
 
-### PL-C-007 — Static Linkage and Minimal Headers
+### PL-C-007 — Enlace estatico y cabeceras mínimas
 
-Mark non-public functions and variables `static`, prefix public symbols with their module name, and give every header an include guard plus only the consumer-facing surface.
+Marcar funciones y variables no públicas `static`, prefijar símbolos públicos con su nombre de módulo, y dar a cada cabecera un protector de inclusión más sólo la superficie orientada al consumidor.
 
 ```c
 #ifndef PURELINE_SESSION_H
@@ -120,17 +120,17 @@ struct session *session_create(const char *user);
 #endif
 ```
 
-### PL-C-008 — Source Folder Density
+### PL-C-008 — Densidad de la carpeta fuente
 
-A C feature folder holds at most **10 hand-maintained `.c` and `.h` files** by default. Generated code, vendored libraries, and tests do not count. Split along responsibility, never into nested folders for their own sake.
+Una carpeta de características C tiene como máximo **10 mantenidos a mano `.c` y `.h` archivos** por defecto. código generado, bibliotecas vendidas y pruebas no cuentan. Dividir a lo largo de la responsabilidad, nunca en carpetas anidadas por su propio bien.
 
 ```c
 #include "session/session.h"
 ```
 
-### PL-C-009 — Tooling and Warnings
+### PL-C-009 — Herramientas y advertencias
 
-Build with `-std=c11 -Wall -Wextra -Werror -pedantic`, format with `clang-format`, and check with `clang-tidy`. Any suppression needs a comment explaining why.
+Construya con `-std=c11 -Wall -Wextra -Werror -pedantic`, formato con `clang-format`, y consulte con `clang-tidy`. Cualquier supresión necesita un comentario que explique por qué.
 
 ```c
 /* Build check: cc -std=c11 -Wall -Wextra -Werror -pedantic -c session.c */

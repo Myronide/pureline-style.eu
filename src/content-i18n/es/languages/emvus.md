@@ -133,8 +133,8 @@ method showPort(Int port) {
 - No descarte un `Result` ni esconda el fallo esperado tras `panic`.
 - Mantenga `success`, `fail` y `return` distintos en lugar de envolver cada operación innecesariamente.
 
-Prefer `?` when forwarding the error unchanged and the enclosing method's
-result type accepts it.
+Prefiere `?` cuando se reenvíe el error sin cambios y el método de inclusión
+El tipo de resultado lo acepta.
 
 ```text
 Explicit result branches                │ ✓ Pureline

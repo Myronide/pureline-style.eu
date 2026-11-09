@@ -32,7 +32,7 @@ end
 
 La règle n'est pas "éviter les conditions postfixes". La règle est: utiliser le formulaire qui maintient l'intention immédiatement évidente.
 
-Prefer the postfix form for a single short check with an immediate return.
+Préférez le formulaire postfix pour un seul court chèque avec un retour immédiat.
 
 ```text
 Block guard                 │ ✓ Pureline

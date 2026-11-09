@@ -4,25 +4,25 @@
 
 Pas de [shared core rules](../README.md#shared-rules) toe samen met dit profiel. Taal-native regels en expliciete profiel uitzonderingen hebben voorrang op de taaloverschrijdende syntax voorkeuren. [Cohesie over Size](../core/structure.md) geldt gedurende het gehele.
 
-## Dart Profile
+## Dartprofiel
 
-Dart 3 with sound null safety is the baseline. All examples assume Dart 3 syntax.
+Dart 3 met geluidsnull veiligheid is de basislijn. Alle voorbeelden veronderstellen Dart 3 syntax.
 
-### PL-DART-001 — `final` and `const` by Default
+### PL-DART-001. `final` en `const` standaard
 
-Declare locals and fields as `final` unless they are reassigned. Use `const` for compile-time values.
+Declareer lokalen en velden als `final` tenzij ze opnieuw toegewezen worden. Gebruik `const` voor compilatie-tijdwaarden.
 
 ```dart
 final user = loadUser();
 const retryLimit = 3;
 ```
 
-- Avoid `var` when the value is never reassigned.
-- Prefer `const` constructors for widgets, value objects, and configuration.
+- Vermijd `var` als de waarde nooit opnieuw wordt toegewezen.
+- `const`-constructors zijn de voorkeur voor widgets, waarde objecten en configuratie.
 
-### PL-DART-002 — Sound Null Safety Without `!`
+### PL-DART-002. Geluid Null Veiligheid zonder `!`
 
-Make nullability explicit in types. Handle `null` with `?.` and `??` when the expression is simple.
+Maak de verwatering expliciet in types. `null` met `?.` en `??` als de expressie eenvoudig is.
 
 ```dart
 String? nickname;
@@ -30,12 +30,12 @@ final label = nickname ?? 'anonymous';
 final length = nickname?.length ?? 0;
 ```
 
-- Avoid the `!` operator. Use it only with a comment that states why the value cannot be null.
-- Prefer promotion through checks over `!`.
+- Vermijd de `!`-operator. Gebruik het alleen met een opmerking die aangeeft waarom de waarde niet nul kan zijn.
+- Liever promotie door middel van controles over `!`.
 
-### PL-DART-003 — Named Parameters with `required` for Public API
+### PL-DART-003. Genoemde parameters met `required` voor publieke API
 
-Public constructors and functions take named parameters. Mark mandatory ones `required`.
+Openbare constructeurs en functies nemen genoemde parameters. Meld de verplichte `required`.
 
 ```dart
 final class Session {
@@ -46,10 +46,10 @@ final class Session {
 }
 ```
 
-- Named arguments make call sites explicit (PL-CORE-007).
-- Use positional parameters only for obvious, single-value helpers.
+- Genoemde argumenten maken call sites expliciet (PL-CORE-007).
+- Gebruik positieparameters alleen voor duidelijke, hulpjes met één waarde.
 
-Named parameters distinguish same-type arguments at the call site.
+Genoemde parameters onderscheiden dezelfde soort argumenten op de call site.
 
 ```text
 − Positional parameters                │ ✓ Pureline
@@ -63,9 +63,9 @@ resize(1920, 1080);                    │   // …
                                        │ resize(width: 1920, height: 1080);
 ```
 
-### PL-DART-004 — Async Code Uses `Future` and `Stream` for Their Purpose
+### PL-DART-004. Async code gebruikt `Future` en `Stream` voor hun doel
 
-Use `Future` for one result and `Stream` for a sequence of events. Use `async` and `await` instead of chained `.then`.
+Gebruik `Future` voor één resultaat en `Stream` voor een reeks gebeurtenissen. Gebruik `async` en `await` in plaats van geketende `.then`.
 
 ```dart
 Future<User> loadUser(UserId id) async {
@@ -80,12 +80,12 @@ Stream<Packet> incoming(Socket socket) async* {
 }
 ```
 
-- Do not wrap a single value in a `Stream`, and do not force a multi-event source into a `Future`.
-- Keep side effects visible at the call site (PL-CORE-015).
+- Geen enkele waarde in een `Stream` inpakken en een multi-event bron niet in een `Future` dwingen.
+- Houd bijwerkingen zichtbaar op de oproepplaats (PL-CORE-015).
 
 ### PL-DART-005. Vermijd `dynamic`
 
-Use concrete types, generics, or `Object?` for unknown data. Narrow unknown data with pattern matching before use.
+Gebruik concrete types, generieken of `Object?` voor onbekende gegevens. Smal onbekende gegevens met patroon dat overeenkomt voor gebruik.
 
 ```dart
 Config parseConfig(Object? input) {
@@ -96,11 +96,11 @@ Config parseConfig(Object? input) {
 }
 ```
 
-- Treat `dynamic` as an exception that must be justified at the boundary.
+- Behandel `dynamic` als een uitzondering die aan de grens moet worden gerechtvaardigd.
 
-### PL-DART-006 — Guard Clauses with Early Return
+### PL-DART-006. Bewakersclausules met vroegtijdige terugkeer
 
-Check invalid and absent states first and return. Keep the main path unindented (PL-CORE-003).
+Controleer ongeldige en afwezige staten eerst en keer terug. Houd het hoofdpad ongemerkt (PL-CORE-003).
 
 ```dart
 String describe(User? user) {
@@ -110,12 +110,12 @@ String describe(User? user) {
 }
 ```
 
-- See [control flow](../core/control-flow.md) for the shared rule.
-- Avoid `else` after a returning branch (PL-CORE-002).
+- Zie [controlestroom](../core/control-flow.md) voor de gedeelde regel.
+- Vermijd `else` na een terugkerende tak (PL-CORE-002).
 
-### PL-DART-007 — Sealed Classes and Switch Expressions for State
+### PL-DART-007. Gesloten klassen en switch-expressies voor staat
 
-Model closed sets of states as `sealed` classes. Handle them with an exhaustive `switch` expression.
+Model gesloten sets van staten als `sealed` klassen. Behandel ze met een uitgebreide `switch` expressie.
 
 ```dart
 sealed class SessionState {
@@ -137,12 +137,12 @@ String label(SessionState state) => switch (state) {
     };
 ```
 
-- Prefer this over boolean flags or string states.
-- The compiler enforces that every state is handled.
+- Liever dit dan booleaanse vlaggen of string staten.
+- De compiler verplicht zich ertoe dat elke staat wordt afgehandeld.
 
 ### PL-DART-008. Naamgeving
 
-Use `lowerCamelCase` for members, variables, parameters, and constants. Use `UpperCamelCase` for types, classes, enums, and extensions.
+Gebruik `lowerCamelCase` voor leden, variabelen, parameters en constanten. Gebruik `UpperCamelCase` voor types, klassen, enums en extensies.
 
 ```dart
 class SessionStore {}
@@ -151,12 +151,12 @@ final maxRetries = 3;
 const defaultTimeout = Duration(seconds: 30);
 ```
 
-- Names must carry meaning (PL-CORE-007). Avoid abbreviations such as `usr` or `cfg`.
-- Use `snake_case` only for file names.
+- Namen moeten betekenis hebben (PL-CORE-007). Vermijd afkortingen zoals `usr` of `cfg`.
+- Gebruik `snake_case` alleen voor bestandsnamen.
 
-### PL-DART-009 — `_` Marks Library-Private Names
+### PL-DART-009. `_` Marks Library-Privé Namen
 
-Prefix names with `_` only when they must stay hidden from other libraries. Do not use `_` as a substitute for documentation.
+Voorvoeg namen met `_` alleen als ze verborgen moeten blijven voor andere bibliotheken. Gebruik `_` niet als vervanging voor documentatie.
 
 ```dart
 class _RetryPolicy {
@@ -166,11 +166,11 @@ class _RetryPolicy {
 void _connect() {}
 ```
 
-- Keep public surface small so that the library's contract stays clear.
+- Houd het publiek oppervlak klein zodat het contract van de bibliotheek duidelijk blijft.
 
-### PL-DART-010 — Small Classes with One Responsibility
+### PL-DART-010. Kleine klassen met één verantwoordelijkheid
 
-Keep classes focused on one coherent responsibility. Split a class when it mixes unrelated concerns, not when it passes an arbitrary line count (PL-CORE-009, PL-CORE-022).
+Houd klassen gericht op één samenhangende verantwoordelijkheid. Splits een klasse als het niet-gerelateerde problemen mengt, niet als het een willekeurige lijntelling passeert (PL-CORE-009, PL-CORE-022).
 
 ```dart
 final class TokenParser {
@@ -180,13 +180,13 @@ final class TokenParser {
 }
 ```
 
-- Prefer composition of small classes over inheritance hierarchies.
+- Liever compositie van kleine klassen dan erfgoed octerarchies.
 
 ### PL-DART-011. Map Density
 
-A Dart source folder under `lib/` may contain at most **10 hand-maintained source files** by default.
+Een Dart bronmap onder `lib/` kan maximaal **10 hand-onderhoud bronbestanden** bevatten standaard.
 
-Generated files, `part` files, barrel files such as `lib/feature.dart`, and tests do not count. A split should follow a real boundary:
+Gegenereerde bestanden, `part`-bestanden, vatbestanden zoals `lib/feature.dart`, en tests tellen niet mee. Een splitsing moet een echte grens volgen:
 
 ```text
 lib/session/
@@ -195,11 +195,11 @@ lib/session/transport/
 lib/session/storage/
 ```
 
-- See [structure](../core/structure.md) for the shared size rules (PL-CORE-021).
+- Zie [structuur](../core/structure.md) voor de regels voor gedeelde grootte (PL-CORE-021).
 
-### PL-DART-012 — Tooling: `dart format` and `dart analyze` with `lints`
+### PL-DART-012. Gereedschap: `dart format` en `dart analyze` met `lints`
 
-Format and analyze every package before review. Enable the `lints` package in `analysis_options.yaml`.
+Formatteer en analyseer elk pakket voordat u het bekijkt. Schakel het `lints`-pakket in `analysis_options.yaml` in.
 
 ```yaml
 include: package:lints/recommended.yaml
@@ -210,5 +210,5 @@ dart format --set-exit-if-changed .
 dart analyze
 ```
 
-- Treat analyzer warnings as failures in CI.
-- Do not disable lints locally without a comment that explains the exception.
+- Behandel de waarschuwingen van de analyser als fouten in de CI.
+- Niet uitschakelen van de lokale..Sus zonder een opmerking die de uitzondering verklaart.

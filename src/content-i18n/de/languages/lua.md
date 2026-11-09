@@ -1,10 +1,10 @@
-# Lua Code Style
+# Codestil Lua
 
 [Code-Stil-Führer](../README.md) · [Original-Spezifikation 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Wenden Sie die [shared core rules](../README.md#shared-rules) mit diesem Profil an. Lua is small and table-centric: a file is a chunk that builds one module table, and structure comes from plain tables and functions. Pureline Lua targets **Lua 5.4**.
+Wenden Sie die [shared core rules](../README.md#shared-rules) mit diesem Profil an. Lua ist klein und tischzentriert: Eine Datei ist ein Stück, das eine Modultabelle erstellt, und die Struktur kommt aus einfachen Tabellen und Funktionen. Pureline Lua zielt auf **Lua 5.4**.
 
-## Lua Profile
+## Profil Lua
 
 ```text
 Requires (explicit dependencies)
@@ -16,9 +16,9 @@ Module table
 return module
 ```
 
-### PL-LUA-001 — Local by Default
+### PL-LUA-001 — Lokale nach Standard
 
-Declare every variable and function with `local`. A global is shared state that any other file can overwrite silently. Do not write to `_G` or `_ENV` outside a program's entry point. See [naming](../core/naming.md) and [state and side effects](../core/state-and-side-effects.md).
+Deklarieren Sie jede Variable und Funktion mit `local`. Ein globaler Zustand wird geteilt, dass jede andere Datei stillschweigend überschreiben kann. Schreiben Sie nicht an `_G` oder `_ENV` außerhalb des Einsteigerpunktes eines Programms. Siehe [Naming](../core/naming.md) und [Zustand und Nebenwirkungen](../core/state-and-side-effects.md).
 
 ```lua
 local function parse_port(text)
@@ -26,9 +26,9 @@ local function parse_port(text)
 end
 ```
 
-### PL-LUA-002 — One Module Table per File
+### PL-LUA-002 — Eine Modultabelle pro Datei
 
-Each file builds a local table, fills it with its public functions, and returns it. Require dependencies at the top so they stay visible.
+Jede Datei baut eine lokale Tabelle auf, füllt sie mit ihren öffentlichen Funktionen und gibt sie zurück. Benötigt Abhängigkeiten an der Spitze, damit sie sichtbar bleiben..
 
 ```lua
 local json = require("json")
@@ -42,9 +42,9 @@ end
 return session
 ```
 
-### PL-LUA-003 — Guard Clauses and Early Return
+### PL-LUA-003 — Wachklauseln und vorzeitige Rückkehr
 
-Check missing and invalid input first, return early, and keep the main path unindented. Follow [control flow](../core/control-flow.md) and [functions](../core/functions.md).
+Überprüfen Sie zuerst fehlende und ungültige Eingaben, kehren Sie früh zurück und halten Sie den Hauptpfad uninndented. Folgen Sie [Kontrollfluss](../core/control-flow.md) und [Funktionen](../core/functions.md).
 
 ```lua
 function session.rename(current, name)
@@ -60,9 +60,9 @@ function session.rename(current, name)
 end
 ```
 
-### PL-LUA-004 — Explicit Nil Checks
+### PL-LUA-004 — Explizite Nil-Kontrollen
 
-Compare against `nil` directly. `false` is a real value in Lua, so `if not value` also catches a meaningful `false`. Test `== nil` when the difference matters.
+Vergleichen Sie mit `nil` direkt. `false` ist ein echter Wert in Lua, daher fängt `if not value` auch ein sinnvolles `false` ein. Testen Sie `== nil`, wenn der Unterschied wichtig ist.
 
 ```lua
 local function timeout_or_default(config)
@@ -73,8 +73,8 @@ local function timeout_or_default(config)
 end
 ```
 
-Use an explicit `nil` check for an optional boolean so that an explicit
-`false` survives the fallback.
+Verwenden Sie einen expliziten `nil`-Check für einen optionalen Boolean, so dass ein expliziter
+`false` überlebt den Rückfall..
 
 ```text
 − Overrides false                          │ ✓ Pureline
@@ -84,9 +84,9 @@ local visible = options.visible or true   │ local visible = options.visible
                                           │ end
 ```
 
-### PL-LUA-005 — Errors Are Values
+### PL-LUA-005 — Fehler sind Werte
 
-Return `nil, err` for expected failures such as a missing file or bad input, and check the pair at the call site. Use `assert` only for programmer errors and broken invariants, where stopping is the correct response.
+Gibt `nil, err` für erwartete Fehler wie eine fehlende Datei oder schlechte Eingabe zurück und überprüft das Paar auf der Anrufseite. Use `assert` only for programmer errors and broken invariants, where stopping is the correct response.
 
 ```lua
 local function read_config(path)
@@ -129,7 +129,7 @@ local tags = { "admin", "ops" }              -- sequence: integer keys
 
 ### PL-LUA-009 — Blocks End on Their Own Lines
 
-Every `function`, `if`, `for`, `while`, and `do` block closes with `end` on its own line, aligned with its opening keyword. Keep blocks multi-line, even for a single statement. See [formatting](../core/formatting.md).
+Every `function`, `if`, `for`, `while`, and `do` block closes with `end` on its own line, aligned with its opening keyword. Keep blocks multi-line, even for a single statement. Siehe [Formatierung](../core/formatting.md).
 
 ```lua
 for _, job in ipairs(jobs) do
@@ -139,9 +139,9 @@ for _, job in ipairs(jobs) do
 end
 ```
 
-### PL-LUA-010 — No Clever One-Liners
+### PL-LUA-010 — Keine Einleiner für Klever
 
-Prefer a sequence of plain statements over dense expressions. Do not use `cond and a or b` when `a` can be `nil` or `false`, because the fallback fires silently. Use an `if` instead.
+Bevorzugen Sie eine Folge von einfachen Aussagen über dichte Ausdrücke... Verwenden Sie `cond and a or b` nicht, wenn `a` `nil` oder `false` sein kann, weil der Rückfall leise feuert. Verwenden Sie stattdessen ein `if`.
 
 ```lua
 local mode = "guest"
@@ -152,8 +152,8 @@ end
 
 ### PL-LUA-011 — Ordnerdichte
 
-A folder of hand-maintained Lua modules holds at most **10 files** by default. Group modules by feature (`session/`, `net/`), and keep shared helpers in one `util/` folder. See [structure](../core/structure.md).
+Ein Ordner mit handgepflegeten Lua-Modulen enthält standardmäßig höchstens **10-Dateien**. Gruppenmodule nach Feature (`session/`, `net/`) und halten gemeinsam genutzte Helfer in einem `util/`-Ordner. Siehe [Struktur](../core/structure.md)...
 
 ### PL-LUA-012 — Werkzeugbau
 
-Run `luacheck` in CI with zero warnings, so undefined globals and unused locals fail the build. Format every file with `StyLua`. Treat both tools as the authority on style details they cover.
+Führen Sie `luacheck` in CI mit Nullwarnungen aus, sodass undefinierte Globale und nicht verwendete Locals nicht Build sind. Formatieren Sie jede Datei mit `StyLua`. Behandeln Sie beide Werkzeuge als die Autorität für Stildetails, die sie abdecken.

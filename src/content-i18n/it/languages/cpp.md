@@ -1,14 +1,14 @@
-# C++ Code Style
+# Stile codice C++
 
 [Code style guide](../README.md) · [Original specification 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
 Apply the [shared core rules](../README.md#shared-rules) together with this profile. Language-native rules and explicit profile exceptions take precedence over cross-language syntax preferences. [Cohesion over Size](../core/structure.md) applies throughout.
 
-## C++ Profile
+## Profilo C++
 
 Pureline C++ follows **modern C++17 and C++20** idioms. Ownership lives in types, resources are released by destructors, and failure is returned as a value.
 
-### PL-CPP-001 — RAII and Unique Ownership
+### PL-CPP-001. RAII e proprietà unicaone infuso le misure inf.
 
 Every resource is owned by an object whose destructor releases it. Use `std::unique_ptr` (via `std::make_unique`) by default; `std::shared_ptr` only for genuinely shared ownership. Raw `new` and `delete` do not appear in application code.
 
@@ -22,7 +22,7 @@ void save(const std::string& path, const std::string& text) {
 }
 ```
 
-### PL-CPP-002 — Const by Default
+### PL-CPP-002. Const per impostazione predefinita
 
 Mark values `const` unless they must change, and use `constexpr` for compile-time constants. Pass read-only arguments by `const &`; take by value only when the function stores or consumes them.
 
@@ -81,7 +81,7 @@ for (const User& user : users) {  │ for (const auto& user : users) {
 }                                 │ }
 ```
 
-### PL-CPP-005 — Small Classes with One Responsibility
+### PL-CPP-005. Piccoli ceti con una sola responsabilitàosodico
 
 A class owns one coherent concept and its invariants. Keep data private and expose a narrow interface. Split classes that mix storage, pricing, persistence, or presentation. [Cohesion over Size](../core/structure.md) decides, not a line count.
 
@@ -97,7 +97,7 @@ private:
 };
 ```
 
-### PL-CPP-006 — Header and Source Split
+### PL-CPP-006. Intestazione e Sorgente divisa le conseguenze.
 
 Declare interfaces in a `.hpp` header and define them in a matching `.cpp`. Every header uses `#pragma once` or classic include guards, and never contains `using namespace`, which leaks names into every includer.
 

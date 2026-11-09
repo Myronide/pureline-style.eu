@@ -1,4 +1,4 @@
-# V Code Style
+# Stile del codice V
 
 [Code style guide](../README.md) · [Original specification 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
@@ -43,7 +43,7 @@ fn show_user() {
 }
 ```
 
-In a function that returns a result, prefer `!` to propagate an unchanged
+In una funzione che restituisce un risultato, preferisci `!` per propagare un risultato immodificato
 error. Use an `or` block when the error path needs additional handling.
 
 ```text
@@ -102,7 +102,7 @@ Name every field in a struct literal. Positional initialisation hides which valu
 user := User{id: 1, name: 'ada'}
 ```
 
-### PL-V-008 — One Responsibility per Module Folder
+### PL-V-008. Una responsabilità per cartella del modulo lamentation de very heageste..
 
 In V, a folder is a module. Its files share one `module` declaration and one responsibility. Cohesion matters more than line count ([Cohesion over Size](../core/structure.md)).
 
@@ -112,7 +112,7 @@ user/
     store.v    loading and saving users
 ```
 
-### PL-V-009 — Keep Folders Dense Enough to Scan
+### PL-V-009. Tenere cartelle denso abbastanza per la scansione
 
 A folder holds at most 10 hand-maintained source files by default. Generated files do not count. Past that limit, split by responsibility into a sub-module folder.
 
@@ -121,7 +121,7 @@ billing/
     invoice/    invoice.v, store.v, render.v
 ```
 
-### PL-V-010 — Format and Vet Before Review
+### PL-V-010. Formato e punto prima della revisione.xevelophe.
 
 Run both tools on every change, so reviews discuss intent instead of layout or suspicious constructs.
 

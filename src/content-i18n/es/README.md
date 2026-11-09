@@ -47,18 +47,18 @@ The Pureline 1.7 coding standard, organized by topic and language. Start with th
 |[Astro](languages/astro.md)| `PL-AS-001`–`PL-AS-009` |frontmatter tecleado, estático por defecto, islas explícitas, estilos con alcance, colecciones de contenido|
 |[HTML](languages/html.md)| `PL-HTML-001`–`PL-HTML-009` |Elementos semánticos, estructura de un encabezado, etiquetas, texto alt, cabeza de documento, validación|
 |[CSS](languages/css.md)| `PL-CSS-001`–`PL-CSS-012` |Tokens, capas en cascada, baja especificidad, sin `!important`, propiedades lógicas, movimiento reducido|
-| [C#](languages/csharp.md) | `PL-CS-001`–`PL-CS-009` | Naming, nullable reference types, records, `using`, async with Task, LINQ, dotnet format |
-| [Angular](languages/angular.md) | `PL-NG-001`–`PL-NG-009` | Standalone components, signals, OnPush, typed forms, `ng lint` |
-| [Vue](languages/vue.md) | `PL-VUE-001`–`PL-VUE-010` | `<script setup lang="ts">`, typed props, computed, composables, Pinia |
-| [GDScript](languages/gdscript.md) | `PL-GD-001`–`PL-GD-010` | Static typing, `@export`, `@onready`, signals, gdformat and gdlint |
-| [C](languages/c.md) | `PL-C-001`–`PL-C-009` | Explicit heap ownership, error codes, guard clauses, clang-format and clang-tidy |
-| [C++](languages/cpp.md) | `PL-CPP-001`–`PL-CPP-008` | RAII, unique ownership, const by default, `std::expected`, header split |
-| [Lua](languages/lua.md) | `PL-LUA-001`–`PL-LUA-012` | Local by default, module tables, explicit nil checks, luacheck and StyLua |
-| [Dart](languages/dart.md) | `PL-DART-001`–`PL-DART-012` | `final` and `const`, sound null safety, named parameters, sealed types |
-| [Flutter](languages/flutter.md) | `PL-FLUT-001`–`PL-FLUT-010` | Small build methods, const widgets, one state approach, mounted checks |
-| [V](languages/v.md) | `PL-V-001`–`PL-V-010` | Immutable by default, result types, `or {}`, option types, `v fmt` |
-| [Swift](languages/swift.md) | `PL-SW-001`–`PL-SW-011` | `let` over `var`, guard let, value types, access control, swift-format and SwiftLint |
-| [Kotlin](languages/kotlin.md) | `PL-KT-001`–`PL-KT-011` | `val` over `var`, data classes, sealed types, null safety, ktlint and detekt |
+| [C#](languages/csharp.md) | `PL-CS-001`–`PL-CS-009` |Nombre, tipos de referencia anulables, registros, `using`, async con Task, LINQ, formato dotnet|
+|[Angular](languages/angular.md)| `PL-NG-001`–`PL-NG-009` |Componentes independientes, señales, OnPush, formularios mecanografiados, `ng lint`|
+|[80](languages/vue.md)| `PL-VUE-001`–`PL-VUE-010` |`<script setup lang="ts">`, atrezzos, computarizados, composable, Pinia|
+|[GDScript](languages/gdscript.md)| `PL-GD-001`–`PL-GD-010` |Tipografía estática, `@export`, `@onready`, señales, gdformat y gdlint|
+| [C](languages/c.md) | `PL-C-001`–`PL-C-009` |Propiedad implícita, códigos de error, cláusulas de guardia, formato de clang y tintineo|
+| [C++](languages/cpp.md) | `PL-CPP-001`–`PL-CPP-008` |RAII, propiedad única, const por defecto, `std::expected`, encabezado dividido|
+|[Lua](languages/lua.md)| `PL-LUA-001`–`PL-LUA-012` |Local por defecto, tablas de módulo, comprobaciones nil explícitas, luacheck y StyLua|
+|[Dart](languages/dart.md)| `PL-DART-001`–`PL-DART-012` |`final` y `const`, seguridad de sonido nulo, parámetros nombrados, tipos sellados|
+|[Flutter](languages/flutter.md)| `PL-FLUT-001`–`PL-FLUT-010` |Pequeños métodos de construcción, widgets de const, un enfoque de estado, cheques montados|
+| [V](languages/v.md) | `PL-V-001`–`PL-V-010` |Inmutable por defecto, tipos de resultados, `or {}`, tipos de opciones, `v fmt`|
+|[Swift](languages/swift.md)| `PL-SW-001`–`PL-SW-011` |`let` sobre `var`, let de guardia, tipos de valor, control de acceso, formato rápido y SwiftLint|
+|[Kotlin](languages/kotlin.md)| `PL-KT-001`–`PL-KT-011` |`val` sobre `var`, clases de datos, tipos sellados, seguridad nula, ktlint y detekt|
 
 Véase también la [vista general del perfil del idioma](languages/README.md) y [requisitos de herramientas](tooling.md).
 

@@ -1,10 +1,10 @@
-# Lua Code Style
+# Estilo de código Lua
 
 [Guía de estilo del código](../README.md) · [Especificaciones originales 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Aplicar las reglas [compartidas](../README.md#shared-rules) con este perfil. Lua is small and table-centric: a file is a chunk that builds one module table, and structure comes from plain tables and functions. Pureline Lua targets **Lua 5.4**.
+Aplicar las reglas [compartidas](../README.md#shared-rules) con este perfil. Lua es pequeña y céntrica en la mesa: un archivo es un trozo que construye una tabla de módulo, y la estructura proviene de tablas y funciones simples. Pureline Lua tiene como objetivo **Lua 5.4**.
 
-## Lua Profile
+## Perfil de Lua
 
 ```text
 Requires (explicit dependencies)
@@ -16,9 +16,9 @@ Module table
 return module
 ```
 
-### PL-LUA-001 — Local by Default
+### PL-LUA-001 — Local por defecto
 
-Declare every variable and function with `local`. A global is shared state that any other file can overwrite silently. Do not write to `_G` or `_ENV` outside a program's entry point. See [naming](../core/naming.md) and [state and side effects](../core/state-and-side-effects.md).
+Declarar cada variable y función con `local`. Un estado global es compartido que cualquier otro archivo puede sobreescribir en silencio. No escriba a `_G` o `_ENV` fuera del punto de entrada del programa. Véase [nombre](../core/naming.md) y [estado y efectos secundarios](../core/state-and-side-effects.md).
 
 ```lua
 local function parse_port(text)
@@ -26,9 +26,9 @@ local function parse_port(text)
 end
 ```
 
-### PL-LUA-002 — One Module Table per File
+### PL-LUA-002 — Un módulo de tabla por archivo
 
-Each file builds a local table, fills it with its public functions, and returns it. Require dependencies at the top so they stay visible.
+Cada archivo construye una tabla local, la llena con sus funciones públicas y la devuelve. Requieren las idas y venidas en la parte superior para que se mantengan visibles.
 
 ```lua
 local json = require("json")
@@ -42,9 +42,9 @@ end
 return session
 ```
 
-### PL-LUA-003 — Guard Clauses and Early Return
+### PL-LUA-003 — Cláusulas de guardia y retorno temprano
 
-Check missing and invalid input first, return early, and keep the main path unindented. Follow [control flow](../core/control-flow.md) and [functions](../core/functions.md).
+Compruebe que la entrada no está disponible y no es válida primero, regrese temprano y mantenga la ruta principal sin identificar. Siga [el flujo de control](../core/control-flow.md) y [funciones](../core/functions.md).
 
 ```lua
 function session.rename(current, name)
@@ -62,7 +62,7 @@ end
 
 ### PL-LUA-004 — Explicit Nil Checks
 
-Compare against `nil` directly. `false` is a real value in Lua, so `if not value` also catches a meaningful `false`. Test `== nil` when the difference matters.
+Compare directamente con `nil`. `false` es un valor real en Lua, por lo que `if not value` también captura un `false` significativo. Prueba `== nil` cuando la diferencia importe.
 
 ```lua
 local function timeout_or_default(config)
@@ -73,8 +73,8 @@ local function timeout_or_default(config)
 end
 ```
 
-Use an explicit `nil` check for an optional boolean so that an explicit
-`false` survives the fallback.
+Utilice una comprobación `nil` explícita para un booleano opcional para que un explícito
+`false` sobrevive al retroceso.
 
 ```text
 − Overrides false                          │ ✓ Pureline
@@ -84,9 +84,9 @@ local visible = options.visible or true   │ local visible = options.visible
                                           │ end
 ```
 
-### PL-LUA-005 — Errors Are Values
+### PL-LUA-005 — Los errores son valores
 
-Return `nil, err` for expected failures such as a missing file or bad input, and check the pair at the call site. Use `assert` only for programmer errors and broken invariants, where stopping is the correct response.
+Devuelve `nil, err` para fallos esperados como un archivo faltante o entrada incorrecta, y comprueba el par en el sitio de llamada. Utilice `assert` sólo para errores del programador y invariantes rotos, donde detenerse es la respuesta correcta.
 
 ```lua
 local function read_config(path)
@@ -101,9 +101,9 @@ local function read_config(path)
 end
 ```
 
-### PL-LUA-006 — Metatables Only When They Clarify
+### PL-LUA-006: Metables sólo cuando se aclaran
 
-Plain tables and functions are the default. Use a metatable (`__index` for a type, `__tostring` for debugging output) only when it makes call sites clearer. Do not build inheritance chains or operator overloads for convenience. See [avoid unnecessary abstractions](../core/principles.md).
+Las tablas y funciones simples son el valor predeterminado. Utilice un metatable (`__index` para un tipo, `__tostring` para la salida de depuración) sólo cuando hace los sitios de llamadas más claros. No construya cadenas de herencia ni sobrecargas de operador para mayor comodidad. Véase [evitar abstracciones innecesarias](../core/principles.md).
 
 ```lua
 local Stack = {}
@@ -114,22 +114,22 @@ function Stack.new()
 end
 ```
 
-### PL-LUA-007 — Small Functions
+### PL-LUA-007 — Funciones pequeñas
 
-Each function does one thing and fits on a screen. Extract a named local function instead of a long body with a comment marking each section. See [functions](../core/functions.md).
+Cada función hace una cosa y cabe en una pantalla. Extraer una función local nombrada en lugar de un cuerpo largo con un comentario que marca cada sección. Véase [funciones](../core/functions.md).
 
-### PL-LUA-008 — String Keys for Records
+### PL-LUA-008 — Claves de cadena para registros
 
-Records use string keys and dot access. Reserve integer keys for sequences, and never mix the two in one table.
+Los registros usan teclas de cadena y acceso a puntos. Reserva las teclas enteras para las secuencias, y nunca mezcles las dos en una tabla.
 
 ```lua
 local user = { name = "Ada", active = true } -- record: string keys
 local tags = { "admin", "ops" }              -- sequence: integer keys
 ```
 
-### PL-LUA-009 — Blocks End on Their Own Lines
+### PL-LUA-009 — Los bloques terminan en sus propias líneas
 
-Every `function`, `if`, `for`, `while`, and `do` block closes with `end` on its own line, aligned with its opening keyword. Keep blocks multi-line, even for a single statement. See [formatting](../core/formatting.md).
+Cada bloque `function`, `if`, `for`, `while` y `do` cierra con `end` en su propia línea, alineado con su palabra clave de apertura. Mantenga bloques multilínea, incluso para una sola declaración. Véase [formato](../core/formatting.md).
 
 ```lua
 for _, job in ipairs(jobs) do
@@ -139,9 +139,9 @@ for _, job in ipairs(jobs) do
 end
 ```
 
-### PL-LUA-010 — No Clever One-Liners
+### PL-LUA-010 — Sin una línea de Clever
 
-Prefer a sequence of plain statements over dense expressions. Do not use `cond and a or b` when `a` can be `nil` or `false`, because the fallback fires silently. Use an `if` instead.
+Prefiere una secuencia de afirmaciones simples sobre expresiones densas. No utilice `cond and a or b` cuando `a` puede ser `nil` o `false`, porque el fuego de reserva se enciende silenciosamente. En su lugar, utilice un `if`.
 
 ```lua
 local mode = "guest"
@@ -152,8 +152,8 @@ end
 
 ### PL-LUA-011 — Densidad de la carpeta
 
-A folder of hand-maintained Lua modules holds at most **10 files** by default. Group modules by feature (`session/`, `net/`), and keep shared helpers in one `util/` folder. See [structure](../core/structure.md).
+Una carpeta de módulos Lua mantenidos a mano contiene como máximo archivos **10** por defecto. Agrupar módulos por función (`session/`, `net/`), y mantener ayudantes compartidos en una carpeta `util/`. Véase [estructura](../core/structure.md).
 
 ### PL-LUA-012 — Herramientas
 
-Run `luacheck` in CI with zero warnings, so undefined globals and unused locals fail the build. Format every file with `StyLua`. Treat both tools as the authority on style details they cover.
+Ejecute `luacheck` en CI con cero advertencias, por lo que los globales indefinidos y los locales no utilizados fallan la compilación. Formatee cada archivo con `StyLua`. Tratar ambas herramientas como la autoridad en los detalles de estilo que cubren.

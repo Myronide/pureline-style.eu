@@ -28,9 +28,9 @@ Use nombres de elementos y atributos en minúsculas, comillas dobles para valore
 
 Cada entrada tiene un `<label>` visible asociado con `for` y `id`, o envuelve la entrada. El texto del marcador de posición no es una etiqueta. Controles relacionados con el grupo con `<fieldset>` y `<legend>`.
 
-Prefer a wrapping label when the label text and input belong together in
-the markup. Use an explicit `for` and `id` association when they need to be
-separate.
+Prefiere una etiqueta de embalaje cuando el texto de la etiqueta y la entrada pertenecen a
+El margen de beneficio. Use una asociación `for` y `id` explícita cuando necesiten ser
+Separados.
 
 ```text
 Explicit association                        │ ✓ Pureline

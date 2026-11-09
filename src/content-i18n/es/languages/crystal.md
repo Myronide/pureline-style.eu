@@ -32,7 +32,7 @@ end
 
 La regla no es "evitar condiciones postfix". La regla es: utilizar la forma que mantiene la intención inmediatamente obvia.
 
-Prefer the postfix form for a single short check with an immediate return.
+Prefiere el formulario postfix para un solo cheque corto con un retorno inmediato.
 
 ```text
 Block guard                 │ ✓ Pureline

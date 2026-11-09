@@ -32,7 +32,7 @@ end
 
 Die Regel ist nicht "vermeiden Postfix Bedingungen." Die Regel ist: die Form zu benutzen, die die Absicht sofort offensichtlich hält..
 
-Prefer the postfix form for a single short check with an immediate return.
+Bevorzugen Sie das Postfix-Formular für eine einzelne kurze Überprüfung mit sofortiger Rückgabe.
 
 ```text
 Block guard                 │ ✓ Pureline

@@ -50,8 +50,8 @@ count++;
 
 No utilice `var`.
 
-Prefer `??` when only `null` and `undefined` should trigger a default.
-Values such as `0`, `false`, and `""` are preserved.
+Prefiere `??` cuando sólo `null` y `undefined` deben desencadenar un predeterminado.
+Valores como `0`, `false` y `""` se conservan.
 
 ```text
 − Noisy                                │ ✓ Pureline

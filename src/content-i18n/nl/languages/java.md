@@ -133,8 +133,8 @@ streams
 
 Moderne syntaxis moet het geluid verminderen, geen nieuwigheid creëren om zijn eigen bestwil.
 
-Prefer an `instanceof` pattern when a guard checks a type and the success
-path needs the value as that type.
+Liever een `instanceof` patroon als een bewaker een type en het succes controleert
+pad heeft de waarde als dat type nodig.
 
 ```text
 − Separate cast                      │ ✓ Pureline

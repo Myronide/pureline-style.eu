@@ -49,8 +49,8 @@ Renderizar HTML sin JavaScript a menos que el componente deba responder al usuar
 - Mapas sobre listas con un `key` estable cuando la lista es interactiva.
 - No anidar más de dos niveles de expresión dentro del marcado. Mueva la parte interna a un componente.
 
-Keep a short formatting expression in the template when it is used once
-and reads clearly at the point of use.
+Mantenga una expresión de formato corta en la plantilla cuando se use una vez
+y lee claramente en el punto de uso.
 
 ```text
 Named frontmatter value                         │ ✓ Pureline

@@ -1,16 +1,16 @@
-# C++ Code Style
+# C++ Codestijl
 
 [Code stijl gids](../README.md) · [Original specificatie 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
 Pas de [shared core rules](../README.md#shared-rules) toe samen met dit profiel. Taal-native regels en expliciete profiel uitzonderingen hebben voorrang op de taaloverschrijdende syntax voorkeuren. [Cohesie over Size](../core/structure.md) geldt gedurende het gehele.
 
-## C++ Profile
+## C++-profiel
 
-Pureline C++ follows **modern C++17 and C++20** idioms. Ownership lives in types, resources are released by destructors, and failure is returned as a value.
+Pureline C++ volgt **moderne C++17 en C++20** idiomen. Eigendom leeft in soorten, middelen worden vrijgegeven door destructors, en mislukking wordt teruggegeven als een waarde.
 
-### PL-CPP-001 — RAII and Unique Ownership
+### PL-CPP-001. RAII en Uniek eigendom
 
-Every resource is owned by an object whose destructor releases it. Use `std::unique_ptr` (via `std::make_unique`) by default; `std::shared_ptr` only for genuinely shared ownership. Raw `new` and `delete` do not appear in application code.
+Elke bron is eigendom van een object waarvan de vernietiging het vrijgeeft. Gebruik `std::unique_ptr` (via `std::make_unique`) standaard; `std::shared_ptr` alleen voor echt gedeelde eigendom. Raw `new` en `delete` komen niet voor in de toepassingscode.
 
 ```cpp
 #include <fstream>
@@ -22,9 +22,9 @@ void save(const std::string& path, const std::string& text) {
 }
 ```
 
-### PL-CPP-002 — Const by Default
+### PL-CPP-002. Conteren met standaard
 
-Mark values `const` unless they must change, and use `constexpr` for compile-time constants. Pass read-only arguments by `const &`; take by value only when the function stores or consumes them.
+Markeer waarden `const` tenzij ze moeten veranderen, en gebruik `constexpr` voor compileer-tijd constanten. Alleen-lezen argumenten door `const &` doorgeven; alleen waarde aannemen wanneer de functie deze opslaat of verbruikt.
 
 ```cpp
 constexpr int kMaxRetries = 3;
@@ -34,9 +34,9 @@ bool retry_allowed(const int attempt) {
 }
 ```
 
-### PL-CPP-003 — Guard Clauses and `std::expected`
+### PL-CPP-003. Guard Clausles en `std::expected`
 
-Validate at the top of the function and keep the success path at base indentation, following [control flow](../core/control-flow.md). Use `std::optional<T>` for absence and `std::expected<T, E>` for failures the caller must handle (C++23; C++17/20 projects use an equivalent such as `tl::expected`). Never return error codes through out parameters.
+Valideer bovenaan de functie en houd het succespad bij het inspringen op de basis, na [controlestroom](../core/control-flow.md). Gebruik `std::optional<T>` voor afwezigheid en `std::expected<T, E>` voor storingen die de beller moet verwerken (C+23; C++17/20 projecten gebruiken een equivalent zoals `tl::expected`). Geef nooit foutcodes terug via parameters.
 
 ```cpp
 #include <expected>
@@ -52,9 +52,9 @@ std::expected<std::string, ConfigError> load_path(const std::string& path) {
 }
 ```
 
-### PL-CPP-004 — Range-Based `for`
+### PL-CPP-004. Afstandsgestuurd `for`
 
-Prefer range-based `for` over index loops. Use a standard algorithm only when its name states the intent more clearly than a loop.
+Liever op range-gebaseerde `for` over index loops. Gebruik een standaard algoritme alleen als de naam de bedoeling duidelijker dan een lus aangeeft.
 
 ```cpp
 #include <string>
@@ -71,8 +71,8 @@ int count_long(const std::vector<std::string>& names) {
 }
 ```
 
-Prefer `const auto&` for read-only iteration when the element type is
-clear from the surrounding code.
+Voorkeur `const auto&` voor alleen-lezen iteratie wanneer het elementtype is
+Duidelijk uit de omringende code.
 
 ```text
 − Explicit element type           │ ✓ Pureline
@@ -81,9 +81,9 @@ for (const User& user : users) {  │ for (const auto& user : users) {
 }                                 │ }
 ```
 
-### PL-CPP-005 — Small Classes with One Responsibility
+### PL-CPP-005. Kleine klassen met één verantwoordelijkheid
 
-A class owns one coherent concept and its invariants. Keep data private and expose a narrow interface. Split classes that mix storage, pricing, persistence, or presentation. [Cohesion over Size](../core/structure.md) decides, not a line count.
+Een klasse bezit één coherent concept en zijn in de augurken. Houd gegevens privé en onthul een smalle interface. Splits klassen die opslag, prijszetting, persistentie of presentatie mengen. [Cohesie over Size](../core/structure.md) beslist, geen regeltelling.
 
 ```cpp
 #include <vector>
@@ -97,9 +97,9 @@ private:
 };
 ```
 
-### PL-CPP-006 — Header and Source Split
+### PL-CPP-006. Header en bron Splitsen
 
-Declare interfaces in a `.hpp` header and define them in a matching `.cpp`. Every header uses `#pragma once` or classic include guards, and never contains `using namespace`, which leaks names into every includer.
+Definieer interfaces in een `.hpp` header en definieer ze in een bijpassende `.cpp`. Elke header gebruikt `#pragma once` of klassieker zijn bewakers, en bevat nooit `using namespace`, die namen lekt in elke includer.
 
 ```cpp
 // format.hpp
@@ -112,7 +112,7 @@ std::string format_price(int cents);
 
 ### PL-CPP-007. Map Density
 
-A source folder holds at most **10 hand-maintained production files** (`.hpp` and `.cpp` both count) by default. Tests, generated code, and vendored code do not count. Past that threshold, split along real responsibility boundaries, never into meaningless nested folders.
+Een bronmap bevat hooguit **10 met de hand onderhouden productiebestanden** (`.hpp` en `.cpp` beide tellingen) standaard. Tests, gegenereerde code en verkochte code tellen niet mee. Die drempel voorbij, opsplitsen langs echte verantwoordelijkheidsgrenzen, nooit in betekenisloze nested mappen.
 
 ```cpp
 #include "orders/order.hpp"
@@ -120,9 +120,9 @@ A source folder holds at most **10 hand-maintained production files** (`.hpp` an
 #include "orders/order_persistence.hpp"
 ```
 
-### PL-CPP-008 — Tooling Enforces the Baseline
+### PL-CPP-008. Het gereedschap zorgt voor de uitlijning
 
-Format with `clang-format`, lint with `clang-tidy`, and compile with `-Wall -Wextra -Werror`. Warnings are defects, not suggestions.
+Formatteer met `clang-format`, met `clang-tidy`, en compileer met `-Wall -Wextra -Werror`. Waarschuwingen zijn gebreken, geen suggesties.
 
 ```cpp
 // Build:  clang++ -std=c++20 -Wall -Wextra -Werror -c cart.cpp

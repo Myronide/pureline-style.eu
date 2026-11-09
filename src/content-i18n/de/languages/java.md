@@ -133,8 +133,8 @@ streams
 
 Modern syntax should reduce noise, not create novelty for its own sake.
 
-Prefer an `instanceof` pattern when a guard checks a type and the success
-path needs the value as that type.
+Bevorzugen Sie ein `instanceof`-Muster, wenn ein Wächter einen Typ und den Erfolg überprüft
+path benötigt den Wert als diesen Typ.
 
 ```text
 − Separate cast                      │ ✓ Pureline

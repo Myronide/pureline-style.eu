@@ -28,9 +28,9 @@ Gebruik kleine letters en attribuutnamen, dubbele aanhalingstekens voor attribuu
 
 Elke invoer heeft een zichtbare `<label>` geassocieerd met `for` en `id`, of wrapt de invoer. Plaatshoudertekst is geen label. Groepsgerelateerde controles met `<fieldset>` en `<legend>`.
 
-Prefer a wrapping label when the label text and input belong together in
-the markup. Use an explicit `for` and `id` association when they need to be
-separate.
+Geef de voorkeur aan een wikkellabel wanneer de tekst en de invoer samen horen in
+the markup. Gebruik een expliciete `for` en `id` associatie wanneer ze nodig zijn om
+gescheiden..
 
 ```text
 Explicit association                        │ ✓ Pureline

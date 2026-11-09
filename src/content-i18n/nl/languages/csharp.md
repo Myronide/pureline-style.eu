@@ -1,14 +1,14 @@
-# C# Code Style
+# C# Codestijl
 
 [Code stijl gids](../README.md) · [Original specificatie 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Pas de [gedeelde kernregels](../README.md#shared-rules) toe met dit profiel. C# is a managed, brace-based language with strong compiler support. Pureline C# targets **.NET 8** or later.
+Pas de [gedeelde kernregels](../README.md#shared-rules) toe met dit profiel. C# is een managed, op braces gebaseerde taal met sterke compiler ondersteuning. Pureline C# richt zich op **.NET 8** of later.
 
 ## C# Profile
 
-### PL-CS-001 — Naming Follows the .NET Convention
+### PL-CS-001. Naamgeving volgt de.NET-overeenkomst
 
-Use `PascalCase` for types, members, and constants, `camelCase` for locals and parameters, and `_camelCase` for private fields. Names state the role of a value, not its type.
+Gebruik `PascalCase` voor types, leden en constanten, `camelCase` voor lokalen en parameters, en `_camelCase` voor privé-velden. Namen geven de rol van een waarde aan, niet het type ervan.
 
 ```csharp
 public static class SessionRules
@@ -18,9 +18,9 @@ public static class SessionRules
 }
 ```
 
-### PL-CS-002 — Nullable Reference Types Are On
+### PL-CS-002. Nullable referentietypes zijn ingeschakeld
 
-Set `<Nullable>enable</Nullable>` in every project. `string` never holds null, and `string?` declares that it may. Do not silence the compiler with `!`; fix the flow instead.
+Stel `<Nullable>enable</Nullable>` in in elk project. `string` heeft nooit nul, en `string?` verklaart dat het mag. De compiler met `!` niet stilzetten; de flow in plaats daarvan repareren.
 
 ```csharp
 public sealed class UserProfile
@@ -30,8 +30,8 @@ public sealed class UserProfile
 }
 ```
 
-Prefer `?.` with `??` when the only purpose of the null check is to select
-a fallback. In this example, `Name` is non-nullable.
+`?.` verkiest `??` als het enige doel van de nulcontrole is om te selecteren
+a fallback. In dit voorbeeld is `Name` niet-nullable.
 
 ```text
 − Separate null guard            │ ✓ Pureline
@@ -42,9 +42,9 @@ if (user is null) {              │ return user?.Name ?? "Gast";
 return user.Name;                │
 ```
 
-### PL-CS-003 — Records for Immutable Data
+### PL-CS-003. Records voor onveranderlijke gegevens
 
-Model data that moves between layers as a `record`. Derive changed copies with `with` instead of mutating. Use a class only when the object has identity or behaviour of its own.
+Modelgegevens die tussen lagen als `record` bewegen. Derive veranderde kopieën met `with` in plaats van met de naam van de zender. Gebruik een klasse alleen als het object een eigen identiteit of gedrag heeft.
 
 ```csharp
 public sealed record Session(string Id, string Title, bool IsActive);
@@ -53,9 +53,9 @@ public static Session Rename(Session session, string title) =>
     session with { Title = title };
 ```
 
-### PL-CS-004 — Guard Clauses Return Early
+### PL-CS-004. Bewakersclausules worden vroeg teruggestuurd
 
-Check invalid input first and return immediately, so the main path stays at the outer indentation level with no `else`. See [control flow](../core/control-flow.md).
+Controleer ongeldige invoer eerst en geef onmiddellijk terug, zodat het hoofdpad blijft op het buitenste inspringniveau zonder `else`. Zie [controlestroom](../core/control-flow.md).
 
 ```csharp
 public static decimal Discount(decimal total)
@@ -69,9 +69,9 @@ public static decimal Discount(decimal total)
 }
 ```
 
-### PL-CS-005 — Dispose with `using` Declarations
+### PL-CS-005. Gooi met `using` Declarations
 
-Use a `using` declaration so disposal happens at the end of the enclosing scope. Each `IDisposable` has one owner, and that owner disposes it.
+Gebruik een `using` verklaring zodat verwijdering gebeurt aan het einde van de omsluiten scope. Elke `IDisposable` heeft één eigenaar en die eigenaar heeft het.
 
 ```csharp
 public static string ReadFirstLine(string path)
@@ -81,9 +81,9 @@ public static string ReadFirstLine(string path)
 }
 ```
 
-### PL-CS-006 — Async All the Way with Task
+### PL-CS-006. Async Helemaal met taak
 
-Return `Task` or `Task<T>`, suffix the name with `Async`, accept a `CancellationToken`, and never block with `.Result` or `.Wait()`. Use `ValueTask` only where a measurement justifies it.
+Geef `Task` of `Task<T>` terug, bevestig de naam met `Async`, accepteer een `CancellationToken` en blokkeer nooit met `.Result` of `.Wait()`. Gebruik `ValueTask` alleen als een meting het rechtvaardigt.
 
 ```csharp
 public static async Task<string> LoadBodyAsync(HttpClient client, string url, CancellationToken ct)
@@ -93,18 +93,18 @@ public static async Task<string> LoadBodyAsync(HttpClient client, string url, Ca
 }
 ```
 
-### PL-CS-007 — LINQ Only When It Reads Clearly
+### PL-CS-007. LINQ alleen als het duidelijk leest
 
-Use LINQ for one linear transformation: a filter, a projection, or a materialization. Switch to a `foreach` loop when the query has side effects, branches, or more than three chained operators.
+Gebruik LINQ voor één lineaire transformatie: een filter, een projectie of een materialisatie. Schakel over op een `foreach`-lus wanneer de query bijwerkingen, branches of meer dan drie geketende operators heeft.
 
 ```csharp
 public static List<string> ActiveTitles(IEnumerable<Session> sessions) =>
     sessions.Where(s => s.IsActive).Select(s => s.Title).ToList();
 ```
 
-### PL-CS-008 — Namespace per Folder, Bounded Folder Density
+### PL-CS-008. Naamruimte per map, Gebonden map-dentiteit
 
-The namespace mirrors the folder path, so `Sessions/Views/` uses `Acme.Sessions.Views`. A folder holds at most **10 hand-maintained source files** by default. Group by feature rather than by kind, and exceed the limit only when every file serves one responsibility (cohesion over size, see [structure](../core/structure.md)).
+De namespace spiegelt het mappenpad, dus `Sessions/Views/` gebruikt `Acme.Sessions.Views`. Een map bevat hooguit **10 hand-onderhoud bronbestanden** standaard. Groep op functie in plaats van op vriendelijke, en overschrijd de limiet alleen wanneer elk bestand dient één verantwoordelijkheid (cohesie over grootte, zie [structuur](../core/structure.md)).
 
 ```csharp
 namespace Acme.Sessions.Views;
@@ -117,7 +117,7 @@ public sealed class SessionCard
 
 ### PL-CS-009. Gereedschape
 
-Run `dotnet format --verify-no-changes` in CI as the official formatter. Enable the Roslyn analyzers and add StyleCop.Analyzers for naming and ordering rules, keep warnings intentional, and test behaviour with xUnit or NUnit (see [tooling](../tooling.md)).
+Run `dotnet format --verify-no-changes` in CI als de officiële ambtenaar. Activeer de Roslyn analysers en voeg StyleCop.Analyzers voor het in- en ordenen van regels, houd waarschuwingen opzettelijk, en test gedrag met xUnit of NUnit (zie [tooling](../tooling.md)).
 
 ```xml
 <PropertyGroup>

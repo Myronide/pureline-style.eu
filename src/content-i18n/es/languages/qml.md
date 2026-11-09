@@ -65,8 +65,8 @@ function submit() {
 
 Una unión tiene una expresión de a lo sumo una condicional y una llamada corta. Mover la lógica más larga a una función con nombre o un objeto de motor C++ / Python. Nested ternaries are not Pureline.
 
-Keep a short binding on the property that uses it. Name the condition
-when multiple controls share it.
+Mantenga un enlace corto en la propiedad que la utiliza. Nombre de la condición
+cuando varios controles lo comparten.
 
 ```text
 Named property                          │ ✓ Pureline

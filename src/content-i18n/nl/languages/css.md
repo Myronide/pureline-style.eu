@@ -40,8 +40,8 @@ De volgorde van de lagen één keer aangeven: `@layer reset, base, components, u
 
 Stijl met enkele lessen. Niet stylen met element kettingen (`div section ul li a`) of id's. Specificiteit die groeit met de markup maakt later veranderingen duur. Een keuze die dieper is dan twee niveaus is een beoordelings-vinding.
 
-Prefer a dedicated class when the element's style should apply independently
-of its position in the component.
+Liever een speciale klasse wanneer de stijl van het element onafhankelijk van toepassing moet zijn
+van zijn positie in het onderdeel.
 
 ```text
 − Descendant selector                  │ ✓ Pureline

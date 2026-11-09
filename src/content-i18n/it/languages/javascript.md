@@ -50,7 +50,7 @@ count++;
 
 Do not use `var`.
 
-Prefer `??` when only `null` and `undefined` should trigger a default.
+Preferisci `??` quando solo `null` e `undefined` dovrebbero attivare un default.
 Values such as `0`, `false`, and `""` are preserved.
 
 ```text

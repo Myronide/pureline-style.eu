@@ -1,14 +1,14 @@
-# Angular Code Style
+# Estilo de código angular
 
 [Guía de estilo del código](../README.md) · [Especificaciones originales 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Aplicar las reglas [core compartido](../README.md#shared-rules), [JavaScript profile](javascript.md), y [TypeScript profile](typescript.md) junto con este perfil. The Angular profile targets **Angular 17 or later** with TypeScript in strict mode. A component reads as a small pipeline: inputs in, guards in the template, derived values, markup out.
+Aplicar las reglas [core compartido](../README.md#shared-rules), [JavaScript profile](javascript.md), y [TypeScript profile](typescript.md) junto con este perfil. El perfil angular apunta a **Angular 17 o más tarde** con TypeScript en modo estricto. Un componente se lee como un pequeño gasoducto: entradas, guardas en la plantilla, valores derivados, marcado.
 
-## Angular Profile
+## Perfil angular
 
-### PL-NG-001 — Standalone Components and `inject()`
+### PL-NG-001 — Componentes independientes y `inject()`
 
-Every component is standalone (default from Angular 19; set `standalone: true` on 17 and 18). Declare dependencies with `inject()` as `private readonly` fields, so the class body starts with its state, not with a constructor.
+Cada componente es independiente (por defecto desde Angular 19; conjunto `standalone: true` en 17 y 18). Declarar las pertenencias con `inject()` como campos `private readonly`, por lo que el cuerpo de clase comienza con su estado, no con un gremio.
 
 ```ts
 @Component({
@@ -21,9 +21,9 @@ export class SessionCardComponent {
 }
 ```
 
-### PL-NG-002 — Signals Hold State, OnPush Renders It
+### PL-NG-002 — Estado de retención de señales, OnPush lo rende
 
-- `signal()` holds writable state, `computed()` derives values, `input()` and `output()` form the interface; never keep a derived value in a second field. Every component sets `ChangeDetectionStrategy.OnPush`, so signals read in the template drive the updates.
+- `signal()` mantiene el estado de escritura, `computed()` deriva valores, `input()` y `output()` forman la interfaz; nunca mantenga un valor derivado en un segundo campo. Cada componente establece `ChangeDetectionStrategy.OnPush`, por lo que las señales leen en la plantilla las actualizaciones.
 
 ```ts
 @Component({
@@ -40,8 +40,8 @@ export class CounterComponent {
 }
 ```
 
-When a template value is derived from a signal, prefer `computed()` over
-a getter that repeats the calculation on every access.
+Cuando un valor de plantilla se deriva de una señal, prefiere `computed()` sobre
+un getter que repite el cálculo en cada acceso.
 
 ```text
 Getter                               │ ✓ Pureline
@@ -54,9 +54,9 @@ get activeCount(): number {          │ readonly activeCount = computed(() =>
 <span>{{ activeCount }}</span>       │ <span>{{ activeCount() }}</span>
 ```
 
-### PL-NG-003 — Built-in Control Flow with `track`
+### PL-NG-003 — Flujo de control integrado con `track`
 
-Use `@if`, `@for`, and `@switch`; do not use `*ngIf` or `*ngFor` in new code. Every `@for` tracks a stable identifier from the data, never `$index` for lists that can change. Use `@empty` for the empty state.
+Utilice `@if`, `@for` y `@switch`; no utilice `*ngIf` o `*ngFor` en un código nuevo. Cada `@for` rastrea un identificador estable de los datos, nunca `$index` para listas que pueden cambiar. Utilice `@empty` para el estado vacío.
 
 ```html
 @for (session of sessions(); track session.id) {
@@ -66,9 +66,9 @@ Use `@if`, `@for`, and `@switch`; do not use `*ngIf` or `*ngFor` in new code. Ev
 }
 ```
 
-### PL-NG-004 — Typed Reactive Forms
+### PL-NG-004 — Formularios de reactividad tipo
 
-Use reactive forms with `nonNullable` controls, so a reset never yields `null`. After the validity guard, read values with `getRawValue()`, which is fully typed.
+Use formularios reactivos con los controles `nonNullable`, por lo que un restablecimiento nunca produce `null`. Después de la guardia de validez, lea los valores con `getRawValue()`, que está completamente tecleado.
 
 ```ts
 readonly form = new FormGroup({
@@ -83,9 +83,9 @@ submit(): void {
 }
 ```
 
-### PL-NG-005 — Smart and Presentational Components
+### PL-NG-005 — Componentes inteligentes y de presentación
 
-- A **smart** component (a page or route target) injects services, owns the signals, and passes plain inputs down. A **presentational** component receives data through `input()`, reports through `output()`, and injects no services.
+- Un componente **smart** (una página o un destino de ruta) inyecta servicios, posee las señales y pasa entradas simples hacia abajo. Un componente **1985tional** recibe datos a través de `input()`, informa a través de `output()`, y no inyecta servicios.
 
 ```ts
 export class SessionListViewComponent {
@@ -94,9 +94,9 @@ export class SessionListViewComponent {
 }
 ```
 
-### PL-NG-006 — Services Have One Responsibility
+### PL-NG-006 — Los servicios tienen una responsabilidad
 
-A service talks to one API, holds one piece of shared state, or implements one domain rule. Components never call `HttpClient` directly. Use `providedIn: 'root'` unless a feature needs a scoped instance.
+Un servicio habla con una API, mantiene un estado compartido o implementa una regla de dominio. Los componentes nunca llaman a `HttpClient` directamente. Use `providedIn: 'root'` a menos que una característica necesite una instancia con alcance.
 
 ```ts
 @Injectable({ providedIn: 'root' })
@@ -108,14 +108,14 @@ export class SessionApi {
 }
 ```
 
-### PL-NG-007 — Feature Folders and Folder Density
+### PL-NG-007 — Carpetas de características y densidad de carpeta
 
-- Group files by feature (`features/sessions/`): component, template, service, and spec together. Name files by role: `session-list.component.ts`, `session-api.service.ts`.
-- A folder holds at most **10 hand-maintained source files** by default ([PL-TS-007](typescript.md)). Split along responsibilities, not into empty nested folders ([PL-STRUCT-003](../core/structure.md)).
+- Agrupar archivos por función (`features/sessions/`): componente, plantilla, servicio y especificaciones juntos. Nombre de los archivos por rol: `session-list.component.ts`, `session-api.service.ts`.
+- Una carpeta contiene como máximo archivos fuente **10 mantenidos a mano** por defecto ([PL-TS-007](typescript.md)]. Dividir a lo largo de las responsabilidades, no en carpetas vacías anidadas [PL-STRUCT-003](../core/structure.md)].
 
-### PL-NG-008 — Strict Types, No `any`
+### PL-NG-008 — Tipos estrictos, no `any`
 
-Enable `"strict": true` in `tsconfig.json`. Do not use `any` in components, services, or templates. Treat HTTP or storage data as `unknown` and narrow it at the boundary ([PL-TS-001](typescript.md)).
+Habilitar `"strict": true` en `tsconfig.json`. No utilice `any` en componentes, servicios o plantillas. Tratar los datos HTTP o de almacenamiento como `unknown` y reducirlo en el límite ([PL-TS-001](typescript.md)].
 
 ```ts
 export function isSession(value: unknown): value is Session {
@@ -125,7 +125,7 @@ export function isSession(value: unknown): value is Session {
 
 ### PL-NG-009 — Herramientas
 
-Run `ng lint` (from `@angular-eslint`), `ng build`, and `ng test` in CI. Format with the official formatter, Prettier, and check it with `prettier --check`. Keep warnings intentional: fix them or suppress them with a stated reason.
+Ejecute `ng lint` (desde `@angular-eslint`), `ng build` y `ng test` en CI. Formatee con el formulario oficial, Prettier, y compruébelo con `prettier --check`. Mantenga las advertencias intencionales: Arréglalos o supéralos con una razón.
 
 ```bash
 ng build --configuration production

@@ -40,8 +40,8 @@ Declarar el orden de las capas una vez: `@layer reset, base, components, utiliti
 
 Estilo con clases individuales.. No teclee con cadenas de elementos (`div section ul li a`) o ids. La especificidad que crece con el margen de beneficio hace que los cambios posteriores sean caros. Un selector más profundo que dos niveles es un hallazgo de revisión.
 
-Prefer a dedicated class when the element's style should apply independently
-of its position in the component.
+Prefiere una clase dedicada cuando el estilo del elemento debe aplicarse independientemente
+de su posición en el componente.
 
 ```text
 − Descendant selector                  │ ✓ Pureline

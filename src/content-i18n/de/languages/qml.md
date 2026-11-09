@@ -65,7 +65,7 @@ function submit() {
 
 Eine Bindung hält höchstens einen Ausdruck von bedingtem und kurzer Anruf. Längere Logik in eine benannte Funktion oder ein C++ / Python Backend Objekt verschieben. Verschachtelte Tenarien sind nicht Pureline.
 
-Keep a short binding on the property that uses it. Name the condition
+Halten Sie eine kurze Bindung an das Eigentum, das es verwendet... Bezeichnung der Bedingung
 when multiple controls share it.
 
 ```text

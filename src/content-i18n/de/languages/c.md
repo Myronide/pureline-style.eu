@@ -4,13 +4,13 @@
 
 Wenden Sie die [shared core rules](../README.md#shared-rules) zusammen mit diesem Profil an. Sprachen-native Regeln und explizite Profilausnahmen haben Vorrang vor sprachenübergreifenden Syntaxeinstellungen. [Kohäsion über Größe](../core/structure.md) gilt in allen Bereichen.
 
-## C Profile
+## C-Profil
 
-Pureline C follows **idiomatic C11/C17**: explicit ownership, explicit error codes, and small translation units. C has no destructors or exceptions, so discipline must be visible in the code itself.
+Pureline C folgt **idiomatic C11/C17**: expliziter Besitz, explizite Fehlercodes und kleine Übersetzungseinheiten. C hat keine Destruktoren oder Ausnahmen, also muss Disziplin im Code selbst sichtbar sein.
 
 ### PL-C-001 — Schutzklauseln und linearer Fluss
 
-Validate arguments first and keep the success path at the base indentation level (see [PL-CORE-003](../core/control-flow.md)); avoid `else` after a returning branch.
+Argumente zuerst validieren und den Erfolgspfad auf der Basiseinrückungsebene halten (siehe [PL-CORE-003](../core/control-flow.md)); `else` nach einem wiederkehrenden Zweig vermeiden.
 
 ```c
 int session_open(const struct request *request, struct session *out)
@@ -22,9 +22,9 @@ int session_open(const struct request *request, struct session *out)
 }
 ```
 
-### PL-C-002 — Return and Check Error Codes
+### PL-C-002 — Fehlercodes zurückgeben und überprüfen
 
-Fallible functions return an `enum` status and pass results through out-parameters. Every status is checked; a deliberate discard uses a `(void)` cast with a comment.
+Fallhafte Funktionen geben einen `enum`-Status zurück und übergeben Ergebnisse durch out-parameters. Jeder Status wird überprüft; ein absichtlicher Rückwurf verwendet einen `(void)`-cast mit einem Kommentar.
 
 ```c
 int load(struct session *session)
@@ -37,18 +37,18 @@ int load(struct session *session)
 }
 ```
 
-### PL-C-003 — Explicit Heap Ownership
+### PL-C-003 — explizite Heap-Eigenschaft
 
-Each heap allocation has exactly one owner. `*_create` transfers ownership to the caller, `*_destroy` releases it, and callees never free borrowed pointers.
+Jede Heap-Zuweisung hat genau einen Besitzer... `*_create` überträgt das Eigentum an dem Anrufer, `*_destroy` veröffentlicht es, und ruft nie kostenlos ausgeliehene Zeiger.
 
 ```c
 /* The caller owns the result and releases it with session_destroy(). */
 struct session *session_create(const char *user);
 ```
 
-### PL-C-004 — `goto` Only for a Single Cleanup Exit
+### PL-C-004 — `goto` Nur für einen einzigen Cleanup-Ausgang
 
-Jump forward to one `cleanup:` label per function, initialise resources to `NULL` first, and never use `goto` for loops or skipped logic.
+Springt zu einem `cleanup:`-Label pro Funktion, initialisiert Ressourcen zuerst zu `NULL` und nutzt `goto` niemals für Loops oder übersprungene Logik.
 
 ```c
 int report_write(const char *path, const char *text)
@@ -67,8 +67,8 @@ cleanup:
 }
 ```
 
-For a single resource with two simple return paths, prefer closing it
-directly at each return. A shared cleanup label is useful as cleanup grows.
+Für eine einzige Ressource mit zwei einfachen Rücklaufpfaden, lieber schließen
+direkt bei jeder Rückkehr. Ein gemeinsames Cleanup-Label ist nützlich, wenn das Cleanup wächst.
 
 ```text
 Shared cleanup label              │ ✓ Pureline
@@ -84,17 +84,17 @@ cleanup:                          │ fclose(file);
     return status;                │
 ```
 
-### PL-C-005 — Const Correctness and Explicit State
+### PL-C-005 — Beständige Korrektheit und expliziter Zustand
 
-Read-only parameters are `const`, locals assigned once are `const`, and runtime state is passed explicitly in a context struct instead of file-scope variables.
+Nur-Leseparameter sind `const`, die Einheimischen sind einmal `const` zugewiesen, und der Laufzeitzustand wird explizit in einem Kontextstruct statt in Datei-Skop-Variablen übergeben.
 
 ```c
 int cache_insert(struct cache *cache, const char *key);
 ```
 
-### PL-C-006 — Small, Focused Functions
+### PL-C-006 — Kleine, fokussierte Funktionen
 
-Each function does one thing at one level of abstraction; extract a helper when a block needs a name. A cohesive state machine may stay long rather than being split arbitrarily.
+Jede Funktion tut auf einer Abstraktionsebene eine Sache; extrahieren Sie einen Helfer, wenn ein Block einen Namen braucht. Eine kohäsive Zustandsmaschine kann lange bleiben, anstatt willkürlich geteilt zu werden.
 
 ```c
 int save_report(const struct report *report, const char *path)
@@ -109,9 +109,9 @@ int save_report(const struct report *report, const char *path)
 }
 ```
 
-### PL-C-007 — Static Linkage and Minimal Headers
+### PL-C-007 — Statische Verbindung und minimale Kopfbedeckungen
 
-Mark non-public functions and variables `static`, prefix public symbols with their module name, and give every header an include guard plus only the consumer-facing surface.
+Markieren Sie nicht-öffentliche Funktionen und Variablen `static`, Präfix öffentliche Symbole mit ihrem Modulnamen, und geben jedem Header einen Include Guard plus nur die Verbraucher-angewandte Oberfläche.
 
 ```c
 #ifndef PURELINE_SESSION_H
@@ -120,7 +120,7 @@ struct session *session_create(const char *user);
 #endif
 ```
 
-### PL-C-008 — Source Folder Density
+### PL-C-008 — Dichte des Quellordners
 
 A C feature folder holds at most **10 hand-maintained `.c` and `.h` files** by default. Generated code, vendored libraries, and tests do not count. Split along responsibility, never into nested folders for their own sake.
 

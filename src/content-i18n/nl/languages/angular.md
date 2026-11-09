@@ -1,14 +1,14 @@
-# Angular Code Style
+# Angulaire codestijl
 
 [Code stijl gids](../README.md) · [Original specificatie 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Pas de [gedeelde kernregels](../README.md#shared-rules), het [JavaScript profiel](javascript.md) en het [TypeScript profiel](typescript.md) toe samen met dit profiel. The Angular profile targets **Angular 17 or later** with TypeScript in strict mode. A component reads as a small pipeline: inputs in, guards in the template, derived values, markup out.
+Pas de [gedeelde kernregels](../README.md#shared-rules), het [JavaScript profiel](javascript.md) en het [TypeScript profiel](typescript.md) toe samen met dit profiel. Het Angular profiel richt zich op **angular 17 of later** met TypeScript in strikte modus. Een onderdeel leest als een kleine pijpleiding: ingangen in, bewakers in het sjabloon, afgeleide waarden, markup out.
 
-## Angular Profile
+## Angulaire profiele pluginage
 
-### PL-NG-001 — Standalone Components and `inject()`
+### PL-NG-001. Standalone componenten en `inject()`
 
-Every component is standalone (default from Angular 19; set `standalone: true` on 17 and 18). Declare dependencies with `inject()` as `private readonly` fields, so the class body starts with its state, not with a constructor.
+Elk onderdeel is standalone (standaard vanaf de hoek 19; zet `standalone: true` op de 17 en 18). Declareer afhankelijkheden met `inject()` als `private readonly` velden, dus het klasse lichaam begint met zijn status, niet met een constructor.
 
 ```ts
 @Component({
@@ -21,9 +21,9 @@ export class SessionCardComponent {
 }
 ```
 
-### PL-NG-002 — Signals Hold State, OnPush Renders It
+### PL-NG-002. Signalen houden stand, OnPush R Austrian
 
-- `signal()` holds writable state, `computed()` derives values, `input()` and `output()` form the interface; never keep a derived value in a second field. Every component sets `ChangeDetectionStrategy.OnPush`, so signals read in the template drive the updates.
+- `signal()` houdt schrijfbare toestand, `computed()` afgeleide waarden, `input()` en `output()` vormen de interface; houd nooit een afgeleide waarde in een tweede veld. Elk onderdeel stelt `ChangeDetectionStrategy.OnPush` in, dus signalen lezen in de sjabloon drive de updates.
 
 ```ts
 @Component({
@@ -40,8 +40,8 @@ export class CounterComponent {
 }
 ```
 
-When a template value is derived from a signal, prefer `computed()` over
-a getter that repeats the calculation on every access.
+Wanneer een sjabloonwaarde wordt afgeleid van een signaal, verkies `computed()` boven
+een getter die de berekening herhaalt op elke toegang.
 
 ```text
 Getter                               │ ✓ Pureline
@@ -54,9 +54,9 @@ get activeCount(): number {          │ readonly activeCount = computed(() =>
 <span>{{ activeCount }}</span>       │ <span>{{ activeCount() }}</span>
 ```
 
-### PL-NG-003 — Built-in Control Flow with `track`
+### PL-NG-003. Ingebouwde regelstroom met `track`
 
-Use `@if`, `@for`, and `@switch`; do not use `*ngIf` or `*ngFor` in new code. Every `@for` tracks a stable identifier from the data, never `$index` for lists that can change. Use `@empty` for the empty state.
+Gebruik `@if`, `@for` en `@switch`; gebruik `*ngIf` of `*ngFor` niet in nieuwe code. Elke `@for` volgt een stabiele identificatiecode van de gegevens, nooit `$index` voor lijsten die kunnen veranderen. Gebruik `@empty` voor de lege staat.
 
 ```html
 @for (session of sessions(); track session.id) {
@@ -66,9 +66,9 @@ Use `@if`, `@for`, and `@switch`; do not use `*ngIf` or `*ngFor` in new code. Ev
 }
 ```
 
-### PL-NG-004 — Typed Reactive Forms
+### PL-NG-004. Getypte reactieve vormen
 
-Use reactive forms with `nonNullable` controls, so a reset never yields `null`. After the validity guard, read values with `getRawValue()`, which is fully typed.
+Gebruik reactieve vormen met `nonNullable`-besturingen, dus een reset geeft nooit `null`. Na de geldigheidsguard lees je waarden met `getRawValue()`, die volledig getypt is.
 
 ```ts
 readonly form = new FormGroup({
@@ -83,9 +83,9 @@ submit(): void {
 }
 ```
 
-### PL-NG-005 — Smart and Presentational Components
+### PL-NG-005. Slimme en presentatieve componenten
 
-- A **smart** component (a page or route target) injects services, owns the signals, and passes plain inputs down. A **presentational** component receives data through `input()`, reports through `output()`, and injects no services.
+- Een **smart** component (een pagina of route target) injecteert diensten, bezit de signalen en geeft duidelijke ingangen door. Een **presentational** component ontvangt gegevens via `input()`, rapporteert via `output()` en injecteert geen diensten.
 
 ```ts
 export class SessionListViewComponent {
@@ -94,9 +94,9 @@ export class SessionListViewComponent {
 }
 ```
 
-### PL-NG-006 — Services Have One Responsibility
+### PL-NG-006. Diensten hebben één verantwoordelijkheid
 
-A service talks to one API, holds one piece of shared state, or implements one domain rule. Components never call `HttpClient` directly. Use `providedIn: 'root'` unless a feature needs a scoped instance.
+Een dienst praat met één API, heeft één deel van gedeelde staat, of implementeert één domeinregel. Componenten nooit `HttpClient` direct aanroepen. `providedIn: 'root'` gebruiken tenzij een functie een scoped instantie nodig heeft.
 
 ```ts
 @Injectable({ providedIn: 'root' })
@@ -108,14 +108,14 @@ export class SessionApi {
 }
 ```
 
-### PL-NG-007 — Feature Folders and Folder Density
+### PL-NG-007. Eigenschappenmappen en map-dinnen
 
-- Group files by feature (`features/sessions/`): component, template, service, and spec together. Name files by role: `session-list.component.ts`, `session-api.service.ts`.
-- A folder holds at most **10 hand-maintained source files** by default ([PL-TS-007](typescript.md)). Split along responsibilities, not into empty nested folders ([PL-STRUCT-003](../core/structure.md)).
+- Groepsbestanden per functie (`features/sessions/`): onderdeel, template, service en spec samen. Naam bestanden per rol: `session-list.component.ts`, `session-api.service.ts`.
+- Een map bevat hooguit **10 met de hand onderhouden bronbestanden** standaard ([PL-TS-007](typescript.md)). Splits langs verantwoordelijkheden, niet in lege nested mappen ([PL-STRUCT-003](../core/structure.md)).
 
-### PL-NG-008 — Strict Types, No `any`
+### PL-NG-008. Strikte types, Geen `any`
 
-Enable `"strict": true` in `tsconfig.json`. Do not use `any` in components, services, or templates. Treat HTTP or storage data as `unknown` and narrow it at the boundary ([PL-TS-001](typescript.md)).
+`"strict": true` inschakelen in `tsconfig.json`. Gebruik `any` niet in componenten, diensten of sjablonen. Behandel HTTP of opslaggegevens als `unknown` en vernauw deze bij de grens ([PL-TS-001](typescript.md)).
 
 ```ts
 export function isSession(value: unknown): value is Session {
@@ -125,7 +125,7 @@ export function isSession(value: unknown): value is Session {
 
 ### PL-NG-009. Gereedschape
 
-Run `ng lint` (from `@angular-eslint`), `ng build`, and `ng test` in CI. Format with the official formatter, Prettier, and check it with `prettier --check`. Keep warnings intentional: fix them or suppress them with a stated reason.
+Run `ng lint` (van `@angular-eslint`), `ng build` en `ng test` in CI. Formatteer met de officiële formatter, Prachtiger, en controleer het met `prettier --check`. Waarschuwingen opzettelijk houden: Ze te herstellen of te onderdrukken met een bepaalde reden.
 
 ```bash
 ng build --configuration production

@@ -4,11 +4,11 @@
 
 Wenden Sie die [shared core rules](../README.md#shared-rules), das [JavaScript profile](javascript.md) und das [TypeScript profile](typescript.md) zusammen mit diesem Profil an. The Angular profile targets **Angular 17 or later** with TypeScript in strict mode. A component reads as a small pipeline: inputs in, guards in the template, derived values, markup out.
 
-## Angular Profile
+## Winkelprofil
 
-### PL-NG-001 — Standalone Components and `inject()`
+### PL-NG-001 — Standalone-Komponenten und `inject()`
 
-Every component is standalone (default from Angular 19; set `standalone: true` on 17 and 18). Declare dependencies with `inject()` as `private readonly` fields, so the class body starts with its state, not with a constructor.
+Jede Komponente ist eigenständig (Standard von Angular 19; `standalone: true` auf 17 und 18 eingestellt). Deklarieren Sie Abhängigkeiten mit `inject()` als `private readonly`-Felder, so dass der Klassenkörper mit seinem Zustand beginnt, nicht mit einem Konstruktor.
 
 ```ts
 @Component({
@@ -21,9 +21,9 @@ export class SessionCardComponent {
 }
 ```
 
-### PL-NG-002 — Signals Hold State, OnPush Renders It
+### PL-NG-002 — Signale halten Zustand, OnPush Renders es
 
-- `signal()` holds writable state, `computed()` derives values, `input()` and `output()` form the interface; never keep a derived value in a second field. Every component sets `ChangeDetectionStrategy.OnPush`, so signals read in the template drive the updates.
+- `signal()` hält den beschreibbaren Zustand, `computed()` Derives Werte, `input()` und `output()` bilden die Schnittstelle; nie einen abgeleiteten Wert in einem zweiten Feld behalten. Jede Komponente setzt `ChangeDetectionStrategy.OnPush`, also werden die in der Vorlage gelesenen Signale die Updates antreiben.
 
 ```ts
 @Component({
@@ -40,7 +40,7 @@ export class CounterComponent {
 }
 ```
 
-When a template value is derived from a signal, prefer `computed()` over
+Wenn ein Template-Wert aus einem Signal abgeleitet wird, bevorzugen Sie `computed()`
 a getter that repeats the calculation on every access.
 
 ```text
@@ -54,9 +54,9 @@ get activeCount(): number {          │ readonly activeCount = computed(() =>
 <span>{{ activeCount }}</span>       │ <span>{{ activeCount() }}</span>
 ```
 
-### PL-NG-003 — Built-in Control Flow with `track`
+### PL-NG-003 — Eingebauter Regelstrom mit `track`
 
-Use `@if`, `@for`, and `@switch`; do not use `*ngIf` or `*ngFor` in new code. Every `@for` tracks a stable identifier from the data, never `$index` for lists that can change. Use `@empty` for the empty state.
+Verwenden Sie `@if`, `@for` und `@switch`; verwenden Sie `*ngIf` oder `*ngFor` nicht in neuem Code. Jedes `@for` verfolgt einen stabilen Identifier aus den Daten, nie `$index` für Listen, die sich ändern können. Verwenden Sie `@empty` für den leeren Zustand.
 
 ```html
 @for (session of sessions(); track session.id) {
@@ -66,9 +66,9 @@ Use `@if`, `@for`, and `@switch`; do not use `*ngIf` or `*ngFor` in new code. Ev
 }
 ```
 
-### PL-NG-004 — Typed Reactive Forms
+### PL-NG-004 — Typisierte Reaktive Formen
 
-Use reactive forms with `nonNullable` controls, so a reset never yields `null`. After the validity guard, read values with `getRawValue()`, which is fully typed.
+Verwenden Sie reaktive Formen mit `nonNullable`-Steuerungen, so dass ein Reset nie `null` ergibt. Nach dem Validity Guard lesen Sie Werte mit `getRawValue()`, die vollständig eingegeben ist.
 
 ```ts
 readonly form = new FormGroup({
@@ -83,9 +83,9 @@ submit(): void {
 }
 ```
 
-### PL-NG-005 — Smart and Presentational Components
+### PL-NG-005 — Intelligente und Präsentationskomponenten
 
-- A **smart** component (a page or route target) injects services, owns the signals, and passes plain inputs down. A **presentational** component receives data through `input()`, reports through `output()`, and injects no services.
+- Eine **smart**-Komponente (eine Seite oder ein Routenziel) injiziert Dienste, besitzt die Signale und leitet einfache Eingänge nach unten. Eine **presentational** Komponente empfängt Daten über `input()`, berichtet über `output()` und injiziert keine Dienste.
 
 ```ts
 export class SessionListViewComponent {
@@ -94,9 +94,9 @@ export class SessionListViewComponent {
 }
 ```
 
-### PL-NG-006 — Services Have One Responsibility
+### PL-NG-006 — Dienstleistungen haben eine Verantwortung
 
-A service talks to one API, holds one piece of shared state, or implements one domain rule. Components never call `HttpClient` directly. Use `providedIn: 'root'` unless a feature needs a scoped instance.
+Ein Dienst spricht mit einer API, hält ein Stück des geteilten Zustands oder implementiert eine Domain-Regel. Komponenten rufen `HttpClient` nie direkt an.. Verwenden Sie `providedIn: 'root'`, es sei denn, eine Funktion benötigt eine scoped Instanz.
 
 ```ts
 @Injectable({ providedIn: 'root' })
@@ -108,14 +108,14 @@ export class SessionApi {
 }
 ```
 
-### PL-NG-007 — Feature Folders and Folder Density
+### PL-NG-007 — Feature Ordner und Ordnerdichte
 
-- Group files by feature (`features/sessions/`): component, template, service, and spec together. Name files by role: `session-list.component.ts`, `session-api.service.ts`.
-- A folder holds at most **10 hand-maintained source files** by default ([PL-TS-007](typescript.md)). Split along responsibilities, not into empty nested folders ([PL-STRUCT-003](../core/structure.md)).
+- Gruppendateien nach Funktion (`features/sessions/`): Komponente, Vorlage, Service und Spezifizierung zusammen. Namen von Dateien nach Rollen: `session-list.component.ts`, `session-api.service.ts`.
+- Ein Ordner enthält standardmäßig höchstens **10 handgepflegete Quelldateien** ([PL-TS-007](typescript.md)). Verteilt die Verantwortlichkeiten, nicht in leere verschachtelte Ordner ([PL-STRUCT-003](../core/structure.md)).
 
-### PL-NG-008 — Strict Types, No `any`
+### PL-NG-008 — Strenge Typen, keine `any`
 
-Enable `"strict": true` in `tsconfig.json`. Do not use `any` in components, services, or templates. Treat HTTP or storage data as `unknown` and narrow it at the boundary ([PL-TS-001](typescript.md)).
+Aktivieren Sie `"strict": true` in `tsconfig.json`. Verwenden Sie `any` nicht in Komponenten, Diensten oder Vorlagen. Treat HTTP or storage data as `unknown` and narrow it at the boundary ([PL-TS-001](typescript.md)).
 
 ```ts
 export function isSession(value: unknown): value is Session {

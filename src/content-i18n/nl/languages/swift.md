@@ -6,19 +6,19 @@ Pas de [shared core rules](../README.md#shared-rules) toe samen met dit profiel.
 
 ## Swift Profile
 
-Pureline Swift follows **idiomatic Swift 5.9 and later**: value semantics, optionals, exhaustive enums, and explicit access control are language strengths and should be used as such.
+Pureline Swift volgt **idiomatic Swift 5.9 en later**: waarde semantiek, optionelen, uitputtende enums en expliciete toegangscontrole zijn taalsterktes en moeten als zodanig worden gebruikt.
 
-### PL-SW-001 — Naming Follows Swift Conventions
+### PL-SW-001. Naam volgt Swift Conventionseeeeeeee
 
-- Types and protocols: `UpperCamelCase`. Members and locals: `lowerCamelCase`, named for their meaning ([Naming](../core/naming.md)).
+- Typen en protocollen: `UpperCamelCase`. Leden en lokale bevolking:e `lowerCamelCase`, genoemd naar hun betekenis ([Namen](../core/naming.md)).
 
 ```swift
 protocol PaymentGateway { func charge(_ order: Order) throws -> Receipt }
 ```
 
-### PL-SW-002 — Explicit Access Control
+### PL-SW-002. Expliciete toegangscontrole
 
-- Write access levels explicitly. Default to `private`; widen to `fileprivate` or `internal` only when a real consumer needs it.
+- Schrijf de toegangsniveaus expliciet. Standaard `private`; alleen uitbreiden naar `fileprivate` of `internal` als een echte consument het nodig heeft.
 
 ```swift
 public struct ConfigLoader {
@@ -27,17 +27,17 @@ public struct ConfigLoader {
 }
 ```
 
-### PL-SW-003 — `let` over `var`
+### PL-SW-003. `let` over `var`
 
-Use `let` unless mutation is required. Keep `var` locals narrowly scoped.
+Gebruik `let` tenzij mutatie noodzakelijk is. Houd `var` locals nauw in de gaten.
 
 ```swift
 let total = items.reduce(0, +)
 ```
 
-### PL-SW-004 — Guard Clauses for Early Exit
+### PL-SW-004. Guard Clausles voor vroege afrit
 
-Validate early with `guard` and keep the successful path at base indentation ([Control Flow](../core/control-flow.md)). Avoid `else` after a branch that already exits.
+Valideer vroeg met `guard` en houd het succesvolle pad bij basisinspringen ([Control Flow](../core/control-flow.md)). Vermijd `else` na een tak die al afgaat.
 
 ```swift
 func open(_ request: Request) throws -> Session {
@@ -47,8 +47,8 @@ func open(_ request: Request) throws -> Session {
 }
 ```
 
-Prefer `guard let` when a missing value ends the function and the unwrapped
-value belongs to the success path.
+`guard let` prefereren als een ontbrekende waarde de functie en de niet-afgepakte waarde beëindigt
+waarde behoort tot het succes pad.
 
 ```text
 − if let                              │ ✓ Pureline
@@ -59,35 +59,35 @@ if let user = users[id] {             │ guard let user = users[id] else {
 return "Gast"                         │ return user.name
 ```
 
-### PL-SW-005 — Optionals Are Unwrapped Safely
+### PL-SW-005. Optionelen worden veilig uitgepakt
 
-- Unwrap with `if let` or `guard let`; use `??` for simple defaults. Never force-unwrap (`!`) or `try!` outside tests; there, use `XCTUnwrap`.
+- Uitpakken met `if let` of `guard let`; gebruik `??` voor eenvoudige standaards. Nooit force-unwrap (`!`) of `try!` buiten de tests; gebruik daar `XCTUnwrap`.
 
 ```swift
 guard let cached = cache[key] else { return nil }
 let name = user.nickname ?? user.login
 ```
 
-### PL-SW-006 — Value Types by Default
+### PL-SW-006. Waardetypes naar standaard
 
-Model data as `struct` and `enum`. Use `class` only for shared identity or mutable reference state, and mark it `final` unless inheritance is designed in.
+Model gegevens als `struct` en `enum`. Gebruik `class` alleen voor gedeelde identiteit of veranderlijke referentietoestand, en merk het `final` tenzij er een erfenis in is ontworpen.
 
 ```swift
 struct Money: Equatable { let cents: Int; let currency: Currency }
 ```
 
-### PL-SW-007 — Protocols Only for Real Abstractions
+### PL-SW-007. Protocollen alleen voor echte abstracties
 
-Introduce a protocol for a real interchangeable implementation, API boundary, or test seam. A single concrete type with no seam should stay concrete ([Architecture](../core/architecture.md)).
+Stel een protocol in voor een echte verwisselbare implementatie, API grens of testnaden. Een enkel betontype zonder naad moet beton blijven ([Architectuur](../core/architecture.md)).
 
 ```swift
 protocol Clock { func now() -> Date }
 struct Scheduler { let clock: any Clock }
 ```
 
-### PL-SW-008 — Exhaustive `switch` over Enums
+### PL-SW-008. Uitputtende `switch` over Enums
 
-Switch over enums without `default` so the compiler flags new cases. Use `if case` or `guard case` for a single pattern.
+Schakel over enums zonder `default` zodat de compiler nieuwe cases opvouwt. Gebruik `if case` of `guard case` voor een enkel patroon.
 
 ```swift
 enum SessionState { case ready, closed, failed }
@@ -101,9 +101,9 @@ func label(for state: SessionState) -> String {
 }
 ```
 
-### PL-SW-009 — Small, Focused Functions
+### PL-SW-009. Kleine, gerichte functies
 
-Keep functions to one level of abstraction: a short sequence of named steps. Extract a helper when a block needs a name to be understood ([Functions](../core/functions.md)).
+Houd functies tot één niveau van abstractie: een korte reeks van genoemde stappen. Een hulpje uitpakken als een blok een naam moet begrijpen ([Functions](../core/functions.md)).
 
 ```swift
 func submit(_ order: Order) throws {
@@ -114,7 +114,7 @@ func submit(_ order: Order) throws {
 
 ### PL-SW-010. Map Density
 
-A Swift source folder should contain at most **10 hand-maintained `.swift` files** by default; generated and test files do not count. Dit is een herzieningsdrempel: split along responsibility boundaries, never into meaningless nested folders ([Structure](../core/structure.md)).
+Een Swift bronmap moet maximaal **10 hand-onderhoud `.swift` bestanden** bevatten standaard; gegenereerde en test bestanden niet tellen. Dit is een herzieningsdrempel: split langs verantwoordelijkheidsgrenzen, nooit in betekenisloze nested mappen ([Structure](../core/structure.md)).
 
 ```text
 Sources/Checkout/
@@ -122,9 +122,9 @@ Sources/Checkout/
     PaymentFlow.swift
 ```
 
-### PL-SW-011 — Tooling Enforces Format and Lint
+### PL-SW-011. Gereedschap formatteren en Lint
 
-- Format with `swift-format` and lint with `SwiftLint` using the project-agreed configuration; keep exceptions there, with reasons, not as scattered `// swiftlint:disable` comments.
+- Formatteer met `swift-format` en met `SwiftLint` met behulp van de project-agreed configuratie; houd uitzonderingen daar, met redenen, niet zoals verspreid `// swiftlint:disable` opmerkingen.
 
 ```bash
 swift-format lint --recursive Sources Tests

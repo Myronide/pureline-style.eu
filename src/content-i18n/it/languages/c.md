@@ -37,7 +37,7 @@ int load(struct session *session)
 }
 ```
 
-### PL-C-003 — Explicit Heap Ownership
+### PL-C-003. Proprietà esplicita del tallone interreno le misure
 
 Each heap allocation has exactly one owner. `*_create` transfers ownership to the caller, `*_destroy` releases it, and callees never free borrowed pointers.
 
@@ -67,7 +67,7 @@ cleanup:
 }
 ```
 
-For a single resource with two simple return paths, prefer closing it
+Per una sola risorsa con due semplici percorsi di ritorno, preferisci chiuderla
 directly at each return. A shared cleanup label is useful as cleanup grows.
 
 ```text
@@ -84,15 +84,15 @@ cleanup:                          │ fclose(file);
     return status;                │
 ```
 
-### PL-C-005 — Const Correctness and Explicit State
+### PL-C-005. Corretta ed esplicitata
 
-Read-only parameters are `const`, locals assigned once are `const`, and runtime state is passed explicitly in a context struct instead of file-scope variables.
+I parametri di sola lettura sono `const`, i locali assegnati una volta sono `const`, e lo stato runtime viene passato esplicitamente in una struttura contestuale invece delle variabili del file-scope.
 
 ```c
 int cache_insert(struct cache *cache, const char *key);
 ```
 
-### PL-C-006 — Small, Focused Functions
+### PL-C-006. Piccole funzioni focalizzate
 
 Each function does one thing at one level of abstraction; extract a helper when a block needs a name. A cohesive state machine may stay long rather than being split arbitrarily.
 
@@ -109,9 +109,9 @@ int save_report(const struct report *report, const char *path)
 }
 ```
 
-### PL-C-007 — Static Linkage and Minimal Headers
+### PL-C-007.Sanac Linkage e intestazioni minime
 
-Mark non-public functions and variables `static`, prefix public symbols with their module name, and give every header an include guard plus only the consumer-facing surface.
+Contrassegna le funzioni e le variabili non pubbliche `static`, prefissa i simboli pubblici con il loro nome di modulo e dai ad ogni intestazione una protezione include più solo la superficie rivolta al consumatore.
 
 ```c
 #ifndef PURELINE_SESSION_H
@@ -120,15 +120,15 @@ struct session *session_create(const char *user);
 #endif
 ```
 
-### PL-C-008 — Source Folder Density
+### PL-C-008. Densità della cartella sorgente
 
-A C feature folder holds at most **10 hand-maintained `.c` and `.h` files** by default. Generated code, vendored libraries, and tests do not count. Split along responsibility, never into nested folders for their own sake.
+Una cartella di funzionalità C contiene al massimo **10 mantenuto a mano `.c` e `.h` file** per impostazione predefinita.. Generated code, vendored libraries, and tests do not count. Split along responsibility, never into nested folders for their own sake.
 
 ```c
 #include "session/session.h"
 ```
 
-### PL-C-009 — Tooling and Warnings
+### PL-C-009. Troppo e avvisi
 
 Build with `-std=c11 -Wall -Wextra -Werror -pedantic`, format with `clang-format`, and check with `clang-tidy`. Any suppression needs a comment explaining why.
 

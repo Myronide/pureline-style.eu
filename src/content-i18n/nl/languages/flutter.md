@@ -1,18 +1,18 @@
-# Flutter Code Style
+# Flotter Code Style
 
 [Code stijl gids](../README.md) · [Original specificatie 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Pas de [shared core rules](../README.md#shared-rules) toe samen met dit profiel. The Flutter profile targets **Dart 3 with Flutter 3.x** and sound null safety. The Dart language rules apply underneath: `final` by default, and sealed types where they model a closed set of states. A widget is a function of its configuration and state: configuration in, guards, derived values, widget tree out.
+Pas de [shared core rules](../README.md#shared-rules) toe samen met dit profiel. Het Flutterprofiel richt zich op **Dart 3 met Flutter 3.x** en geluid zonder veiligheid. De Dart-taalregels gelden hieronder: `final` standaard, en verzegelde types waar ze model een gesloten set van staten. Een widget is een functie van zijn configuratie en staat: configuratie in, bewakers, afgeleide waarden, widget boom uit.
 
 ## Flutter Profile
 
-### PL-FLUT-001 — Build Methods Are Small and Free of Side Effects
+### PL-FLUT-001. Build methoden zijn klein en vrij van bijwerkingen
 
-`build` computes a widget tree from its inputs and nothing else. It does not start requests, write storage, navigate, or mutate fields. When the tree grows past one screen of nesting, extract a block ([PL-FLUT-002](#pl-flut-002--extract-growing-widgets-into-const-classes)). Side effects belong in event handlers and the state layer ([state and side effects](../core/state-and-side-effects.md)).
+`build` berekent een widgetboom van zijn ingangen en niets anders. Het start geen verzoeken, schrijf opslag, navigeren, of muteren velden. Als de boom langs één broedscherm groeit, haal dan een blok ([PL-FLUT-002](#pl-flut-002--extract-growing-widgets-into-const-classes)). Bijwerkingen zijn in geval van een gebeurtenis en de statuslaag ([toestand en bijwerkingen](../core/state-and-side-effects.md)).
 
-### PL-FLUT-002 — Extract Growing Widgets into Const Classes
+### PL-FLUT-002. Uitpakken van groeiende widgets in Cont-klassen
 
-Extract a block into its own `StatelessWidget` when it has its own name, data, or state. Do not extract helper methods that return widgets: they cannot be `const` and hide the widget boundary from Flutter.
+Een blok uitpakken in zijn eigen `StatelessWidget` als het zijn eigen naam, gegevens of toestand heeft. Hulpmethoden die widgets teruggeven niet uitpakken: ze kunnen niet `const` zijn en de widgetgrens voor Flutter verbergen.
 
 ```dart
 class SessionHeader extends StatelessWidget {
@@ -30,9 +30,9 @@ class SessionHeader extends StatelessWidget {
 }
 ```
 
-### PL-FLUT-003 — Const Constructors Wherever Possible
+### PL-FLUT-003. Cont Constructors Waar mogelijk
 
-Mark constructors `const` when all fields are final, and write `const` at every call site whose value is compile-time constant.
+Markeer constructors `const` als alle velden definitief zijn, en schrijf `const` op elke call site waarvan de waarde compileertijd constant is.
 
 ```dart
 return const Padding(
@@ -41,9 +41,9 @@ return const Padding(
 );
 ```
 
-### PL-FLUT-004 — One State Management Approach per App
+### PL-FLUT-004. Eén State Management Approach per App
 
-Choose one approach for the whole app and name it in the project README: Riverpod, or `ChangeNotifier` with `provider` for smaller apps. Use it consistently. `setState` is fine for purely local UI state, such as a toggle or an expanded flag. Business state lives in providers or notifiers, not in widgets.
+Kies één aanpak voor de hele app en noem het in het project README: Riverpod, of `ChangeNotifier` met `provider` voor kleinere apps. Use it consistently. `setState` is prima voor een puur lokale UI staat, zoals een toggle of een uitgebreide vlag. De bedrijfsstaat woont in aanbieders of kennisgevers, niet in widgets.
 
 ```dart
 final sessionsProvider = FutureProvider<List<Session>>((ref) {
@@ -51,13 +51,13 @@ final sessionsProvider = FutureProvider<List<Session>>((ref) {
 });
 ```
 
-### PL-FLUT-005 — No Network or Storage Calls Inside Build
+### PL-FLUT-005. Geen netwerk of opslaggesprekken binnen Build
 
-`build` runs on every rebuild, so a request placed there repeats unpredictably. Load data in the state layer; widgets render the result.
+`build` draait op elke herbouw, dus een verzoek dat daar geplaatst wordt herhaalt zich onvoorspelbaar. Laad data in de status laag; widgets maken het resultaat.
 
-### PL-FLUT-006 — Guard Clauses Before the Main Tree
+### PL-FLUT-006. Wachtclausules voor de hoofdboom
 
-Laadt, fout en leegt de toestand eerst en keert vroeg terug. The successful layout stays at the base indentation.
+Laadt, fout en leegt de toestand eerst en keert vroeg terug. De succesvolle indeling blijft op de basis inspringen.
 
 ```dart
 @override
@@ -73,10 +73,10 @@ Widget build(BuildContext context) {
 }
 ```
 
-Avoid nested conditionals in widget trees.
+Vermijd nested voorwaardes in widget bomen.
 
-Use a collection `if` when only one child is conditional and the rest of
-the list is shared.
+Gebruik een `if` verzameling als slechts één kind voorwaardelijk is en de rest van deeee
+de lijst wordt gedeeld.
 
 ```text
 − Two child lists                            │ ✓ Pureline
@@ -88,9 +88,9 @@ return Column(                               │ return Column(
                                              │ );
 ```
 
-### PL-FLUT-007 — Keys Only Where List Identity Matters
+### PL-FLUT-007. Sleutels alleen waar lijstidentiteit belangrijk is
 
-Give a key only when a widget's identity must survive reordering or removal, such as stateful list items or a `Dismissible`. Use a stable identifier from the data, never the list index.
+Geef alleen een sleutel wanneer de identiteit van een widget moet overleven herordening of verwijdering, zoals stateful lijst items of een `Dismissible`. Gebruik een stabiele identificatiecode uit de gegevens, nooit de lijstindex.
 
 ```dart
 ListView.builder(
@@ -102,9 +102,9 @@ ListView.builder(
 );
 ```
 
-### PL-FLUT-008 — BuildContext After await Needs a Mounted Check
+### PL-FLUT-008. BuildContext Na het wachten Heeft een aangekoppelde controle nodig
 
-A `BuildContext` may belong to a widget removed while an `await` was pending. Check that it is still mounted before using it after an `await`.
+Een `BuildContext` kan deel uitmaken van een widget die verwijderd is terwijl een `await` in behandeling was. Controleer of het nog steeds is gemonteerd voordat het na een `await` wordt gebruikt.
 
 ```dart
 Future<void> handleSave() async {
@@ -116,15 +116,15 @@ Future<void> handleSave() async {
 }
 ```
 
-Inside a `State` subclass, check `mounted` instead.
+In een `State`-subklasse, controleer in plaats daarvan `mounted`.
 
-### PL-FLUT-009 — Feature Folders and Folder Density
+### PL-FLUT-009. Eigenschappenmappen en map-dinnen
 
-Group widgets, providers, and tests by feature (`lib/features/sessions/`), not by file kind across the app. A folder holds at most **10 hand-maintained source files** by default. Dit is een herzieningsdrempel: split along responsibilities, not into meaningless nested folders ([structure](../core/structure.md)).
+Groepswidgets, providers, en tests op functie (`lib/features/sessions/`), niet op bestandstype in de app. Een map bevat hooguit **10 hand-onderhoud bronbestanden** standaard. Dit is een herzieningsdrempel: split langs verantwoordelijkheden, niet in betekenisloze nested mappen ([structuur](../core/structure.md)).
 
-### PL-FLUT-010 — Tooling Gates Every Change
+### PL-FLUT-010. Werkplekken elke verandering
 
-Every change passes the formatter and analyzers before review:
+Elke verandering passeert de formatter en analysers voordat ze worden beoordeeld:
 
 ```text
 dart format --set-exit-if-changed .
@@ -132,4 +132,4 @@ dart analyze
 flutter analyze
 ```
 
-`dart format` settles layout, so formatting debates never reach review. Warnings are not optional: a disabled lint rule needs a reason in `analysis_options.yaml`.
+`dart format` regelt lay-out, dus formatteren debatten nooit bereiken beoordeling. Waarschuwingen zijn niet optioneel: een gehandicapte verkorte regel heeft een reden nodig in `analysis_options.yaml`.

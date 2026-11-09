@@ -1,10 +1,10 @@
-# Vue Code Style
+# Estilo de código Vue
 
 [Guía de estilo del código](../README.md) · [Especificaciones originales 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Aplicar las reglas [core compartido](../README.md#shared-rules), [JavaScript profile](javascript.md), y [TypeScript profile](typescript.md) junto con este perfil. The Vue profile targets **Vue 3 with the Composition API, `<script setup>`, and TypeScript in strict mode**. A component reads as a small pipeline: typed inputs, reusable logic, derived values, markup.
+Aplicar las reglas [core compartido](../README.md#shared-rules), [JavaScript profile](javascript.md), y [TypeScript profile](typescript.md) junto con este perfil. El perfil Vue se dirige a **Vue 3 con la API de Composición, `<script setup>` y TypeScript en modo estricto**. Un componente se lee como un pequeño gasoducto: entradas mecanografiadas, lógica reutilizable, valores derivados, marcado.
 
-## Vue Profile
+## Perfil Vue
 
 ```text
 Props and emits
@@ -16,9 +16,9 @@ Computed values
 Template (markup)
 ```
 
-### PL-VUE-001 — Components Use `<script setup lang="ts">`
+### PL-VUE-001 — Los componentes utilizan `<script setup lang="ts">`
 
-Every component is a Single-File Component with `<script setup lang="ts">` and a `<style scoped>` block. Order the blocks script, template, style, so inputs are read before markup.
+Cada componente es un componente de un solo archivo con `<script setup lang="ts">` y un bloque `<style scoped>`. Ordene el script de bloques, plantilla, estilo, por lo que las entradas se leen antes del marcado.
 
 ```vue
 <script setup lang="ts">
@@ -29,9 +29,9 @@ const props = defineProps<{ title: string }>();
 </template>
 ```
 
-### PL-VUE-002 — Props and Emits Are Typed
+### PL-VUE-002 — Se escriben los elementos y los emitos
 
-Declare props with a type-only `defineProps<T>()` and emits with `defineEmits<{ ... }>()`. Use union types for variants, never a set of optional booleans ([PL-TS-001](typescript.md)).
+Declarar accesorios con un tipo único `defineProps<T>()` y emite con `defineEmits<{ ... }>()`. Usar tipos de unión para variantes, nunca un conjunto de booleanos opcionales [PL-TS-001](typescript.md)].
 
 ```vue
 <script setup lang="ts">
@@ -40,9 +40,9 @@ const emit = defineEmits<{ select: [id: string] }>();
 </script>
 ```
 
-### PL-VUE-003 — Computed Over Watch
+### PL-VUE-003 — Control de la calidad
 
-Derive a value with `computed` whenever it follows from props or state. Use `watch` only for side effects such as requests or timers, never to set a ref that a `computed` could produce.
+Derive un valor con `computed` cuando proceda de props o estado. Utilice `watch` sólo para efectos secundarios como peticiones o temporizadores, para nunca establecer una ref que un `computed` podría producir.
 
 ```vue
 <script setup lang="ts">
@@ -53,9 +53,9 @@ const openCount = computed(() => props.items.filter((item) => !item.done).length
 </script>
 ```
 
-### PL-VUE-004 — Composables Own One Concern
+### PL-VUE-004 — Composable Propio Preocupación
 
-Put reusable stateful logic in a `useX` function that returns refs and functions. One composable handles one concern: one subscription, one form, one data source. Shared composables live in a `composables/` folder.
+Ponga la lógica de estado reutilizable en una función `useX` que devuelve refs y funciones. Una componible se ocupa de una preocupación: una suscripción, un formulario, una fuente de datos. Composable compartido vive en una carpeta `composables/`.
 
 ```ts
 import { ref } from "vue";
@@ -66,9 +66,9 @@ export function useCounter(start = 0) {
 }
 ```
 
-### PL-VUE-005 — `v-if` Creates, `v-show` Toggles
+### PL-VUE-005 — `v-if` crea, `v-show` conmuta
 
-Use `v-if` for guards, empty states, and branches that must not exist in the DOM. Use `v-show` for a value that flips often, such as a panel the user toggles.
+Use `v-if` para guardias, estados vacíos y ramas que no deben existir en el DOM. Use `v-show` para un valor que se voltea a menudo, como un panel que el usuario alterna.
 
 ```vue
 <template>
@@ -77,9 +77,9 @@ Use `v-if` for guards, empty states, and branches that must not exist in the DOM
 </template>
 ```
 
-### PL-VUE-006 — Lists Use a Stable `:key`
+### PL-VUE-006 — Listas de uso de un `:key` estable
 
-Every `v-for` has a `:key` bound to a stable identifier from the data, never the index of a list that can be reordered or filtered. Do not combine `v-if` and `v-for` on one element; filter in a `computed` instead.
+Cada `v-for` tiene un `:key` unido a un identificador estable de los datos, nunca el índice de una lista que se puede reordenar o filtrar. No combine `v-if` y `v-for` en un elemento; en su lugar, filtre en un `computed`.
 
 ```vue
 <template>
@@ -89,9 +89,9 @@ Every `v-for` has a `:key` bound to a stable identifier from the data, never the
 </template>
 ```
 
-### PL-VUE-007 — Templates Hold Simple Expressions Only
+### PL-VUE-007 — Las plantillas solo contienen expresiones simples
 
-A template expression is one property access, one simple ternary, or one short call. Move anything longer into a `computed` or a named function. Nested ternaries are not Pureline ([control flow](../core/control-flow.md)).
+Una expresión de plantilla es un acceso a una propiedad, una simple palabra de inicio o una llamada corta. Mueva cualquier cosa más a una función `computed` o con nombre. Las fuentes anidadas no son Pureline [[flujo de control](../core/control-flow.md)].
 
 ```vue
 <script setup lang="ts">
@@ -103,7 +103,7 @@ const props = defineProps<{ done: boolean }>();
 </template>
 ```
 
-With a `users` ref available to the component:
+Con un ref `users` disponible para el componente:
 
 ```text
 − Inline filtering          │ ✓ Pureline
@@ -121,9 +121,9 @@ With a `users` ref available to the component:
                             │ </template>
 ```
 
-### PL-VUE-008 — Pinia Holds Shared State
+### PL-VUE-008 — Pinia mantiene el Estado compartido
 
-Keep state in a component or composable until two unrelated parts of the app need it, then move it to a Pinia store. Read stores with `storeToRefs` so destructuring keeps reactivity.
+Mantener estado en un componente o componible hasta que dos partes no relacionadas de la aplicación lo necesiten, luego moverlo a una tienda de Pinia. Read stores with `storeToRefs` so destructuring keeps reactivity.
 
 ```ts
 const { items } = storeToRefs(useSessionStore());
@@ -131,7 +131,7 @@ const { items } = storeToRefs(useSessionStore());
 
 ### PL-VUE-009 — Densidad de la carpeta
 
-A folder holds at most **10 hand-maintained source files** by default. Group components, composables, and stores by feature (`features/sessions/`) when a feature has more than one file, and keep shared primitives in one `components/` folder ([structure](../core/structure.md)).
+Una carpeta contiene como máximo archivos fuente **10 mantenidos a mano** por defecto. Agrupar componentes, componibles y almacenar por función (`features/sessions/`) cuando una característica tiene más de un archivo, y mantener primitivos compartidos en una carpeta `components/` ([estructura](../core/structure.md)).:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ### PL-VUE-010 — Herramientas
 

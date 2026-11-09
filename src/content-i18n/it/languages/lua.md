@@ -1,10 +1,10 @@
-# Lua Code Style
+# Stile del codice Lua
 
 [Code style guide](../README.md) · [Original specification 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Apply the [shared core rules](../README.md#shared-rules) with this profile. Lua is small and table-centric: a file is a chunk that builds one module table, and structure comes from plain tables and functions. Pureline Lua targets **Lua 5.4**.
+Apply the [shared core rules](../README.md#shared-rules) with this profile. Lua è piccolo e tavolino-centrico: un file è un chunk che costruisce una tabella dei moduli, e la struttura proviene da tabelle e funzioni semplici. Pureline Lua targets **Lua 5.4**.
 
-## Lua Profile
+## Profilo di Lua
 
 ```text
 Requires (explicit dependencies)
@@ -16,7 +16,7 @@ Module table
 return module
 ```
 
-### PL-LUA-001 — Local by Default
+### PL-LUA-001. Locale per impostazione predefinita
 
 Declare every variable and function with `local`. A global is shared state that any other file can overwrite silently. Do not write to `_G` or `_ENV` outside a program's entry point. See [naming](../core/naming.md) and [state and side effects](../core/state-and-side-effects.md).
 
@@ -26,7 +26,7 @@ local function parse_port(text)
 end
 ```
 
-### PL-LUA-002 — One Module Table per File
+### PL-LUA-002. Tabella di un modulo per file
 
 Each file builds a local table, fills it with its public functions, and returns it. Require dependencies at the top so they stay visible.
 
@@ -84,7 +84,7 @@ local visible = options.visible or true   │ local visible = options.visible
                                           │ end
 ```
 
-### PL-LUA-005 — Errors Are Values
+### PL-LUA-005. Gli errori sono valori l''di il lancerà.
 
 Return `nil, err` for expected failures such as a missing file or bad input, and check the pair at the call site. Use `assert` only for programmer errors and broken invariants, where stopping is the correct response.
 
@@ -101,9 +101,9 @@ local function read_config(path)
 end
 ```
 
-### PL-LUA-006 — Metatables Only When They Clarify
+### PL-LUA-006. Metatables solo quando chiariscono
 
-Plain tables and functions are the default. Use a metatable (`__index` for a type, `__tostring` for debugging output) only when it makes call sites clearer. Do not build inheritance chains or operator overloads for convenience. See [avoid unnecessary abstractions](../core/principles.md).
+Plain tables and functions are the default. Use a metatable (`__index` for a type, `__tostring` for debugging output) only when it makes call sites clearer. Non costruire catene ereditarie o sovraccarichi di operatore per comodità. di potenza di potenza. ' See [avoid unnecessary abstractions](../core/principles.md).
 
 ```lua
 local Stack = {}
@@ -118,7 +118,7 @@ end
 
 Each function does one thing and fits on a screen. Extract a named local function instead of a long body with a comment marking each section. See [functions](../core/functions.md).
 
-### PL-LUA-008 — String Keys for Records
+### PL-LUA-008. Chiavi per archi per recordorato triossido di sodio
 
 Records use string keys and dot access. Reserve integer keys for sequences, and never mix the two in one table.
 
@@ -127,7 +127,7 @@ local user = { name = "Ada", active = true } -- record: string keys
 local tags = { "admin", "ops" }              -- sequence: integer keys
 ```
 
-### PL-LUA-009 — Blocks End on Their Own Lines
+### PL-LUA-009. I blocchi terminano sulle loro proprie linee ilm di il '.
 
 Every `function`, `if`, `for`, `while`, and `do` block closes with `end` on its own line, aligned with its opening keyword. Keep blocks multi-line, even for a single statement. See [formatting](../core/formatting.md).
 
@@ -139,9 +139,9 @@ for _, job in ipairs(jobs) do
 end
 ```
 
-### PL-LUA-010 — No Clever One-Liners
+### PL-LUA-010, nessun Clever One-Liner
 
-Prefer a sequence of plain statements over dense expressions. Do not use `cond and a or b` when `a` can be `nil` or `false`, because the fallback fires silently. Use an `if` instead.
+Prefer a sequence of plain statements over dense expressions. Non usare `cond and a or b` quando `a` può essere `nil` o `false`, perché il ripiego si accende in silenzio. Usare invece uno `if`..
 
 ```lua
 local mode = "guest"
@@ -152,8 +152,8 @@ end
 
 ### Densità della cartella PL-LUA-011
 
-A folder of hand-maintained Lua modules holds at most **10 files** by default. Group modules by feature (`session/`, `net/`), and keep shared helpers in one `util/` folder. See [structure](../core/structure.md).
+Una cartella dei moduli Lua tenuti a mano contiene al massimo i file **10** per impostazione predefinita.. I moduli di gruppo per funzione (`session/`, `net/`) e mantenere gli helper condivisi in una cartella `util/`... See [structure](../core/structure.md).
 
 ### PL-LUA-012. Troppo,, p.., p...
 
-Run `luacheck` in CI with zero warnings, so undefined globals and unused locals fail the build. Format every file with `StyLua`. Treat both tools as the authority on style details they cover.
+Esegui `luacheck` in CI con zero avvertimenti, quindi globali indefiniti e locali non utilizzati falliscono la generazione.. Formatta ogni file con `StyLua`.. Treat both tools as the authority on style details they cover.

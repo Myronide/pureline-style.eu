@@ -28,9 +28,9 @@ Utilisez des noms d'éléments et d'attributs minuscules, une double estimation 
 
 Chaque entrée a un `<label>` visible associé à `for` et `id`, ou enveloppe l'entrée. Le texte de placement n'est pas une étiquette. Contrôles liés au groupe avec `<fieldset>` et `<legend>`.
 
-Prefer a wrapping label when the label text and input belong together in
-the markup. Use an explicit `for` and `id` association when they need to be
-separate.
+Préférez une étiquette d'emballage lorsque le texte et l'entrée de l'étiquette sont réunis dans
+le balisage. Utilisez une association explicite `for` et `id` quand ils doivent être
+séparé.
 
 ```text
 Explicit association                        │ ✓ Pureline

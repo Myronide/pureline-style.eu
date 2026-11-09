@@ -28,8 +28,8 @@ Use lowercase element and attribute names, double quotes for attribute values, a
 
 Ogni ingresso ha uno `<label>` visibile associato a `for` e `id`, o avvolge l'ingresso.. Placeholder text is not a label. Controlli relativi al gruppo con `<fieldset>` e `<legend>`...
 
-Prefer a wrapping label when the label text and input belong together in
-the markup. Use an explicit `for` and `id` association when they need to be
+Preferire un'etichetta di confezionamento quando il testo e l'input dell'etichetta appartengono insieme in
+the markup. Usare un'associazione `for` e `id` esplicita quando devono essere
 separate.
 
 ```text

@@ -28,9 +28,9 @@ Verwenden Sie Kleinbuchstaben und Attributnamen, doppelte Anführungszeichen fü
 
 Every input has a visible `<label>` associated with `for` and `id`, or wraps the input. Placeholder text is not a label. Group related controls with `<fieldset>` and `<legend>`.
 
-Prefer a wrapping label when the label text and input belong together in
-the markup. Use an explicit `for` and `id` association when they need to be
-separate.
+Bevorzugen Sie ein Umhüllungsetikett, wenn der Etikettentext und die Eingabe zusammen gehören in
+Die Markierung. Verwenden Sie eine explizite `for` und `id` Assoziation, wenn sie sein müssen
+getrennt.
 
 ```text
 Explicit association                        │ ✓ Pureline

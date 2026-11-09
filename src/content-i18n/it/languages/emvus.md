@@ -133,7 +133,7 @@ method showPort(Int port) {
 - Do not discard a `Result` or hide expected failure behind `panic`.
 - Keep `success`, `fail`, and `return` distinct rather than wrapping every operation unnecessarily.
 
-Prefer `?` when forwarding the error unchanged and the enclosing method's
+Preferisci `?` quando si inoltra l'errore immodificato e il metodo di racchiudemento
 result type accepts it.
 
 ```text

@@ -133,8 +133,8 @@ streams
 
 La sintaxis moderna debe reducir el ruido, no crear novedad por sí misma.
 
-Prefer an `instanceof` pattern when a guard checks a type and the success
-path needs the value as that type.
+Prefiere un patrón `instanceof` cuando un guardia comprueba un tipo y el éxito
+path necesita el valor como ese tipo.
 
 ```text
 − Separate cast                      │ ✓ Pureline

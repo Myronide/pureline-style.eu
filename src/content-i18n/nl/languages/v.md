@@ -1,22 +1,22 @@
-# V Code Style
+# V Codestijl
 
 [Code stijl gids](../README.md) · [Original specificatie 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
 Pas de [shared core rules](../README.md#shared-rules) toe samen met dit profiel. Taal-native regels en expliciete profiel uitzonderingen hebben voorrang op de taaloverschrijdende syntax voorkeuren. [Cohesie over Size](../core/structure.md) geldt gedurende het gehele.
 
-## V Profile
+## V-profiel
 
 ### PL-V-001. Onveranderbaar door Standaard
 
-Variables are immutable unless declared with `mut`. Declare `mut` only where a value must change. See [PL-CORE-010](../core/principles.md).
+Variabelen zijn onveranderlijk tenzij aangegeven met `mut`. Alleen `mut` aangeven waar een waarde moet veranderen. Zie [PL-CORE-010](../core/principles.md).
 
 ```v
 limit := 10
 ```
 
-### PL-V-002 — Return Result Types for Failures
+### PL-V-002. Return Resultaat Types voor fouten
 
-A fallible function returns `!T` and reports failure with `error(...)`.
+Een feilbare functie geeft `!T` terug en rapporteert een storing met `error(...)`.
 
 ```v
 struct User {
@@ -32,9 +32,9 @@ fn load_user(id int) !User {
 }
 ```
 
-### PL-V-003 — Handle Errors Early With `or {}`
+### PL-V-003. Fouten vroegtijdig afhandelen met `or {}`
 
-Handle a failed call at the call site. Propagate with `!` only when the caller should own the error.
+Behandel een mislukt gesprek op de call site. Propagaat alleen met `!` als de beller de fout moet bezitten.
 
 ```v
 fn show_user() {
@@ -43,8 +43,8 @@ fn show_user() {
 }
 ```
 
-In a function that returns a result, prefer `!` to propagate an unchanged
-error. Use an `or` block when the error path needs additional handling.
+In een functie die een resultaat oplevert, verkiest `!` om een onveranderde
+fout. Gebruik een `or`-blok als het foutpad extra handling nodig heeft.
 
 ```text
 Explicit propagation                  │ ✓ Pureline
@@ -55,9 +55,9 @@ config := load_config(path) or {      │ config := load_config(path)!
 start(config)                         │
 ```
 
-### PL-V-004 — Use Option Types for Absent Values
+### PL-V-004. Gebruik opties voor afwezige waarden
 
-Use `?T` when absence is a normal outcome. Use `!T` when failure needs a reason.
+Gebruik `?T` als afwezigheid een normaal resultaat is. Gebruik `!T` als er een reden nodig is.
 
 ```v
 fn find_user(users []User, id int) ?User {
@@ -70,9 +70,9 @@ fn find_user(users []User, id int) ?User {
 }
 ```
 
-### PL-V-005 — Guard Clauses and Small Functions
+### PL-V-005. Guard Clausles en kleine functies
 
-Reject invalid input first so the success path stays linear. Each function does one job. See [PL-CORE-003](../core/principles.md) and [PL-CORE-006](../core/principles.md).
+Ongeldige invoer eerst weigeren zodat het succespad lineair blijft. Elke functie doet één taak. Zie [PL-CORE-003](../core/principles.md) en [PL-CORE-006](../core/principles.md).
 
 ```v
 fn withdraw(balance int, amount int) !int {
@@ -83,9 +83,9 @@ fn withdraw(balance int, amount int) !int {
 }
 ```
 
-### PL-V-006 — Naming Follows V Conventions
+### PL-V-006. Naamgeving volgt V-verdragen
 
-Functions and variables use `snake_case`. Structs and enums use `PascalCase`.
+Functies en variabelen gebruiken `snake_case`. Struiken en enums gebruiken `PascalCase`.
 
 ```v
 enum Role {
@@ -94,17 +94,17 @@ enum Role {
 }
 ```
 
-### PL-V-007 — Initialise Structs Explicitly
+### PL-V-007. Initialiseer Struiken Expliciet
 
-Name every field in a struct literal. Positional initialisation hides which value goes where.
+Noem elk veld in een struct literaal. Positionale initialisatie verbergt welke waarde waar naartoe gaat.
 
 ```v
 user := User{id: 1, name: 'ada'}
 ```
 
-### PL-V-008 — One Responsibility per Module Folder
+### PL-V-008. Eén verantwoordelijkheid per modulemap
 
-In V, a folder is a module. Its files share one `module` declaration and one responsibility. Cohesion matters more than line count ([Cohesion over Size](../core/structure.md)).
+In V is een map een module. De bestanden delen één `module` verklaring en één verantwoordelijkheid. Cohesie is belangrijker dan lijntelling ([Cohesie over grootte](../core/structure.md)).
 
 ```text
 user/
@@ -112,18 +112,18 @@ user/
     store.v    loading and saving users
 ```
 
-### PL-V-009 — Keep Folders Dense Enough to Scan
+### PL-V-009. Houd mappen Dense genoeg om te scannen
 
-A folder holds at most 10 hand-maintained source files by default. Generated files do not count. Past that limit, split by responsibility into a sub-module folder.
+Een map bevat hooguit 10 handbewaarde bronbestanden. Gegenereerde bestanden tellen niet mee. Deze limiet is overschreden, verdeeld door verantwoordelijkheid in een submodule map.
 
 ```text
 billing/
     invoice/    invoice.v, store.v, render.v
 ```
 
-### PL-V-010 — Format and Vet Before Review
+### PL-V-010. Formaat en vet voor beoordeling
 
-Run both tools on every change, so reviews discuss intent instead of layout or suspicious constructs.
+Run beide tools op elke verandering, dus reviews bespreken intentie in plaats van lay-out of verdachte constructies.
 
 ```sh
 v fmt -w .

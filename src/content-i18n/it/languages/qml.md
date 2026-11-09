@@ -65,7 +65,7 @@ function submit() {
 
 A binding holds one expression of at most one conditional and a short call. Move longer logic into a named function or a C++ / Python backend object. Nested ternaries are not Pureline.
 
-Keep a short binding on the property that uses it. Name the condition
+Keep a short binding on the property that uses it. Nome della condizione
 when multiple controls share it.
 
 ```text

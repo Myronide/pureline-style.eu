@@ -49,8 +49,8 @@ Render HTML zonder JavaScript tenzij het onderdeel moet reageren op de gebruiker
 - Kaarten over lijsten met een stabiele `key` als de lijst interactief is.
 - Nest niet meer dan twee expressieniveaus binnen de markup. Verplaats het binnenste deel naar een onderdeel.
 
-Keep a short formatting expression in the template when it is used once
-and reads clearly at the point of use.
+Een korte opmaakexpressie in het sjabloon bewaren wanneer het eenmaal wordt gebruikt
+en leest duidelijk op het punt van gebruik.
 
 ```text
 Named frontmatter value                         │ ✓ Pureline

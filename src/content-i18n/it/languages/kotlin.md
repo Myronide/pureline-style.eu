@@ -23,7 +23,7 @@ Use `data class` for values that carry data and compare by content. Do not hand-
 data class SessionId(val value: String)
 ```
 
-### PL-KT-003 — Sealed Types with Exhaustive when
+### PL-KT-003. Tipi sigillati con estensivo quando
 
 Model states as `sealed interface` and branch with an exhaustive `when` expression. Avoid `else`, which silently absorbs new cases.
 
@@ -41,10 +41,10 @@ fun describe(state: ConnectionState): String = when (state) {
 }
 ```
 
-### PL-KT-004 — Null Safety Without !!
+### PL-KT-004. Sicurezza Null senza!!..
 
-Use `?.` for optional access and `?:` for fallback values. Prefer a
-separate null guard when a missing value causes an early return. Never use
+Use `?.` for optional access and `?:` for fallback values. Preferire arate
+separato null guardia quando un valore mancante provoca un ritorno anticipato. Non usare
 `!!` outside tests.
 
 ```text
@@ -57,7 +57,7 @@ return user.name                       │     return "Gast"
                                        │ return user.name
 ```
 
-### PL-KT-005 — Scope Functions Only When They Read Clearly
+### PL-KT-005. Funzioni di campo d'applicazione solo quando leggono chiaramente
 
 Use `let`, `run`, or `apply` when they remove a temporary name or configure one object. Do not chain or nest them; a plain statement is clearer.
 
@@ -66,7 +66,7 @@ fun salutation(name: String?): String =
     name?.trim()?.let { "Dear $it" } ?: "Guest"
 ```
 
-### PL-KT-006 — Extension Functions with Narrow Scope
+### PL-KT-006. Funzioni di estensione con campo di applicazione stretto
 
 Add an extension only when it reads as a property of the receiver. Avoid extensions on `Any` or broad types, and never hide side effects behind one.
 
@@ -74,7 +74,7 @@ Add an extension only when it reads as a property of the receiver. Avoid extensi
 fun String.toSlug(): String = trim().lowercase().replace(' ', '-')
 ```
 
-### PL-KT-007 — Named Arguments for Booleans and Many Parameters
+### PL-KT-007. Argomenti nominati per i booleani e molti parametri,oxenom, p... lab.
 
 Name arguments for every boolean flag and for any call with more than two parameters. A bare `true` tells the reader nothing.
 

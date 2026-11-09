@@ -1,14 +1,14 @@
-# Angular Code Style
+# Stile del codice angolare
 
 [Code style guide](../README.md) · [Original specification 1.7](../../../PURELINE_SPECIFICATION_1.7.md)
 
-Apply the [shared core rules](../README.md#shared-rules), the [JavaScript profile](javascript.md), and the [TypeScript profile](typescript.md) together with this profile. The Angular profile targets **Angular 17 or later** with TypeScript in strict mode. A component reads as a small pipeline: inputs in, guards in the template, derived values, markup out.
+Apply the [shared core rules](../README.md#shared-rules), the [JavaScript profile](javascript.md), and the [TypeScript profile](typescript.md) together with this profile. Il profilo angolare si rivolge a **Angular 17 o versioni successive** con TypeScript in modalità rigorosa. Un componente si legge come una piccola pipeline: inputs in, guards in the template, derived values, markup out.
 
-## Angular Profile
+## Profilo angolare
 
-### PL-NG-001 — Standalone Components and `inject()`
+### PL-NG-001. Componenti standalone e `inject()`
 
-Every component is standalone (default from Angular 19; set `standalone: true` on 17 and 18). Declare dependencies with `inject()` as `private readonly` fields, so the class body starts with its state, not with a constructor.
+Every component is standalone (default from Angular 19; set `standalone: true` on 17 and 18). Dichiarare dipendenze con `inject()` come campi `private readonly`, quindi il corpo di classe inizia con il suo stato, non con un costruttore...
 
 ```ts
 @Component({
@@ -21,9 +21,9 @@ export class SessionCardComponent {
 }
 ```
 
-### PL-NG-002 — Signals Hold State, OnPush Renders It
+### PL-NG-002. Segnali di stato, OnPush Renders It
 
-- `signal()` holds writable state, `computed()` derives values, `input()` and `output()` form the interface; never keep a derived value in a second field. Every component sets `ChangeDetectionStrategy.OnPush`, so signals read in the template drive the updates.
+- `signal()` ha uno stato scrivibile, `computed()` deriva valori, `input()` e `output()` formano l'interfaccia; non mantenere mai un valore derivato in un secondo campo. Every component sets `ChangeDetectionStrategy.OnPush`, so signals read in the template drive the updates.
 
 ```ts
 @Component({
@@ -40,7 +40,7 @@ export class CounterComponent {
 }
 ```
 
-When a template value is derived from a signal, prefer `computed()` over
+Quando un valore del modello è derivato da un segnale, preferisci `computed()` su
 a getter that repeats the calculation on every access.
 
 ```text
@@ -66,7 +66,7 @@ Use `@if`, `@for`, and `@switch`; do not use `*ngIf` or `*ngFor` in new code. Ev
 }
 ```
 
-### PL-NG-004 — Typed Reactive Forms
+### PL-NG-004. Forme reattive digitate
 
 Use reactive forms with `nonNullable` controls, so a reset never yields `null`. After the validity guard, read values with `getRawValue()`, which is fully typed.
 
@@ -83,7 +83,7 @@ submit(): void {
 }
 ```
 
-### PL-NG-005 — Smart and Presentational Components
+### PL-NG-005. Componenti intelligenti e di presentazione
 
 - A **smart** component (a page or route target) injects services, owns the signals, and passes plain inputs down. A **presentational** component receives data through `input()`, reports through `output()`, and injects no services.
 
@@ -94,7 +94,7 @@ export class SessionListViewComponent {
 }
 ```
 
-### PL-NG-006 — Services Have One Responsibility
+### PL-NG-006. I servizi hanno una responsabilità
 
 A service talks to one API, holds one piece of shared state, or implements one domain rule. Components never call `HttpClient` directly. Use `providedIn: 'root'` unless a feature needs a scoped instance.
 
@@ -108,7 +108,7 @@ export class SessionApi {
 }
 ```
 
-### PL-NG-007 — Feature Folders and Folder Density
+### PL-NG-007. Cartelle e densità delle cartelle
 
 - Group files by feature (`features/sessions/`): component, template, service, and spec together. Name files by role: `session-list.component.ts`, `session-api.service.ts`.
 - A folder holds at most **10 hand-maintained source files** by default ([PL-TS-007](typescript.md)). Split along responsibilities, not into empty nested folders ([PL-STRUCT-003](../core/structure.md)).
